@@ -6,7 +6,7 @@ import com.example.merrybeltmobilemoney.R
 data class HomeState(
     val customerId: String = "",
     val balance: String = "",
-    val banklist: List<Banks.BankList> = emptyList(),
+    val banklist: List<Banks.AllBanks> = emptyList(),
     val bankLogo: String = "",
     //Expandable Menu
     var size: Size = Size.Zero,

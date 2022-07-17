@@ -10,9 +10,9 @@ data class Banks(
     val status: String? = "",
     @SerializedName("data")
     @Expose
-    val data: List<BankList> =  emptyList()
+    val data: List<AllBanks> =  emptyList()
 ){
-    data class BankList(
+    data class AllBanks(
         @SerializedName("url")
         @Expose
         val url: String? = "",
