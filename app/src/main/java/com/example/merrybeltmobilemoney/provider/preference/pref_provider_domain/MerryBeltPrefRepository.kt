@@ -5,20 +5,19 @@ import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.U
 
 interface MerryBeltPrefRepository {
 
-    suspend fun saveShopName(shopname: String)
-    suspend fun saveShopAddress(shopaddress: String)
-    suspend fun saveCustomerId(customerId: String)
+    suspend fun saveTerminalId(terminalId: String)
+    suspend fun saveAccountNumber(accountNumber: String)
     suspend fun saveBalance(balance: String)
-    suspend fun loadUserInfo(): UsersInfoDomain
+    suspend fun saveAccountName(accountName: String)
+    suspend fun saveSessionId(sessionId: String)
+    fun loadUserInfo(): UsersInfoDomain
 
-    //suspend fun loadUserInfo(): UsersInfoDomain
 
     companion object {
-        const val KEY_SHOP = "shopname"
-        const val KEY_ADDRESS = "shopaddress"
-        const val KEY_CUSTOMERID = "customerId"
-        const val KEY_BALANCE = "balance"
+        const val KEY_TERMINAL = "terminalId"
+        const val KEY_ACC_NUMBER = "accountNumber"
+        const val KEY_ACC_BALANCE = "balance"
+        const val KEY_ACC_NAME= "accountName"
+        const val KEY_SESSION_ID = "sessionId"
     }
 }
-
-

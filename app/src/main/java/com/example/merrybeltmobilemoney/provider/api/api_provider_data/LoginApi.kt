@@ -17,5 +17,4 @@ interface LoginApi {
         @Body data: LoginCredential
     ): Response<LoginResponse>
 
-
 }

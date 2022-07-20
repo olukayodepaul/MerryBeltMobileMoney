@@ -14,8 +14,6 @@ object EncryptionUtil {
 
     fun encrypt(message: String, secret: String): ByteArray {
 
-        print("MESSAGE: $message")
-        print("SECRET: $secret")
         val md = MessageDigest.getInstance("md5")
         val digestOfPassword = md.digest(
             secret

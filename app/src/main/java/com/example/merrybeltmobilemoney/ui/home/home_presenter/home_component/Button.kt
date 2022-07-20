@@ -31,7 +31,7 @@ fun Buttons(
 
         ) {
         Text(
-            text = label!!,
+            text = label,
             style = TextStyle(
                 color = White,
                 fontSize = 20.sp,

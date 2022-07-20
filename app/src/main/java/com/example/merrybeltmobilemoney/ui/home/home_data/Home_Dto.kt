@@ -3,6 +3,35 @@ package com.example.merrybeltmobilemoney.ui.home.home_data
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+
+//Network Mgt(7) get session_id Response
+data class NetworkMgtRes(
+    @SerializedName("status")
+    @Expose
+    val status: Boolean? = null,
+    @SerializedName("data")
+    @Expose
+    val data: NetworkMgtResBodyData? = null
+){
+    data class NetworkMgtResBodyData(
+        @SerializedName("sessionId")
+        @Expose
+        val sessionId: String? = "",
+        @SerializedName("terminalId")
+        @Expose
+        val terminalId: String = "",
+        @SerializedName("accountNumber")
+        @Expose
+        val accountNumber: String = "",
+        @SerializedName("balance")
+        @Expose
+        val balance: String = "",
+        @SerializedName("accountName")
+        @Expose
+        val accountName: String = "",
+    )
+}
+
 //BankList(1)
 data class Banks(
     @SerializedName("status")
@@ -104,36 +133,12 @@ data class TransferFundRes(
     )
 }
 
-
 //Network Mgt(6) get session_id Request
 data class NetworkMgtReq(
     val serialNumber: String? = null,
     val stan: String? = null,
     val onlyAccountInfo: Boolean? = null
 )
-
-//Network Mgt(7) get session_id Response
-data class NetworkMgtRes(
-    @SerializedName("status")
-    @Expose
-    val status: Boolean? = null,
-    @SerializedName("data")
-    @Expose
-    val data: NetworkMgtResBodyData? = null
-){
-    data class NetworkMgtResBodyData(
-        @SerializedName("sessionId")
-        @Expose
-        val sessionId: String? = "",
-        @SerializedName("terminalId")
-        @Expose
-        val terminalId: String = "",
-        @SerializedName("merchantId")
-        @Expose
-        val merchantId: String = "",
-    )
-}
-
 
 //AitTime Credit (8)
 data class AirtimeReq(
@@ -210,5 +215,12 @@ data class DataPurchase(
     val phcnCategory: String? = null,
     val phcnPurchaseCategory: String? = null, //AEDC IKEJA
     val type: String? = null, //"PHCN"
+)
+
+
+//Purchase Data(11):
+data class TestData(
+    val amount: Double? = 0.0
+
 )
 

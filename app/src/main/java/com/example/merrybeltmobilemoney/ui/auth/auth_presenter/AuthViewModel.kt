@@ -9,6 +9,7 @@ import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthEvent
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthState
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginAuthState
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
+import com.example.merrybeltmobilemoney.ui.home.home_data.NetworkMgtReq
 import com.example.merrybeltmobilemoney.util.getHash
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -20,8 +21,10 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(private val repo: MerryBeltApiRepository,
-                                        private val appContext: Application) : ViewModel(){
+class AuthViewModel @Inject constructor(
+    private val repo: MerryBeltApiRepository,
+    private val appContext: Application)
+    : ViewModel(){
 
     private val _apiEvent = Channel<LoginAuthState>()
     val uiEvent = _apiEvent.receiveAsFlow()
@@ -86,31 +89,42 @@ class AuthViewModel @Inject constructor(private val repo: MerryBeltApiRepository
 
                     if(bodyPayLoad!!.errorStatusCode==1){
 
-                        repo.saveShopAddress(bodyPayLoad.shopAddress!!)
-                        repo.saveShopName(bodyPayLoad.shopName!!)
-                        repo.saveBalance(bodyPayLoad.balance!!.balance!!)
-                        repo.saveCustomerId(bodyPayLoad.customerId!!)
+                        if(repo.loadUserInfo().balance!!.isEmpty()){
 
-                        _apiEvent.send(
-                            LoginAuthState.Success(
-                                status = 200
+                            val authData = NetworkMgtReq(
+                                serialNumber = "63201125995137",
+                                stan = "123456",
+                                onlyAccountInfo = false
                             )
-                        )
+
+                            val networkApi = repo.isNetworkApi(authData)
+
+                            if(networkApi.isSuccessful || networkApi.code()==200 || networkApi.body()!!.status==true) {
+
+                                val isNetworkResponse = networkApi.body()!!.data
+
+                                repo.saveBalance(isNetworkResponse!!.balance)
+                                repo.saveAccountName(isNetworkResponse.accountName)
+                                repo.saveAccountNumber(isNetworkResponse.accountNumber)
+                                repo.saveTerminalId(isNetworkResponse.terminalId)
+                                repo.saveSessionId(isNetworkResponse.sessionId!!)
+
+                                _apiEvent.send(LoginAuthState.Success(status = 200))
+
+                            }else{
+                                _apiEvent.send(LoginAuthState.Error(error =  "Session id error, please contact the admin"))
+                            }
+
+                        }else{
+                           _apiEvent.send(LoginAuthState.Success(status = 200))
+                        }
 
                     }else{
-                        _apiEvent.send(
-                            LoginAuthState.Error(
-                                error =  bodyPayLoad.shopName!!,
-                            )
-                        )
+                        _apiEvent.send(LoginAuthState.Error(error =  bodyPayLoad.shopName!!,))
                     }
 
                 }catch (e:Throwable) {
-                    _apiEvent.send(
-                        LoginAuthState.Error(
-                            error =  e.message.toString(),
-                        )
-                    )
+                    _apiEvent.send(LoginAuthState.Error(error =  e.message.toString()))
                 }
             }
         }
@@ -136,4 +150,5 @@ class AuthViewModel @Inject constructor(private val repo: MerryBeltApiRepository
             }
         }
     }
+
 }

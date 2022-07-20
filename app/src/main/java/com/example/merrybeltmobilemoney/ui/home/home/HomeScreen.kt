@@ -3,6 +3,7 @@ package com.example.merrybeltmobilemoney.ui.home.home
 
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,9 +34,7 @@ fun HomeScreen(
     localContext: Context,
     navController: NavHostController
 ) {
-
     val uiSate = viewModel.uiState.collectAsState().value
-    val uiEvent = viewModel::homeEventHandler
 
     Column(
         modifier = Modifier
@@ -56,7 +55,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .align(Alignment.Start),
                 style = TextStyle(
-                    fontSize = 12.sp,
+                    fontSize = 13.sp,
                     fontFamily = RobotoBold,
                     color = White,
                     fontWeight = FontWeight.Bold

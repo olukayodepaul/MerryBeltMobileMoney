@@ -7,37 +7,47 @@ class MerryBeltPrefRepositoryImpl(
     private val sharedPref: SharedPreferences
 ): MerryBeltPrefRepository {
 
-    override suspend fun saveShopName(shopname: String) {
+    override suspend fun saveTerminalId(terminalId: String) {
         sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_SHOP, shopname)
-            .apply()
+            .putString(MerryBeltPrefRepository.KEY_TERMINAL, terminalId).apply()
     }
 
-    override suspend fun saveShopAddress(shopaddress: String) {
+    override suspend fun saveAccountNumber(accountNumber: String) {
         sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_ADDRESS, shopaddress)
-            .apply()
-    }
-
-    override suspend fun saveCustomerId(customerId: String) {
-        sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_CUSTOMERID, customerId)
-            .apply()
+            .putString(MerryBeltPrefRepository.KEY_ACC_NUMBER, accountNumber).apply()
     }
 
     override suspend fun saveBalance(balance: String) {
         sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_BALANCE, balance)
-            .apply()
+            .putString(MerryBeltPrefRepository.KEY_ACC_BALANCE, balance).apply()
     }
 
-    override suspend fun loadUserInfo(): UsersInfoDomain {
-        val customerId = sharedPref.getString(MerryBeltPrefRepository.KEY_CUSTOMERID, "")
-        val balance = sharedPref.getString(MerryBeltPrefRepository.KEY_BALANCE, "")
+    override suspend fun saveAccountName(accountName: String) {
+        sharedPref.edit()
+            .putString(MerryBeltPrefRepository.KEY_ACC_NAME, accountName).apply()
+    }
+
+    override suspend fun saveSessionId(sessionId: String) {
+        sharedPref.edit()
+            .putString(MerryBeltPrefRepository.KEY_SESSION_ID, sessionId)
+    }
+
+
+    override  fun loadUserInfo(): UsersInfoDomain {
+
+        val terminalId = sharedPref.getString(MerryBeltPrefRepository.KEY_TERMINAL, "")
+        val accountNumber = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NUMBER, "")
+        val balance = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_BALANCE, "")
+        val accountName = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NAME, "")
+        val sessionId = sharedPref.getString(MerryBeltPrefRepository.KEY_SESSION_ID, "")
+
         return UsersInfoDomain(
-            customerId = customerId!!,
-            balance = balance!!
+            terminalId = terminalId!!,
+            accountNumber = accountNumber!!,
+            balance = balance,
+            accountName = accountName!!,
+            sessionId = sessionId!!
         )
-    }
 
+    }
 }

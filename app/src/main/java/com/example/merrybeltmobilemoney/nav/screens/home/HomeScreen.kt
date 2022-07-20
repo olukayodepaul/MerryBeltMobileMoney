@@ -20,7 +20,6 @@ import com.example.merrybeltmobilemoney.ui.home.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
     localContext: Context,
     navController: NavHostController = rememberNavController()
 ) {
@@ -28,7 +27,6 @@ fun HomeScreen(
         bottomBar = { BottomBar(navController = navController) }
     ) {
         HomeNavGraph(
-            viewModel = viewModel,
             localContext = localContext,
             navController = navController
         )

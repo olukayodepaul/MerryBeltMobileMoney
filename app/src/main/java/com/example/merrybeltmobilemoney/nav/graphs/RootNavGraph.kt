@@ -14,7 +14,6 @@ fun RootNavigationGraph(
     navController: NavHostController,
     viewModel: AuthViewModel,
     localContext: Context,
-    homeViewModel: HomeViewModel
 ) {
     NavHost(
         navController = navController,
@@ -28,7 +27,6 @@ fun RootNavigationGraph(
         )
         composable(route = Graph.HOME) {
             HomeScreen(
-                viewModel =  homeViewModel,
                 localContext = localContext
             )
         }

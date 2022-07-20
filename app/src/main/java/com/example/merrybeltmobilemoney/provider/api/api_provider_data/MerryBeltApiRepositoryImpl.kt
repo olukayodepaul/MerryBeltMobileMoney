@@ -6,12 +6,17 @@ import com.example.merrybeltmobilemoney.provider.preference.pref_provider_domain
 import com.example.merrybeltmobilemoney.provider.room.room_provider_domain.MerryBeltRoomDao
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
+import com.example.merrybeltmobilemoney.ui.home.home_data.Banks
+import com.example.merrybeltmobilemoney.ui.home.home_data.NetworkMgtReq
+import com.example.merrybeltmobilemoney.ui.home.home_data.NetworkMgtRes
+import com.example.merrybeltmobilemoney.ui.home.home_data.TestData
 import retrofit2.Response
 
 
 class MerryBeltApiRepositoryImpl(
 
     private val merryBeltApi: MerryBeltApi,
+    private val merryBeltEncryptedApi: MerryBeltEncryptedApi,
     private val loginApi: LoginApi,
     private val authKey: String,
     private val apiUser: String,
@@ -47,32 +52,36 @@ class MerryBeltApiRepositoryImpl(
         return apiID
     }
 
-    override suspend fun saveShopName(shopname: String) {
-        sharedPref.saveShopName(shopname)
+    override suspend fun saveTerminalId(terminalId: String) {
+        sharedPref.saveTerminalId(terminalId)
     }
 
-    override suspend fun saveShopAddress(shopaddress: String) {
-        sharedPref.saveShopAddress(shopaddress)
+    override suspend fun saveAccountNumber(accountNumber: String) {
+        sharedPref.saveAccountNumber(accountNumber)
     }
 
-    override suspend fun saveCustomerId(customerId: String) {
-        sharedPref.saveCustomerId(customerId)
-    }
 
     override suspend fun saveBalance(balance: String) {
         sharedPref.saveBalance(balance)
     }
 
-    override suspend fun loadUserInfo(): UsersInfoDomain {
+    override suspend fun saveAccountName(accountName: String) {
+        sharedPref.saveAccountName(accountName)
+    }
+
+    override suspend fun saveSessionId(sessionId: String) {
+         sharedPref.saveSessionId(sessionId)
+    }
+
+    override fun loadUserInfo(): UsersInfoDomain {
         return sharedPref.loadUserInfo()
     }
 
-//    override suspend fun getBankList(terminalId: String, sessionId: String): Response<Banks> {
-//        return merryBeltApi.getBanks(terminalId, sessionId)
-//    }
-//
-//    override suspend fun networkMgt(data: NetworkMgtReq): Response<NetworkMgtRes> {
-//        return merryBeltApi.networkMgt(data)
-//    }
+    override suspend fun isNetworkApi(data: NetworkMgtReq): Response<NetworkMgtRes> {
+        return merryBeltApi.getNetwork(data)
+    }
 
+    override suspend fun getBanks(terminalId: String, sessionId: String, data: TestData): Response<Banks> {
+        return merryBeltEncryptedApi.getBanks(terminalId, sessionId, data)
+    }
 }

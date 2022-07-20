@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.LoginApi
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.MerryBeltApi
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.MerryBeltApiRepositoryImpl
+import com.example.merrybeltmobilemoney.provider.api.api_provider_data.MerryBeltEncryptedApi
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
 import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.MerryBeltPrefRepositoryImpl
 import com.example.merrybeltmobilemoney.provider.preference.pref_provider_domain.MerryBeltPrefRepository
@@ -35,6 +36,7 @@ object AppModule {
     @Singleton
     fun provideMerrybeltRepository(
         merryBeltApi: MerryBeltApi,
+        merryBeltEncryptedApi: MerryBeltEncryptedApi,
         loginApi: LoginApi,
         @Named("TOKEN_KEY") authToken: String,
         @Named("API_USER_LOGIN") apiUser: String,
@@ -43,7 +45,7 @@ object AppModule {
         merryPref: MerryBeltPrefRepository
     ): MerryBeltApiRepository {
         return MerryBeltApiRepositoryImpl(
-            merryBeltApi, loginApi, authToken, apiUser, apiId, merryBeltRoomDao, merryPref
+            merryBeltApi, merryBeltEncryptedApi, loginApi, authToken, apiUser, apiId, merryBeltRoomDao, merryPref
         )
     }
 

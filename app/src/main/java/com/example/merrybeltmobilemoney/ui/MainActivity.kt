@@ -23,15 +23,14 @@ class MainActivity : ComponentActivity() {
 
             val  viewModel: AuthViewModel = hiltViewModel()
             val localContext: Context = LocalContext.current
-            val homeViewModel: HomeViewModel = hiltViewModel()
+
 
             MaterialTheme {
                 MerryBeltMobileMoneyTheme {
                     RootNavigationGraph(
                         navController = rememberNavController(),
                         viewModel = viewModel,
-                        localContext = localContext,
-                        homeViewModel = homeViewModel
+                        localContext = localContext
                     )
                 }
             }

@@ -1,5 +1,7 @@
 package com.example.merrybeltmobilemoney.ui.home
 
+
+import android.widget.Toast
 import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,9 +10,12 @@ import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBe
 import com.example.merrybeltmobilemoney.ui.home.home_data.Banks
 import com.example.merrybeltmobilemoney.ui.home.home_data.HomeEvent
 import com.example.merrybeltmobilemoney.ui.home.home_data.HomeState
+import com.example.merrybeltmobilemoney.ui.home.home_data.TestData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -28,7 +33,7 @@ class HomeViewModel @Inject constructor(private val repo: MerryBeltApiRepository
         )
     }
 
-    private fun setBankList(bankList: List<Banks.BankList>) {
+    private fun setBankList(bankList: List<Banks.AllBanks>) {
         uiState.value = uiState.value.copy(
             banklist = bankList,
         )
@@ -96,18 +101,6 @@ class HomeViewModel @Inject constructor(private val repo: MerryBeltApiRepository
         )
     }
 
-    private fun getBankList() {
-        viewModelScope.launch {
-//            try {
-//               // val isBankList = repo.getBankList(terminalId = "", sessionId = "")
-//                setBankList(isBankList.body()!!.data)
-//            } catch (e: Throwable) {
-//            }
-        }
-    }
-
-
-
     //event
     fun homeEventHandler(event: HomeEvent) {
         when (event) {
@@ -147,12 +140,26 @@ class HomeViewModel @Inject constructor(private val repo: MerryBeltApiRepository
     }
 
     init {
-
         viewModelScope.launch {
-            getBankList()
+
+            try {
+
+                var t = TestData(
+                    amount =  30.0
+                )
+                val isBankList = repo.getBanks(terminalId = repo.loadUserInfo().terminalId, sessionId = repo.loadUserInfo().sessionId, t)
+                val responseFromBankList = isBankList.body()!!.data
+                Toast.makeText(appContext, "1 ${responseFromBankList}", Toast.LENGTH_LONG).show()
+
+            } catch (e: Throwable) {
+                Toast.makeText(appContext, "2 ${e.message}", Toast.LENGTH_LONG).show()
+            }
+
             setCustomerId(
-                customerId = repo.loadUserInfo().customerId,
-                balance = repo.loadUserInfo().balance
+                customerId =  repo.loadUserInfo().accountNumber,
+                balance = NumberFormat.getNumberInstance(Locale.US)
+                    .format(repo.loadUserInfo().balance!!.toInt())
+                    .replace(oldValue = ",", newValue = "،"),
             )
         }
     }

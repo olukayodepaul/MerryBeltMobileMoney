@@ -2,6 +2,7 @@ package com.example.merrybeltmobilemoney.nav.graphs
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,7 +21,7 @@ import com.example.merrybeltmobilemoney.ui.home.home.trans_channel.withrawChanne
 
 @Composable
 fun HomeNavGraph(
-    viewModel: HomeViewModel,
+    homeViewModel: HomeViewModel = hiltViewModel(),
     localContext: Context,
     navController: NavHostController
 ) {
@@ -31,7 +32,7 @@ fun HomeNavGraph(
     ) {
         composable(route = BottomBarScreen.Home.route) {
             HomeScreen(
-                viewModel = viewModel,
+                viewModel = homeViewModel,
                 localContext = localContext,
                 navController = navController
             )
@@ -50,7 +51,7 @@ fun HomeNavGraph(
         }
         detailsNavGraph(
             navController = navController,
-            viewModel = viewModel,
+            viewModel = homeViewModel,
             localContext = localContext,
         )
     }
