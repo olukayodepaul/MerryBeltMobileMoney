@@ -220,7 +220,8 @@ data class DataPurchase(
 
 //Purchase Data(11):
 data class TestData(
-    val amount: Double? = 0.0
+    val bankCode: String = "",
+    val accountNumber:String = ""
 
 )
 

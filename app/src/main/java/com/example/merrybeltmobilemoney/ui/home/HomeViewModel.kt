@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.home.home_data.Banks
 import com.example.merrybeltmobilemoney.ui.home.home_data.HomeEvent
 import com.example.merrybeltmobilemoney.ui.home.home_data.HomeState
@@ -142,25 +143,27 @@ class HomeViewModel @Inject constructor(private val repo: MerryBeltApiRepository
     init {
         viewModelScope.launch {
 
-            try {
-
-                var t = TestData(
-                    amount =  30.0
-                )
-                val isBankList = repo.getBanks(terminalId = repo.loadUserInfo().terminalId, sessionId = repo.loadUserInfo().sessionId, t)
-                val responseFromBankList = isBankList.body()!!.data
-                Toast.makeText(appContext, "1 ${responseFromBankList}", Toast.LENGTH_LONG).show()
-
-            } catch (e: Throwable) {
-                Toast.makeText(appContext, "2 ${e.message}", Toast.LENGTH_LONG).show()
-            }
-
-            setCustomerId(
-                customerId =  repo.loadUserInfo().accountNumber,
-                balance = NumberFormat.getNumberInstance(Locale.US)
-                    .format(repo.loadUserInfo().balance!!.toInt())
-                    .replace(oldValue = ",", newValue = "،"),
-            )
+//            try {
+//
+//                var t = LoginCredential(
+//                    bankCode = "058",
+//                    accountNumber = "0112169539"
+//                )
+//                val isBankList = repo.getBanks(terminalId = "2033HQOQ", sessionId = "2033HQOQ-b70983fb-8b6e-4d6e-b0ec-4c6f50a39581",
+//                    t)
+//                val responseFromBankList = isBankList.body()!!.data
+//                Toast.makeText(appContext, "1 ${responseFromBankList}", Toast.LENGTH_LONG).show()
+//
+//            } catch (e: Throwable) {
+//                Toast.makeText(appContext, "2 ${e.message}", Toast.LENGTH_LONG).show()
+//            }
+//
+//            setCustomerId(
+//                customerId =  repo.loadUserInfo().accountNumber,
+//                balance = NumberFormat.getNumberInstance(Locale.US)
+//                    .format(repo.loadUserInfo().balance!!.toInt())
+//                    .replace(oldValue = ",", newValue = "،"),
+//            )
         }
     }
 

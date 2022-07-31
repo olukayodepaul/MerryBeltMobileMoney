@@ -12,11 +12,18 @@ import retrofit2.Response
 interface MerryBeltApiRepository {
 
     suspend fun login(
-        requestTime: String,
-        apiHashKey: String,
-        apiUserId: Int,
-        data: LoginCredential,
+        terminalId: String,
+        sessionId: String,
+        data: String,
     ): Response<LoginResponse>
+
+
+//    suspend fun login(
+//        requestTime: String,
+//        apiHashKey: String,
+//        apiUserId: Int,
+//        data: LoginCredential,
+//    ): Response<LoginResponse>
 
     suspend fun token(): String
 

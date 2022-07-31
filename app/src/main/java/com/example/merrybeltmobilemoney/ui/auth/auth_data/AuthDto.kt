@@ -2,16 +2,24 @@ package com.example.merrybeltmobilemoney.ui.auth.auth_data
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-
+@JsonClass(generateAdapter = true)
 data class LoginCredential(
-    @SerializedName("login")
-    @Expose
-    val login: String,
-    @SerializedName("loginPasswordMD5")
-    @Expose
-    val loginPasswordMD5: String
+    @Json(name = "bankCode") val bankCode: String,
+    @Json(name = "accountNumber") val accountNumber: String
 )
+
+
+//data class LoginCredential(
+//    @SerializedName("login")
+//    @Expose
+//    val login: String,
+//    @SerializedName("loginPasswordMD5")
+//    @Expose
+//    val loginPasswordMD5: String
+//)
 
 data class LoginResponse(
     @SerializedName("errorStatusCode")

@@ -1,12 +1,12 @@
 package com.example.merrybeltmobilemoney.util
 
-import android.util.Base64
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
@@ -18,27 +18,40 @@ class EncryptionUtil {
 
     val algo = "DESede/ECB/PKCS7Padding"
 
-    fun epokhaiEncrypt(message: String): String {
-        val cipher: Cipher = Cipher.getInstance(algo)
-        cipher.init(Cipher.ENCRYPT_MODE, getSecreteKey(repo.loadUserInfo().sessionId))
-        val plainTextBytes = message.toByteArray(charset("UTF-8"))
-        val buf: ByteArray = cipher.doFinal(plainTextBytes)
-        val base64Bytes: ByteArray = Base64.encode(buf, Base64.DEFAULT)
-        return String(base64Bytes)
-    }
+    fun isEncryption(message: String): ByteArray {
 
-    fun epokhaiDecrypt(encryptedText: String): String? {
-        val message = Base64.decode(encryptedText.toByteArray(), Base64.DEFAULT)
-        val decipher = Cipher.getInstance(algo)
-        decipher.init(Cipher.DECRYPT_MODE, getSecreteKey(repo.loadUserInfo().sessionId))
-        val plainText = decipher.doFinal(message)
-        return String(plainText, StandardCharsets.UTF_8)
-    }
-
-    private fun getSecreteKey(secretKey: String): SecretKey? {
         val md = MessageDigest.getInstance("md5")
-        val digestOfPassword = md.digest(secretKey.toByteArray(charset("utf-8")))
-        val keyBytes: ByteArray = Arrays.copyOf(digestOfPassword, 24)
-        return SecretKeySpec(keyBytes, "DESede")
+        val digestOfPassword = md.digest("2033HQOQ-9c1ed177-3b0f-4417-8d70-76e84fb09640".toByteArray(StandardCharsets.UTF_8))
+        val keyBytes = Arrays.copyOf(digestOfPassword, 24)
+        var j = 0
+        var k = 16
+        while (j < 8) {
+            keyBytes[k++] = keyBytes[j++]
+        }
+        val key: SecretKey = SecretKeySpec(keyBytes, "DESede")
+        val iv = IvParameterSpec(ByteArray(8))
+        val cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding")
+        cipher.init(Cipher.ENCRYPT_MODE, key, iv)
+        val plainTextBytes = message.toByteArray(StandardCharsets.UTF_8)
+        return cipher.doFinal(plainTextBytes)
     }
+
+    fun isDecryption(encryptedText: String): String {
+            val md = MessageDigest.getInstance("md5")
+            val digestOfPassword = md.digest("2033HQOQ-9c1ed177-3b0f-4417-8d70-76e84fb09640".toByteArray(StandardCharsets.UTF_8))
+            val keyBytes = Arrays.copyOf(digestOfPassword, 24)
+            var j = 0
+            var k = 16
+            while (j < 8) {
+                keyBytes[k++] = keyBytes[j++]
+            }
+            val key: SecretKey = SecretKeySpec(keyBytes, "DESede")
+            val iv = IvParameterSpec(ByteArray(8))
+            val decipher = Cipher.getInstance("DESede/CBC/PKCS5Padding")
+            decipher.init(Cipher.DECRYPT_MODE, key, iv)
+            val decodedBuffer = org.bouncycastle.util.encoders.Base64.decode(encryptedText)
+            val plainText = decipher.doFinal(decodedBuffer)
+            return String(plainText)
+    }
+
 }

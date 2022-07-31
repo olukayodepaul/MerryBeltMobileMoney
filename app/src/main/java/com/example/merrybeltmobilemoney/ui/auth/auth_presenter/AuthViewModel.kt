@@ -1,6 +1,8 @@
 package com.example.merrybeltmobilemoney.ui.auth.auth_presenter
 
 import android.annotation.SuppressLint
+import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
@@ -10,7 +12,12 @@ import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthState
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginAuthState
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.home.home_data.NetworkMgtReq
+import com.example.merrybeltmobilemoney.util.Constant.loginAdapter
+import com.example.merrybeltmobilemoney.util.Constant.moshi
+import com.example.merrybeltmobilemoney.util.EncryptionUtil
 import com.example.merrybeltmobilemoney.util.getHash
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,52 +85,67 @@ class AuthViewModel @Inject constructor(
 
                 try {
 
-                    val requestTime = SimpleDateFormat("yyyyMMddHHmmssZ").format(Date())
-                    val apiHashKey = getHash("${repo.apiUser()}${repo.token()}$requestTime")
-                    val apiUser = repo.apiID()
+                    val requestData = LoginCredential(
+                        bankCode = "058",
+                        accountNumber = "0113069289"
+                    )
 
-                    val bodyRequest = LoginCredential(_userName, _password)
-                    val handleApiRequest = repo.login(requestTime, apiHashKey, apiUser, bodyRequest)
+                    //convert Object to String
+                    val toJson = loginAdapter.toJson(requestData)
 
-                    val bodyPayLoad = handleApiRequest.body()
+                     val repo = repo.login(
+                         terminalId = "2033HQOQ",
+                         sessionId = "22033HQOQ-9c1ed177-3b0f-4417-8d70-76e84fb09640",
+                         data = toJson
+                     )
 
-                    if(bodyPayLoad!!.errorStatusCode==1){
-
-                        if(repo.loadUserInfo().balance!!.isEmpty()){
-
-                            val authData = NetworkMgtReq(
-                                serialNumber = "63201125995137",
-                                stan = "123456",
-                                onlyAccountInfo = false
-                            )
-
-                            val networkApi = repo.isNetworkApi(authData)
-
-                            if(networkApi.isSuccessful || networkApi.code()==200 || networkApi.body()!!.status==true) {
-
-                                val isNetworkResponse = networkApi.body()!!.data
-
-                                repo.saveBalance(isNetworkResponse!!.balance)
-                                repo.saveAccountName(isNetworkResponse.accountName)
-                                repo.saveAccountNumber(isNetworkResponse.accountNumber)
-                                repo.saveTerminalId(isNetworkResponse.terminalId)
-                                repo.saveSessionId(isNetworkResponse.sessionId!!)
-
-                                _apiEvent.send(LoginAuthState.Success(status = 200))
-
-                            }else{
-                                _apiEvent.send(LoginAuthState.Error(error =  "Session id error, please contact the admin"))
-                            }
-
-                        }else{
-                           _apiEvent.send(LoginAuthState.Success(status = 200))
-                        }
-
-                    }else{
-                        _apiEvent.send(LoginAuthState.Error(error =  bodyPayLoad.shopName!!,))
-                    }
+//                    val requestTime = SimpleDateFormat("yyyyMMddHHmmssZ").format(Date())
+//                    val apiHashKey = getHash("${repo.apiUser()}${repo.token()}$requestTime")
+//                    val apiUser = repo.apiID()
+//
+//                    val bodyRequest = LoginCredential(_userName, _password)
+//                    val handleApiRequest = repo.login(requestTime, apiHashKey, apiUser, bodyRequest)
+//
+//                    val bodyPayLoad = handleApiRequest.body()
+//
+//                    if(bodyPayLoad!!.errorStatusCode==1){
+//
+//                        if(repo.loadUserInfo().balance!!.isEmpty()){
+//
+//                            val authData = NetworkMgtReq(
+//                                serialNumber = "63201125995137",
+//                                stan = "123456",
+//                                onlyAccountInfo = false
+//                            )
+//
+//                            val networkApi = repo.isNetworkApi(authData)
+//
+//                            if(networkApi.isSuccessful || networkApi.code()==200 || networkApi.body()!!.status==true) {
+//
+//                                val isNetworkResponse = networkApi.body()!!.data
+//
+//                                repo.saveBalance(isNetworkResponse!!.balance)
+//                                repo.saveAccountName(isNetworkResponse.accountName)
+//                                repo.saveAccountNumber(isNetworkResponse.accountNumber)
+//                                repo.saveTerminalId(isNetworkResponse.terminalId)
+//                                repo.saveSessionId(isNetworkResponse.sessionId!!)
+//
+//                                _apiEvent.send(LoginAuthState.Success(status = 200))
+//
+//                            }else{
+//                                _apiEvent.send(LoginAuthState.Error(error =  "Session id error, please contact the admin"))
+//                            }
+//
+//                        }else{
+//                           _apiEvent.send(LoginAuthState.Success(status = 200))
+//                        }
+//
+//                    }else{
+//                        _apiEvent.send(LoginAuthState.Error(error =  bodyPayLoad.shopName!!,))
+//                    }
 
                 }catch (e:Throwable) {
+                    Log.d("EPOKHAI 66", "${e.message}")
                     _apiEvent.send(LoginAuthState.Error(error =  e.message.toString()))
                 }
             }

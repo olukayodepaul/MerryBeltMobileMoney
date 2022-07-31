@@ -25,19 +25,12 @@ class MerryBeltApiRepositoryImpl(
     private val sharedPref: MerryBeltPrefRepository
 
 ) : MerryBeltApiRepository {
-
     override suspend fun login(
-        requestTime: String,
-        apiHashKey: String,
-        apiUserId: Int,
-        data: LoginCredential
+        terminalId: String,
+        sessionId: String,
+        data: String
     ): Response<LoginResponse> {
-        return loginApi.login(
-            requestTime,
-            apiHashKey,
-            apiUserId,
-            data
-        )
+        return loginApi.login(terminalId, sessionId, data)
     }
 
     override suspend fun token(): String {
