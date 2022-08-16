@@ -1,6 +1,7 @@
 package com.example.merrybeltmobilemoney.provider.api.api_provider_domain
 
 import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.UsersInfoDomain
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.CustomerValidations
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
 import com.example.merrybeltmobilemoney.ui.home.home_data.Banks
@@ -14,8 +15,8 @@ interface MerryBeltApiRepository {
     suspend fun login(
         terminalId: String,
         sessionId: String,
-        data: String,
-    ): Response<LoginResponse>
+        data: CustomerValidations,
+    ): Response<LoginCredential>
 
 
 //    suspend fun login(

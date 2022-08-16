@@ -54,3 +54,10 @@ data class Balance(
     val instantBetSettlementBalance: Float? = 0f,
 )
 
+
+data class CustomerValidations(
+    val bankCode: String,
+    val accountNumber: String
+)
+
+

@@ -1,30 +1,17 @@
 package com.example.merrybeltmobilemoney.ui.auth.auth_presenter
 
 import android.annotation.SuppressLint
-import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
-import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthEvent
-import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthState
-import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginAuthState
-import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
-import com.example.merrybeltmobilemoney.ui.home.home_data.NetworkMgtReq
-import com.example.merrybeltmobilemoney.util.Constant.loginAdapter
-import com.example.merrybeltmobilemoney.util.Constant.moshi
-import com.example.merrybeltmobilemoney.util.EncryptionUtil
-import com.example.merrybeltmobilemoney.util.getHash
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -85,18 +72,15 @@ class AuthViewModel @Inject constructor(
 
                 try {
 
-                    val requestData = LoginCredential(
+                    val requestData = CustomerValidations(
                         bankCode = "058",
                         accountNumber = "0113069289"
                     )
 
-                    //convert Object to String
-                    val toJson = loginAdapter.toJson(requestData)
-
                      val repo = repo.login(
                          terminalId = "2033HQOQ",
-                         sessionId = "22033HQOQ-9c1ed177-3b0f-4417-8d70-76e84fb09640",
-                         data = toJson
+                         sessionId = "2033HQOQ-72548648-ff04-408e-bc09-a0d85f9181d7",
+                         data = requestData
                      )
 
 //                    val requestTime = SimpleDateFormat("yyyyMMddHHmmssZ").format(Date())

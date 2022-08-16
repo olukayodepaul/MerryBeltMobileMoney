@@ -4,6 +4,7 @@ package com.example.merrybeltmobilemoney.util
 import android.util.Base64
 import android.util.Log
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -46,13 +47,11 @@ class BasicTransAuthInterceptor(username: String, password: String) : Intercepto
 }
 
 
-class TransportInterceptor(username: String, password: String, moshi: Moshi) : Interceptor {
+class TransportInterceptor(username: String, password: String) : Interceptor {
 
     private var credentials: String = Credentials.basic(username, password)
-    private val moshi = moshi
 
     override fun intercept(chain: Interceptor.Chain): Response {
-
 
         val original = chain.request()
 
@@ -62,38 +61,26 @@ class TransportInterceptor(username: String, password: String, moshi: Moshi) : I
         buffer.clear()
         buffer.close()
 
-        Log.d("Pohai 1", "$strOldBody")
-        Log.d("Pohai 5", "${original.headers}")
-        Log.d("Pohai 6", "${original.method}")
-        Log.d("Pohai 7", "${credentials}")
-
         val encryptedRequest = Base64.encodeToString(EncryptionUtil().isEncryption(strOldBody), Base64.NO_WRAP).trim()
-
-        Log.d("Pohai 2", encryptedRequest)
-        val decryptedData = EncryptionUtil().isDecryption(encryptedRequest)
-        Log.d("Pohai 4", "$decryptedData")
-
         val request = original
             .newBuilder()
             .addHeader("Authorization", credentials)
             .addHeader("terminalId", original.headers["terminalId"]!!)
             .addHeader("sessionId", original.headers["sessionId"]!!)
             .addHeader("Content-Type", "text/plain")
-            .method(original.method, encryptedRequest.toRequestBody("text/plain".toMediaTypeOrNull()))
+            .method(original.method, encryptedRequest.toRequestBody("text/plain; ".toMediaTypeOrNull()))
             .build()
-
-        val req = chain.proceed(request)
-
-        Log.d("Pohai 3", "$req")
-
-        val encData = req.body?.string().toString()
-
-
-//        Log.d("EPOKHAI 55","${EncryptionUtil().epokhaiDecrypt("HHsdDokaQaAnxL1nx/0SldLrOdxf+faEV0Be0Ian8qvxD1OEYt/snFDIQqjpAFUE")}")
-
-        return req.newBuilder()
-            .body(encData.toResponseBody("application/json; charset=utf-8".toMediaTypeOrNull()))
-            .build()
+        return chain.proceed(request)
 
     }
 }
+
+
+//        val req = chain.proceed(request)
+//
+//        val encData = req.body?.string().toString()
+//        val decryptedData = EncryptionUtil().isDecryption(encData)
+//        val gson = Gson()
+//        return req.newBuilder()
+//            .body(decryptedData.toResponseBody("application/json".toMediaTypeOrNull()))
+//            .build()

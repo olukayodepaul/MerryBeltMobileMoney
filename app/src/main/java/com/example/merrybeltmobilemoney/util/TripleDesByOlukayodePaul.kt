@@ -21,7 +21,7 @@ class EncryptionUtil {
     fun isEncryption(message: String): ByteArray {
 
         val md = MessageDigest.getInstance("md5")
-        val digestOfPassword = md.digest("2033HQOQ-9c1ed177-3b0f-4417-8d70-76e84fb09640".toByteArray(StandardCharsets.UTF_8))
+        val digestOfPassword = md.digest("2033HQOQ-72548648-ff04-408e-bc09-a0d85f9181d7".toByteArray(StandardCharsets.UTF_8))
         val keyBytes = Arrays.copyOf(digestOfPassword, 24)
         var j = 0
         var k = 16
@@ -38,7 +38,7 @@ class EncryptionUtil {
 
     fun isDecryption(encryptedText: String): String {
             val md = MessageDigest.getInstance("md5")
-            val digestOfPassword = md.digest("2033HQOQ-9c1ed177-3b0f-4417-8d70-76e84fb09640".toByteArray(StandardCharsets.UTF_8))
+            val digestOfPassword = md.digest("2033HQOQ-72548648-ff04-408e-bc09-a0d85f9181d7         ".toByteArray(StandardCharsets.UTF_8))
             val keyBytes = Arrays.copyOf(digestOfPassword, 24)
             var j = 0
             var k = 16

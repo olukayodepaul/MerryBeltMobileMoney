@@ -1,7 +1,7 @@
 package com.example.merrybeltmobilemoney.provider.api.api_provider_data
 
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.CustomerValidations
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
-import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -12,8 +12,8 @@ interface LoginApi {
     suspend fun login(
         @Header("terminalId")  terminalId: String,
         @Header("sessionId")  sessionId: String,
-        @Body data: String
-    ): Response<LoginResponse>
+        @Body data: CustomerValidations
+    ): Response<LoginCredential>
 
 
 //    @POST("/merry/auth")

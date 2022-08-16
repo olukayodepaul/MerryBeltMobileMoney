@@ -5,14 +5,10 @@ import com.example.merrybeltmobilemoney.BuildConfig
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.LoginApi
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.MerryBeltApi
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.MerryBeltEncryptedApi
-import com.example.merrybeltmobilemoney.util.BasicLoginAuthInterceptor
 import com.example.merrybeltmobilemoney.util.BasicTransAuthInterceptor
-import com.example.merrybeltmobilemoney.util.Constant.LOGIN_BASE_URL
 import com.example.merrybeltmobilemoney.util.Constant.TRANSACTION_URL
 import com.example.merrybeltmobilemoney.util.TransportInterceptor
 import com.google.gson.GsonBuilder
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +17,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -33,13 +28,9 @@ object ApiModules {
     @Provides
     fun provideLoginApi(): LoginApi {
 
-
-        val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-
         val supportInterceptor = TransportInterceptor(
             username = "restdevice",
             password = "5NDM1NjckJV4KK",
-            moshi = moshi
         )
 
         val okHttpClientBuilder = OkHttpClient.Builder()
@@ -55,17 +46,12 @@ object ApiModules {
             okHttpClientBuilder.addInterceptor(logging)
         }
 
-
-
-
         return Retrofit.Builder()
             .baseUrl("https://a6a8-105-112-30-112.eu.ngrok.io")
-            //.addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(okHttpClientBuilder.build())
             .build()
             .create(LoginApi::class.java)
-
     }
 
     @Singleton
@@ -121,7 +107,7 @@ object ApiModules {
         }
 
         return Retrofit.Builder()
-            .baseUrl("https://210d-197-255-50-163.eu.ngrok.io")
+            .baseUrl("https://a6a8-105-112-30-112.eu.ngrok.io")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(okHttpClientBuilder.build())
             .build()
