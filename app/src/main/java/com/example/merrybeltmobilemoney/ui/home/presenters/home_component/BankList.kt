@@ -1,5 +1,6 @@
 package com.example.merrybeltmobilemoney.ui.home.presenters.home_component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,7 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -17,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.theme.*
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home_data.HomeState
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferState
 
@@ -32,8 +32,8 @@ fun BankList(
 
     Box {
         OutlinedTextField(
-            value = uiState.value,
-            onValueChange = { },
+            value = uiState.specimen, //Menu Active Text
+            onValueChange = {},
             label = {
                 Text(
                     text = "Banks",
@@ -71,34 +71,29 @@ fun BankList(
             ),
         )
         DropdownMenu(
-            expanded = uiState.enable,
+            expanded = uiState.expanded,
             onDismissRequest = {
                 uiEvent(
-                    TransferEvent.OnEnable(
-                        enable = false
+                    TransferEvent.OnExpanded(
+                        expanded = false
                     )
                 )
             },
             Modifier.fillMaxWidth()
         ) {
-            uiState.accountVerification.forEach { specimen ->
+
+             uiState.listOfBanks.forEach { specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
-                        TransferEvent.OnEnable(
-                            enable = !uiState.enable
+                        TransferEvent.OnExpanded(
+                            expanded = false
                         )
                     )
 
                     uiEvent(
-                        TransferEvent.OnBankLogo(
-                            bankLogo = specimen.url!!
-                        )
-                    )
-
-                    uiEvent(
-                        TransferEvent.OnValue(
-                            value = specimen.name
+                        TransferEvent.OnSpecimenText(
+                            specimen = specimen.name
                         )
                     )
 
@@ -128,7 +123,7 @@ fun BankList(
                                 )
                             }
                         }
-                        Text(text = specimen.name)
+                        Text(text = specimen.name) //Dropdownmenu list items
                     }
 
                 }
@@ -142,10 +137,11 @@ fun BankList(
                 .clickable(
                     onClick = {
                         uiEvent(
-                            TransferEvent.OnEnable(
-                                enable = !uiState.enable
+                            TransferEvent.OnExpanded(
+                                expanded = !uiState.expanded
                             )
                         )
+                        //expanded = !expanded
                     }
                 )
         )

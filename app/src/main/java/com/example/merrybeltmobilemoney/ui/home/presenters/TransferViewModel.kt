@@ -25,82 +25,92 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
         )
     }
 
-    private fun onAccountNumber(accountNumber: String) {
+    private fun onExpanded(expanded: Boolean) {
         uiState.value = uiState.value.copy(
-            accountNumber = accountNumber
+            expanded = expanded
         )
     }
 
-    private fun onInputtedAccNo(inputtedAccNo: String) {
-
+    private fun onSpecimenText(specimen: String) {
         uiState.value = uiState.value.copy(
-            inputtedAccNo = inputtedAccNo
-        )
-
-        getBankList(inputtedAccNo)
-    }
-
-    private fun getBankList(accountVerification: List<AllBanks>) {
-        uiState.value = uiState.value.copy(
-            accountVerification = accountVerification,
+            specimen = specimen
         )
     }
 
-    private fun getBankList(inputtedAccNo:String) = viewModelScope.launch{
-        if(inputtedAccNo.length==10) {
-
-        }
-    }
-
-
-    private fun onInputtedAccName(inputtedAccName: String) {
+    private fun onSetListOfBanks(listOfBanks: List<AllBanks>) {
         uiState.value = uiState.value.copy(
-            inputtedAccName = inputtedAccName
+            listOfBanks = listOfBanks,
         )
     }
 
-    private fun onChangeInputtedAmount(inputtedAccName: String) {
-        uiState.value = uiState.value.copy(
-            inputtedAccName = inputtedAccName
-        )
-    }
 
-    private fun onChangeInputtedRemark(inputtedRemark: String) {
-        uiState.value = uiState.value.copy(
-            inputtedRemark = inputtedRemark
-        )
-    }
+//
+//    private fun onInputtedAccNo(inputtedAccNo: String) {
+//
+//        uiState.value = uiState.value.copy(
+//            inputtedAccNo = inputtedAccNo
+//        )
+//
+//        getBankList(inputtedAccNo)
+//    }
+//
 
-    private fun onSelectedItemIndex(selectedItemIndex: Int) {
-        uiState.value = uiState.value.copy(selectedItemIndex = selectedItemIndex)
-    }
-
+//
+//    private fun getBankList(inputtedAccNo:String) = viewModelScope.launch{
+//        if(inputtedAccNo.length==10) {
+//
+//        }
+//    }
+//
+//
+//    private fun onInputtedAccName(inputtedAccName: String) {
+//        uiState.value = uiState.value.copy(
+//            inputtedAccName = inputtedAccName
+//        )
+//    }
+//
+//    private fun onChangeInputtedAmount(inputtedAccName: String) {
+//        uiState.value = uiState.value.copy(
+//            inputtedAccName = inputtedAccName
+//        )
+//    }
+//
+//    private fun onChangeInputtedRemark(inputtedRemark: String) {
+//        uiState.value = uiState.value.copy(
+//            inputtedRemark = inputtedRemark
+//        )
+//    }
+//
+//    private fun onSelectedItemIndex(selectedItemIndex: Int) {
+//        uiState.value = uiState.value.copy(selectedItemIndex = selectedItemIndex)
+//    }
 
 
     fun transEventHandler(transEvent: TransferEvent) {
         when (transEvent) {
 
-            is TransferEvent.OnChangeInputtedAccNo->{
-                onInputtedAccNo(transEvent.accNo)
+            is TransferEvent.OnExpanded->{
+                onExpanded(transEvent.expanded)
             }
 
-            is TransferEvent.OnChangeInputtedAccName->{
-                onInputtedAccName(transEvent.accName)
+            is TransferEvent.OnSpecimenText->{
+                onSpecimenText(transEvent.specimen)
             }
 
-            is TransferEvent.OnChangeInputtedAmount->{
-                onChangeInputtedAmount(transEvent.amount)
-            }
 
-            is TransferEvent.OnChangeInputtedRemark->{
-                onChangeInputtedRemark(transEvent.remark)
-            }
+//
+//            is TransferEvent.OnChangeInputtedAmount->{
+//                onChangeInputtedAmount(transEvent.amount)
+//            }
+//
+//            is TransferEvent.OnChangeInputtedRemark->{
+//                onChangeInputtedRemark(transEvent.remark)
+//            }
+//
+//            is TransferEvent.OnSelectedItemIndex -> {
+//                onSelectedItemIndex(transEvent.selectedItemIndex)
+//            }
 
-            is TransferEvent.OnSelectedItemIndex -> {
-                onSelectedItemIndex(transEvent.selectedItemIndex)
-            }
-
-            else -> {}
         }
     }
 
@@ -108,19 +118,19 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
     init {
         viewModelScope.launch {
 
+            onBalance(balances = repo.customerProfile().balance)
+
             try{
 
                 val dataFromEncryptedBankList = repo.getEncryptedBankList(repo.customerProfile().terminalId, repo.customerProfile().sessionId)
                 val decryptedData = EncryptionUtil().isDecryption(dataFromEncryptedBankList.body()!!.data, repo.customerProfile().sessionId)
-                val decryptedBankList: List<AllBanks> = gson.fromJson(decryptedData, Array<AllBanks>::class.java).toList()
-                getBankList(decryptedBankList)
+                val getListOfBanks: List<AllBanks> = gson.fromJson(decryptedData, Array<AllBanks>::class.java).toList()
+                onSetListOfBanks(listOfBanks = getListOfBanks)
 
             }catch (e:Throwable) {
                 Log.d("ISEPOKHAI 2", "${e.message}")
             }
 
-            onBalance(balances = repo.customerProfile().balance)
-            onAccountNumber(accountNumber = repo.customerProfile().accountNumber)
         }
     }
 

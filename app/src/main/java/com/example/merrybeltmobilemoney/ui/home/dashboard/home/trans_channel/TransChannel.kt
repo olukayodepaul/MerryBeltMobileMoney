@@ -1,7 +1,6 @@
 package com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel
 
 
-import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -135,36 +134,36 @@ fun transferChannel(
 
                             ) {
 
-                                if (uiState.bankLogo.isEmpty()) {
-                                    Icon(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .fillMaxHeight()
-                                            .padding(7.dp),
-                                        painter = painterResource(id = cusIcon(1)),
-                                        contentDescription = "Logo"
-                                    )
-                                } else {
-                                    val leadingIcon =
-                                        rememberImagePainter(data = uiState.bankLogo,
-                                            builder = {
-                                            }
-                                        )
-                                    Image(
-                                        painter = leadingIcon,
-                                        contentDescription = "logo",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .fillMaxHeight()
-                                            .padding(7.dp),
-                                    )
-                                    val painterState = leadingIcon.state
-                                    if (painterState is ImagePainter.State.Loading) {
-                                        CircularProgressIndicator(
-                                            color = MChild
-                                        )
-                                    }
-                                }
+//                                if (uiState.bankLogo.isEmpty()) {
+//                                    Icon(
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .fillMaxHeight()
+//                                            .padding(7.dp),
+//                                        painter = painterResource(id = cusIcon(1)),
+//                                        contentDescription = "Logo"
+//                                    )
+//                                } else {
+//                                    val leadingIcon =
+//                                        rememberImagePainter(data = uiState.bankLogo,
+//                                            builder = {
+//                                            }
+//                                        )
+//                                    Image(
+//                                        painter = leadingIcon,
+//                                        contentDescription = "logo",
+//                                        modifier = Modifier
+//                                            .fillMaxWidth()
+//                                            .fillMaxHeight()
+//                                            .padding(7.dp),
+//                                    )
+//                                    val painterState = leadingIcon.state
+//                                    if (painterState is ImagePainter.State.Loading) {
+//                                        CircularProgressIndicator(
+//                                            color = MChild
+//                                        )
+//                                    }
+//                                }
                             }
 
                             BankList(
@@ -173,61 +172,61 @@ fun transferChannel(
                             )
                         }
 
-                        OutlinedTextFieldsNumber(
-                            label = "Account Number",
-                            value = uiState.inputtedAccNo,
-                            onValueChange = {inputtedAccNo->
-                                uiEvent(
-                                    TransferEvent.OnChangeInputtedAccNo(inputtedAccNo)
-                                )
-                            },
-                            enabled = true,
-                        )
+//                        OutlinedTextFieldsNumber(
+//                            label = "Account Number",
+//                            value = uiState.inputtedAccNo,
+//                            onValueChange = {inputtedAccNo->
+//                                uiEvent(
+//                                    TransferEvent.OnChangeInputtedAccNo(inputtedAccNo)
+//                                )
+//                            },
+//                            enabled = true,
+//                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
-                        OutlinedTextFieldsText(
-                            label = "Account Name",
-                            value = uiState.inputtedAccName,
-                            onValueChange = {inputtedAccName->
-                                uiEvent(
-                                    TransferEvent.OnChangeInputtedAccName(inputtedAccName)
-                                )
-                            },
-                            enabled = uiState.enableWidget
-                        )
+//                        OutlinedTextFieldsText(
+//                            label = "Account Name",
+//                            value = uiState.inputtedAccName,
+//                            onValueChange = {inputtedAccName->
+//                                uiEvent(
+//                                    TransferEvent.OnChangeInputtedAccName(inputtedAccName)
+//                                )
+//                            },
+//                            enabled = uiState.enableWidget
+//                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
-                        OutlinedTextFieldsNumber(
-                            label = "Amount",
-                            value = uiState.inputtedAmount,
-                            onValueChange = {inputtedAmount->
-                                uiEvent(
-                                    TransferEvent.OnChangeInputtedAmount(inputtedAmount)
-                                )
-                            },
-                            enabled = uiState.enableWidget
-                        )
+//                        OutlinedTextFieldsNumber(
+//                            label = "Amount",
+//                            value = uiState.inputtedAmount,
+//                            onValueChange = {inputtedAmount->
+//                                uiEvent(
+//                                    TransferEvent.OnChangeInputtedAmount(inputtedAmount)
+//                                )
+//                            },
+//                            enabled = uiState.enableWidget
+//                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
-                        OutlinedTextFieldsText(
-                            label = "Remark",
-                            value = uiState.inputtedRemark,
-                            onValueChange = {inputtedRemark->
-                                uiEvent(
-                                    TransferEvent.OnChangeInputtedRemark(inputtedRemark)
-                                )
-                            },
-                            enabled = uiState.enableWidget
-                        )
+//                        OutlinedTextFieldsText(
+//                            label = "Remark",
+//                            value = uiState.inputtedRemark,
+//                            onValueChange = {inputtedRemark->
+//                                uiEvent(
+//                                    TransferEvent.OnChangeInputtedRemark(inputtedRemark)
+//                                )
+//                            },
+//                            enabled = uiState.enableWidget
+//                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                        Buttons(
-                            label = "Next",
-                            enabled = uiState.enableWidget
-                        )
+//                        Buttons(
+//                            label = "Next",
+//                            enabled = uiState.enableWidget
+//                        )
                     }
                 }
             }
