@@ -133,17 +133,7 @@ fun transferChannel(
                                 contentAlignment = Alignment.Center
 
                             ) {
-
-                                if (uiState.selectedBankLogo.isEmpty()) {
-                                    Icon(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .fillMaxHeight()
-                                            .padding(7.dp),
-                                        painter = painterResource(id = cusIcon(1)),
-                                        contentDescription = "Logo"
-                                    )
-                                } else {
+                                if(uiState.selectedBankLogo.isNotEmpty()){
                                     val leadingIcon =
                                         rememberImagePainter(data = uiState.selectedBankLogo,
                                             builder = {
