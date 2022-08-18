@@ -43,6 +43,12 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
         )
     }
 
+    private fun onSelectedBankLogo(selectedBankLogo: String) {
+        uiState.value = uiState.value.copy(
+            selectedBankLogo = selectedBankLogo
+        )
+    }
+
 
 //
 //    private fun onInputtedAccNo(inputtedAccNo: String) {
@@ -95,6 +101,10 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
 
             is TransferEvent.OnSpecimenText->{
                 onSpecimenText(transEvent.specimen)
+            }
+
+            is TransferEvent.OnSelectedBankLogo->{
+                onSelectedBankLogo(transEvent.bankLogo)
             }
 
 

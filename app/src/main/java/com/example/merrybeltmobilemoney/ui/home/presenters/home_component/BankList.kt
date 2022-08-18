@@ -1,6 +1,5 @@
 package com.example.merrybeltmobilemoney.ui.home.presenters.home_component
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +24,7 @@ import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferS
 @Composable
 fun BankList(
     uiState: TransferState,
-    uiEvent:(TransferEvent)->Unit,
+    uiEvent: (TransferEvent) -> Unit,
 ) {
 
     val bColor = Borderline
@@ -82,7 +81,7 @@ fun BankList(
             Modifier.fillMaxWidth()
         ) {
 
-             uiState.listOfBanks.forEach { specimen ->
+            uiState.listOfBanks.forEach { specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
@@ -97,15 +96,23 @@ fun BankList(
                         )
                     )
 
+                    uiEvent(
+                        TransferEvent.OnSelectedBankLogo(
+                            bankLogo = specimen.url!!
+                        )
+                    )
+
                 }) {
-                    Row(   Modifier
-                        .padding(5.dp)
+                    Row(
+                        Modifier
+                            .padding(5.dp)
                     ) {
                         Column(
                             Modifier
-                            .padding(end = 10.dp)
-                            .width(20.dp)
-                            .height(20.dp)) {
+                                .padding(end = 10.dp)
+                                .width(20.dp)
+                                .height(20.dp)
+                        ) {
 
                             val painter = rememberImagePainter(
                                 data = specimen.url,

@@ -9,7 +9,7 @@ data class TransferState (
 //    val enableWidget: Boolean = false,
 //    val inputtedAmount: String = "",
 //    val inputtedRemark: String = "",
-//    val bankLogo: String = "",
+
 //    var value: String = "",
 //    val enable: Boolean = false,
 
@@ -18,7 +18,8 @@ data class TransferState (
 
     val listOfBanks: List<AllBanks> = emptyList(),
     val expanded: Boolean = false,
-    val specimen: String = ""
+    val specimen: String = "",
+    val selectedBankLogo: String = "",
 
 )
 
@@ -31,12 +32,13 @@ sealed class TransferEvent {
 //    class OnChangeInputtedAmount(val amount: String): TransferEvent()
 //    class OnChangeInputtedRemark(val remark: String): TransferEvent()
 //    class OnEnable(val enable: Boolean) : TransferEvent()
-//    class OnBankLogo(val bankLogo: String) : TransferEvent()
 //    class OnValue(val value: String) : TransferEvent()
 //    class OnSelectedItemIndex(val selectedItemIndex: Int) : TransferEvent()
 
     class OnExpanded(val expanded: Boolean) : TransferEvent()
     class OnSpecimenText(val specimen:  String) : TransferEvent()
+    class OnSelectedBankLogo(val bankLogo: String) : TransferEvent()
+
 }
 
 

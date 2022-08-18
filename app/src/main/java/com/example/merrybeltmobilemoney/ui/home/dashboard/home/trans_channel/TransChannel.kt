@@ -134,36 +134,36 @@ fun transferChannel(
 
                             ) {
 
-//                                if (uiState.bankLogo.isEmpty()) {
-//                                    Icon(
-//                                        modifier = Modifier
-//                                            .fillMaxWidth()
-//                                            .fillMaxHeight()
-//                                            .padding(7.dp),
-//                                        painter = painterResource(id = cusIcon(1)),
-//                                        contentDescription = "Logo"
-//                                    )
-//                                } else {
-//                                    val leadingIcon =
-//                                        rememberImagePainter(data = uiState.bankLogo,
-//                                            builder = {
-//                                            }
-//                                        )
-//                                    Image(
-//                                        painter = leadingIcon,
-//                                        contentDescription = "logo",
-//                                        modifier = Modifier
-//                                            .fillMaxWidth()
-//                                            .fillMaxHeight()
-//                                            .padding(7.dp),
-//                                    )
-//                                    val painterState = leadingIcon.state
-//                                    if (painterState is ImagePainter.State.Loading) {
-//                                        CircularProgressIndicator(
-//                                            color = MChild
-//                                        )
-//                                    }
-//                                }
+                                if (uiState.selectedBankLogo.isEmpty()) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .fillMaxHeight()
+                                            .padding(7.dp),
+                                        painter = painterResource(id = cusIcon(1)),
+                                        contentDescription = "Logo"
+                                    )
+                                } else {
+                                    val leadingIcon =
+                                        rememberImagePainter(data = uiState.selectedBankLogo,
+                                            builder = {
+                                            }
+                                        )
+                                    Image(
+                                        painter = leadingIcon,
+                                        contentDescription = "logo",
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .fillMaxHeight()
+                                            .padding(7.dp),
+                                    )
+                                    val painterState = leadingIcon.state
+                                    if (painterState is ImagePainter.State.Loading) {
+                                        CircularProgressIndicator(
+                                            color = MChild
+                                        )
+                                    }
+                                }
                             }
 
                             BankList(
