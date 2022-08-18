@@ -1,4 +1,4 @@
-package com.example.merrybeltmobilemoney.ui.home.home.trans_channel
+package com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

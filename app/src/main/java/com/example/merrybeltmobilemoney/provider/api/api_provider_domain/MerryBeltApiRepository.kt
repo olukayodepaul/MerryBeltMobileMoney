@@ -24,7 +24,7 @@ interface MerryBeltApiRepository {
 
     suspend fun terminalId(terminalId: String)
 
-    suspend fun merchantId(terminalId: String)
+    suspend fun merchantId(merchantId: String)
 
     suspend fun businessName(businessName: String)
 
@@ -39,7 +39,7 @@ interface MerryBeltApiRepository {
     suspend fun accountNumber(accountNumber: String)
 
     suspend fun category(category: String)
-    
+
     fun customerProfile(): CustomersProfile
 
 }

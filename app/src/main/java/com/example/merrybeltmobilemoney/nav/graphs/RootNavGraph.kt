@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.merrybeltmobilemoney.nav.screens.home.HomeScreen
 import com.example.merrybeltmobilemoney.ui.auth.auth_presenter.AuthViewModel
-import com.example.merrybeltmobilemoney.ui.home.HomeViewModel
 
 @Composable
 fun RootNavigationGraph(
@@ -22,8 +21,7 @@ fun RootNavigationGraph(
     ) {
         authNavGraph(
             navController = navController,
-            viewModel = viewModel,
-            localContext = localContext
+            viewModel = viewModel
         )
         composable(route = Graph.HOME) {
             HomeScreen(
@@ -38,7 +36,4 @@ object Graph {
     const val AUTHENTICATION = "auth_graph"
     const val HOME = "home_graph"
     const val TRANSFER = "details_graph"
-    const val WITHDRAWER = "withdrawer_graph"
-    const val BILLPAYMENT = "billpays_graph"
-    const val CREDITACC = "creditacc_graph"
 }

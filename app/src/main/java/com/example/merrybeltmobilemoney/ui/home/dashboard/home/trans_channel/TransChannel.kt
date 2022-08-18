@@ -1,4 +1,4 @@
-package com.example.merrybeltmobilemoney.ui.home.home.trans_channel
+package com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel
 
 
 import android.content.Context
@@ -21,25 +21,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.theme.*
-import com.example.merrybeltmobilemoney.ui.home.HomeViewModel
-import com.example.merrybeltmobilemoney.ui.home.home_data.HomeEvent
-import com.example.merrybeltmobilemoney.ui.home.home_presenter.home_component.BankList
-import com.example.merrybeltmobilemoney.ui.home.home_presenter.home_component.Buttons
-import com.example.merrybeltmobilemoney.ui.home.home_presenter.home_component.OutlinedTextFieldsNumber
-import com.example.merrybeltmobilemoney.ui.home.home_presenter.home_component.OutlinedTextFieldsText
+import com.example.merrybeltmobilemoney.ui.home.presenters.TransferViewModel
+import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.BankList
+import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.Buttons
+import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsNumber
+import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsText
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
 
 @Composable
 fun transferChannel(
-    viewModel: HomeViewModel,
-    localContext: Context,
-    navController: NavHostController
+    transViewModel: TransferViewModel = hiltViewModel(),
 ) {
-    val uiSate = viewModel.uiState.collectAsState().value
-    val uiEvent = viewModel::homeEventHandler
+    val uiState = transViewModel.uiState.collectAsState().value
+    val uiEvent = transViewModel::transEventHandler
 
     Scaffold(
         topBar = {
@@ -92,7 +91,7 @@ fun transferChannel(
                     )
 
                     Text(
-                        text = uiSate.balance,
+                        text = uiState.balances,
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally),
                         style = TextStyle(
@@ -137,7 +136,7 @@ fun transferChannel(
 
                             ) {
 
-                                if (uiSate.bankLogo.isEmpty()) {
+                                if (uiState.bankLogo.isEmpty()) {
                                     Icon(
                                         modifier = Modifier
                                             .fillMaxWidth()
@@ -148,7 +147,7 @@ fun transferChannel(
                                     )
                                 } else {
                                     val leadingIcon =
-                                        rememberImagePainter(data = uiSate.bankLogo,
+                                        rememberImagePainter(data = uiState.bankLogo,
                                             builder = {
                                             }
                                         )
@@ -170,17 +169,17 @@ fun transferChannel(
                             }
 
                             BankList(
-                                uiStete = uiSate,
+                                uiState = uiState,
                                 uiEvent = uiEvent,
                             )
                         }
 
                         OutlinedTextFieldsNumber(
                             label = "Account Number",
-                            value = uiSate.accNumber,
-                            onValueChange = {accNumber->
+                            value = uiState.inputtedAccNo,
+                            onValueChange = {inputtedAccNo->
                                 uiEvent(
-                                    HomeEvent.onAccountNumber(accNumber)
+                                    TransferEvent.OnChangeInputtedAccNo(inputtedAccNo)
                                 )
                             },
                             enabled = true,
@@ -190,45 +189,45 @@ fun transferChannel(
 
                         OutlinedTextFieldsText(
                             label = "Account Name",
-                            value = uiSate.accName,
-                            onValueChange = {accName->
+                            value = uiState.inputtedAccName,
+                            onValueChange = {inputtedAccName->
                                 uiEvent(
-                                    HomeEvent.onAccountName(accName)
+                                    TransferEvent.OnChangeInputtedAccName(inputtedAccName)
                                 )
                             },
-                            enabled = uiSate.enableWidget
+                            enabled = uiState.enableWidget
                         )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
                         OutlinedTextFieldsNumber(
                             label = "Amount",
-                            value = uiSate.accAmount,
-                            onValueChange = {accAmount->
+                            value = uiState.inputtedAmount,
+                            onValueChange = {inputtedAmount->
                                 uiEvent(
-                                    HomeEvent.onAmount(accAmount)
+                                    TransferEvent.OnChangeInputtedAmount(inputtedAmount)
                                 )
                             },
-                            enabled = uiSate.enableWidget
+                            enabled = uiState.enableWidget
                         )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
                         OutlinedTextFieldsText(
                             label = "Remark",
-                            value = uiSate.accRemark,
-                            onValueChange = {accRemark->
+                            value = uiState.inputtedRemark,
+                            onValueChange = {inputtedRemark->
                                 uiEvent(
-                                    HomeEvent.onRemark(accRemark)
+                                    TransferEvent.OnChangeInputtedRemark(inputtedRemark)
                                 )
                             },
-                            enabled = uiSate.enableWidget
+                            enabled = uiState.enableWidget
                         )
 
                         Spacer(modifier = Modifier.padding(bottom = 20.dp))
                         Buttons(
                             label = "Next",
-                            enabled = uiSate.enableWidget
+                            enabled = uiState.enableWidget
                         )
                     }
                 }

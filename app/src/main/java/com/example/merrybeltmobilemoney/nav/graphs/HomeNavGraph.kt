@@ -9,19 +9,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.merrybeltmobilemoney.nav.BottomBarScreen
-import com.example.merrybeltmobilemoney.ui.home.HomeViewModel
-import com.example.merrybeltmobilemoney.ui.home.home.HomeScreen
-import com.example.merrybeltmobilemoney.ui.home.home.ProfileScreen
-import com.example.merrybeltmobilemoney.ui.home.home.SettingScreen
-import com.example.merrybeltmobilemoney.ui.home.home.trans_channel.CreditAccChannel
-import com.example.merrybeltmobilemoney.ui.home.home.trans_channel.PayBillChannel
-import com.example.merrybeltmobilemoney.ui.home.home.trans_channel.transferChannel
-import com.example.merrybeltmobilemoney.ui.home.home.trans_channel.withrawChannel
+import com.example.merrybeltmobilemoney.ui.home.presenters.HomeViewModel
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home.HomeScreen
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home.ProfileScreen
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home.SettingScreen
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.CreditAccChannel
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.PayBillChannel
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.transferChannel
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.withrawChannel
 
 
 @Composable
 fun HomeNavGraph(
-    homeViewModel: HomeViewModel = hiltViewModel(),
     localContext: Context,
     navController: NavHostController
 ) {
@@ -32,8 +31,6 @@ fun HomeNavGraph(
     ) {
         composable(route = BottomBarScreen.Home.route) {
             HomeScreen(
-                viewModel = homeViewModel,
-                localContext = localContext,
                 navController = navController
             )
         }
@@ -51,14 +48,12 @@ fun HomeNavGraph(
         }
         detailsNavGraph(
             navController = navController,
-            viewModel = homeViewModel,
             localContext = localContext,
         )
     }
 }
 
 fun NavGraphBuilder.detailsNavGraph(
-    viewModel: HomeViewModel,
     localContext: Context,
     navController: NavHostController
 ) {
@@ -68,11 +63,7 @@ fun NavGraphBuilder.detailsNavGraph(
     ) {
 
         composable(route = DetailsScreen.Transfers.route) {
-            transferChannel(
-                viewModel = viewModel,
-                localContext = localContext,
-                navController = navController
-            )
+            transferChannel()
         }
 
         composable(route = DetailsScreen.AccCredit.route) {

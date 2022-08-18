@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -14,8 +13,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.merrybeltmobilemoney.nav.BottomBarScreen
 import com.example.merrybeltmobilemoney.nav.graphs.HomeNavGraph
-import com.example.merrybeltmobilemoney.ui.auth.auth_presenter.AuthViewModel
-import com.example.merrybeltmobilemoney.ui.home.HomeViewModel
 
 
 @Composable

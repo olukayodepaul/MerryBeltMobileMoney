@@ -7,47 +7,72 @@ class MerryBeltPrefRepositoryImpl(
     private val sharedPref: SharedPreferences
 ): MerryBeltPrefRepository {
 
-    override suspend fun saveTerminalId(terminalId: String) {
+    override suspend fun sessionId(sessionId: String) {
         sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_TERMINAL, terminalId).apply()
+            .putString(MerryBeltPrefRepository.KEY_SESSION_ID, sessionId).apply()
     }
 
-    override suspend fun saveAccountNumber(accountNumber: String) {
-        sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_ACC_NUMBER, accountNumber).apply()
+    override suspend fun terminalId(terminalId: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_TERMINAL, terminalId).apply()
     }
 
-    override suspend fun saveBalance(balance: String) {
-        sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_ACC_BALANCE, balance).apply()
+    override suspend fun merchantId(merchantId: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_MERCHANT_ID, merchantId).apply()
     }
 
-    override suspend fun saveAccountName(accountName: String) {
-        sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_ACC_NAME, accountName).apply()
+    override suspend fun businessName(businessName: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_BUSINESS_NAME, businessName).apply()
     }
 
-    override suspend fun saveSessionId(sessionId: String) {
-        sharedPref.edit()
-            .putString(MerryBeltPrefRepository.KEY_SESSION_ID, sessionId)
+    override suspend fun merchantName(merchantName: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_MERCHANT_NAME, merchantName).apply()
     }
 
+    override suspend fun bank(bank: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_BANK, bank).apply()
+    }
 
-    override  fun loadUserInfo(): UsersInfoDomain {
+    override suspend fun balances(balance: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_BALANCE, balance).apply()
+    }
 
-        val terminalId = sharedPref.getString(MerryBeltPrefRepository.KEY_TERMINAL, "")
-        val accountNumber = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NUMBER, "")
-        val balance = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_BALANCE, "")
-        val accountName = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NAME, "")
+    override suspend fun accountName(accountName: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_ACC_NAME, accountName).apply()
+    }
+
+    override suspend fun accountNumber(accountNumber: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_ACC_NUMBER, accountNumber).apply()
+    }
+
+    override suspend fun category(category: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_CATEGORY, category).apply()
+    }
+
+    override fun customerProfile(): CustomersProfile {
+
         val sessionId = sharedPref.getString(MerryBeltPrefRepository.KEY_SESSION_ID, "")
+        val terminalId = sharedPref.getString(MerryBeltPrefRepository.KEY_TERMINAL, "")
+        val merchantId = sharedPref.getString(MerryBeltPrefRepository.KEY_MERCHANT_ID, "")
+        val businessName = sharedPref.getString(MerryBeltPrefRepository.KEY_BUSINESS_NAME, "")
+        val merchantName = sharedPref.getString(MerryBeltPrefRepository.KEY_MERCHANT_NAME, "")
+        val bank = sharedPref.getString(MerryBeltPrefRepository.KEY_BANK, "")
+        val balance = sharedPref.getString(MerryBeltPrefRepository.KEY_BALANCE, "")
+        val accountName = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NAME, "")
+        val accountNumber = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NUMBER, "")
+        val category = sharedPref.getString(MerryBeltPrefRepository.KEY_CATEGORY, "")
 
-        return UsersInfoDomain(
+        return CustomersProfile(
+            sessionId = sessionId!!,
             terminalId = terminalId!!,
-            accountNumber = accountNumber!!,
-            balance = balance,
+            merchantId = merchantId,
+            businessName = businessName!!,
+            merchantName = merchantName!!,
+            bank = bank!!,
+            balance = balance!!,
             accountName = accountName!!,
-            sessionId = sessionId!!
+            accountNumber = accountNumber!!,
+            category = category!!,
         )
-
     }
+
 }

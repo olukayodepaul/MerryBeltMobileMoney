@@ -1,4 +1,4 @@
-package com.example.merrybeltmobilemoney.ui.home.home_presenter.home_component
+package com.example.merrybeltmobilemoney.ui.home.presenters.home_component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button

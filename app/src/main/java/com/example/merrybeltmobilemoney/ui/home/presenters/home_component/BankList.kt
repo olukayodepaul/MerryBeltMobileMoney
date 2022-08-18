@@ -1,4 +1,4 @@
-package com.example.merrybeltmobilemoney.ui.home.home_presenter.home_component
+package com.example.merrybeltmobilemoney.ui.home.presenters.home_component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,21 +17,22 @@ import androidx.compose.ui.unit.sp
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.theme.*
-import com.example.merrybeltmobilemoney.ui.home.home_data.HomeEvent
-import com.example.merrybeltmobilemoney.ui.home.home_data.HomeState
+import com.example.merrybeltmobilemoney.ui.home.dashboard.home_data.HomeState
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferState
 
 
 @Composable
 fun BankList(
-    uiStete: HomeState,
-    uiEvent:(HomeEvent)->Unit,
+    uiState: TransferState,
+    uiEvent:(TransferEvent)->Unit,
 ) {
 
     val bColor = Borderline
 
     Box {
         OutlinedTextField(
-            value = uiStete.value,
+            value = uiState.value,
             onValueChange = { },
             label = {
                 Text(
@@ -70,33 +71,33 @@ fun BankList(
             ),
         )
         DropdownMenu(
-            expanded = uiStete.enable,
+            expanded = uiState.enable,
             onDismissRequest = {
                 uiEvent(
-                    HomeEvent.onEnable(
+                    TransferEvent.OnEnable(
                         enable = false
                     )
                 )
             },
             Modifier.fillMaxWidth()
         ) {
-            uiStete.banklist.forEach { specimen ->
+            uiState.accountVerification.forEach { specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
-                        HomeEvent.onEnable(
-                            enable = !uiStete.enable
+                        TransferEvent.OnEnable(
+                            enable = !uiState.enable
                         )
                     )
 
                     uiEvent(
-                        HomeEvent.onBankLog(
+                        TransferEvent.OnBankLogo(
                             bankLogo = specimen.url!!
                         )
                     )
 
                     uiEvent(
-                        HomeEvent.onValue(
+                        TransferEvent.OnValue(
                             value = specimen.name
                         )
                     )
@@ -140,8 +141,8 @@ fun BankList(
                 .clickable(
                     onClick = {
                         uiEvent(
-                            HomeEvent.onEnable(
-                                enable = !uiStete.enable
+                            TransferEvent.OnEnable(
+                                enable = !uiState.enable
                             )
                         )
                     }

@@ -45,48 +45,46 @@ class MerryBeltApiRepositoryImpl(
     }
 
     override suspend fun sessionId(sessionId: String) {
-        TODO("Not yet implemented")
+        sharedPref.sessionId(sessionId)
     }
 
     override suspend fun terminalId(terminalId: String) {
-        TODO("Not yet implemented")
+        sharedPref.terminalId(terminalId)
     }
 
-    override suspend fun merchantId(terminalId: String) {
-        TODO("Not yet implemented")
+    override suspend fun merchantId(merchantId: String) {
+        sharedPref.merchantId(merchantId)
     }
 
     override suspend fun businessName(businessName: String) {
-        TODO("Not yet implemented")
+        sharedPref.businessName(businessName)
     }
 
     override suspend fun merchantName(merchantName: String) {
-        TODO("Not yet implemented")
+        sharedPref.merchantName(merchantName)
     }
 
-    override suspend fun bank(terminalId: String) {
-        TODO("Not yet implemented")
+    override suspend fun bank(bank: String) {
+        sharedPref.bank(bank)
     }
 
     override suspend fun balances(balance: String) {
-        TODO("Not yet implemented")
+        sharedPref.balances(balance)
     }
 
     override suspend fun accountName(accountName: String) {
-        TODO("Not yet implemented")
+        sharedPref.accountName(accountName)
     }
 
     override suspend fun accountNumber(accountNumber: String) {
-        TODO("Not yet implemented")
+        sharedPref.accountNumber(accountNumber)
     }
 
     override suspend fun category(category: String) {
-        TODO("Not yet implemented")
+        sharedPref.category(category)
     }
 
-    override fun loadUserInfo(): CustomersProfile {
+    override fun customerProfile(): CustomersProfile {
         return sharedPref.customerProfile()
     }
-
-
 }

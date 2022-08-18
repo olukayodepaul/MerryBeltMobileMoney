@@ -12,8 +12,7 @@ import com.example.merrybeltmobilemoney.ui.auth.auth_presenter.auth_component.Lo
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
-    viewModel: AuthViewModel,
-    localContext: Context
+    viewModel: AuthViewModel
 ) {
     navigation(
         route = Graph.AUTHENTICATION,
@@ -47,6 +46,6 @@ fun NavGraphBuilder.authNavGraph(
 
 sealed class AuthScreen(val route: String) {
     object Login : AuthScreen(route = "LOGIN")
-    object SignUp : AuthScreen(route = "SIGN_UP")
-    object Forgot : AuthScreen(route = "FORGOT")
+    //object SignUp : AuthScreen(route = "SIGN_UP")
+    //object Forgot : AuthScreen(route = "FORGOT")
 }

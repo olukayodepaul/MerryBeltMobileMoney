@@ -1,4 +1,4 @@
-package com.example.merrybeltmobilemoney.ui.home.home
+package com.example.merrybeltmobilemoney.ui.home.dashboard.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.Text
@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun ProfileScreen(
+fun SettingScreen(
     name: String,
     onClick: () -> Unit
 ) {
-    Text(text = "ProfileScreen",
+    Text(text = "SettingScreen",
         modifier = Modifier.clickable { onClick() },
     )
 }
