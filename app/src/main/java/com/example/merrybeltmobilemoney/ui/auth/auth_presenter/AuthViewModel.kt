@@ -1,24 +1,23 @@
 package com.example.merrybeltmobilemoney.ui.auth.auth_presenter
 
-import android.annotation.SuppressLint
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.*
+import com.example.merrybeltmobilemoney.util.getHash
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
-    private val repo: MerryBeltApiRepository,
-    private val appContext: Application)
-    : ViewModel(){
+class AuthViewModel @Inject constructor(private val repo: MerryBeltApiRepository, private val appContext: Application) : ViewModel(){
 
     private val _apiEvent = Channel<LoginAuthState>()
     val uiEvent = _apiEvent.receiveAsFlow()
@@ -50,92 +49,46 @@ class AuthViewModel @Inject constructor(
         )
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun AuthApiRequest(
-        userName: String,
-        password: String
-    ) {
+    fun authApiRequest(userName: String, password: ByteArray) = viewModelScope.launch {
 
-        viewModelScope.launch {
+            if (userName.isEmpty() || password.isEmpty()) {
 
-            val _userName = userName
-            val _password = password
-
-            if (_userName.isEmpty() || _password.isEmpty()) {
                 showUserDialogEvent(
                     isDialogMessage = "Please enter correct username and password!",
                     isDialogShow = true,
                 )
+
             } else {
 
                 updateProgressBarEvent(loader = true)
 
                 try {
 
-                    val requestData = CustomerValidations(
-                        bankCode = "058",
-                        accountNumber = "0113069289"
-                    )
+                    val requestTime = SimpleDateFormat("yyyyMMddHHmmssZ").format(Date())
+                    val apiHashKey = getHash("${repo.apiUser()}${repo.token()}$requestTime")
+                    val apiUser = repo.apiID()
 
-                     val repo = repo.login(
-                         terminalId = "2033HQOQ",
-                         sessionId = "2033HQOQ-72548648-ff04-408e-bc09-a0d85f9181d7",
-                         data = requestData
-                     )
+                    val bodyRequest = LoginCredential(userName, password)
+                    val handleApiRequest = repo.login(requestTime, apiHashKey, apiUser, bodyRequest)
+                    val bodyPayLoad = handleApiRequest.body()
 
-//                    val requestTime = SimpleDateFormat("yyyyMMddHHmmssZ").format(Date())
-//                    val apiHashKey = getHash("${repo.apiUser()}${repo.token()}$requestTime")
-//                    val apiUser = repo.apiID()
-//
-//                    val bodyRequest = LoginCredential(_userName, _password)
-//                    val handleApiRequest = repo.login(requestTime, apiHashKey, apiUser, bodyRequest)
-//
-//                    val bodyPayLoad = handleApiRequest.body()
-//
-//                    if(bodyPayLoad!!.errorStatusCode==1){
-//
-//                        if(repo.loadUserInfo().balance!!.isEmpty()){
-//
-//                            val authData = NetworkMgtReq(
-//                                serialNumber = "63201125995137",
-//                                stan = "123456",
-//                                onlyAccountInfo = false
-//                            )
-//
-//                            val networkApi = repo.isNetworkApi(authData)
-//
-//                            if(networkApi.isSuccessful || networkApi.code()==200 || networkApi.body()!!.status==true) {
-//
-//                                val isNetworkResponse = networkApi.body()!!.data
-//
-//                                repo.saveBalance(isNetworkResponse!!.balance)
-//                                repo.saveAccountName(isNetworkResponse.accountName)
-//                                repo.saveAccountNumber(isNetworkResponse.accountNumber)
-//                                repo.saveTerminalId(isNetworkResponse.terminalId)
-//                                repo.saveSessionId(isNetworkResponse.sessionId!!)
-//
-//                                _apiEvent.send(LoginAuthState.Success(status = 200))
-//
-//                            }else{
-//                                _apiEvent.send(LoginAuthState.Error(error =  "Session id error, please contact the admin"))
-//                            }
-//
-//                        }else{
-//                           _apiEvent.send(LoginAuthState.Success(status = 200))
-//                        }
-//
-//                    }else{
-//                        _apiEvent.send(LoginAuthState.Error(error =  bodyPayLoad.shopName!!,))
-//                    }
+                    if(bodyPayLoad!!.errorStatusCode== 1 && handleApiRequest.code()==200 && handleApiRequest.isSuccessful) {
+                        //this is add coded
+//                        repo.saveBalance("300.0")
+//                        repo.saveAccountName("Mint mfb")
+//                        repo.saveAccountNumber("accountNumber")
+//                        repo.saveTerminalId("2033HQOQ")
+//                        repo.saveSessionId("2033HQOQ-7ee05873-740e-4433-8ff9-540880efc1b0")
+                        _apiEvent.send(LoginAuthState.Success(status = 200))
+                    }else{
+                        _apiEvent.send(LoginAuthState.Error(error =  bodyPayLoad.errorMessage!!))
+                    }
 
                 }catch (e:Throwable) {
-                    Log.d("EPOKHAI 66", "${e.message}")
                     _apiEvent.send(LoginAuthState.Error(error =  e.message.toString()))
                 }
             }
         }
-    }
-
 
     fun authEventHandler(authenticationEvent: AuthEvent) {
         when (authenticationEvent) {
@@ -156,5 +109,6 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
 
 }

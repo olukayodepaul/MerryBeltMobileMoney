@@ -28,7 +28,7 @@ object ApiModules {
     @Provides
     fun provideLoginApi(): LoginApi {
 
-        val supportInterceptor = TransportInterceptor(
+        val supportInterceptor = BasicTransAuthInterceptor(
             username = "restdevice",
             password = "5NDM1NjckJV4KK",
         )
@@ -47,7 +47,7 @@ object ApiModules {
         }
 
         return Retrofit.Builder()
-            .baseUrl("https://a6a8-105-112-30-112.eu.ngrok.io")
+            .baseUrl("https://test.merrybet.com")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(okHttpClientBuilder.build())
             .build()

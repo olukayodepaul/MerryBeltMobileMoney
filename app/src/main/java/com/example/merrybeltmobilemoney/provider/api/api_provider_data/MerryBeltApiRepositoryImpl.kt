@@ -1,16 +1,11 @@
 package com.example.merrybeltmobilemoney.provider.api.api_provider_data
 
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
-import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.UsersInfoDomain
+import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.CustomersProfile
 import com.example.merrybeltmobilemoney.provider.preference.pref_provider_domain.MerryBeltPrefRepository
 import com.example.merrybeltmobilemoney.provider.room.room_provider_domain.MerryBeltRoomDao
-import com.example.merrybeltmobilemoney.ui.auth.auth_data.CustomerValidations
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
-import com.example.merrybeltmobilemoney.ui.home.home_data.Banks
-import com.example.merrybeltmobilemoney.ui.home.home_data.NetworkMgtReq
-import com.example.merrybeltmobilemoney.ui.home.home_data.NetworkMgtRes
-import com.example.merrybeltmobilemoney.ui.home.home_data.TestData
 import retrofit2.Response
 
 
@@ -26,12 +21,15 @@ class MerryBeltApiRepositoryImpl(
     private val sharedPref: MerryBeltPrefRepository
 
 ) : MerryBeltApiRepository {
+
+
     override suspend fun login(
-        terminalId: String,
-        sessionId: String,
-        data: CustomerValidations
-    ): Response<LoginCredential> {
-        return loginApi.login(terminalId, sessionId, data)
+        requestTime: String,
+        apiHashKey: String,
+        apiUserId: Int,
+        data: LoginCredential,
+    ): Response<LoginResponse> {
+        return loginApi.login(requestTime, apiHashKey, apiUserId, data)
     }
 
     override suspend fun token(): String {
@@ -46,36 +44,49 @@ class MerryBeltApiRepositoryImpl(
         return apiID
     }
 
-    override suspend fun saveTerminalId(terminalId: String) {
-        sharedPref.saveTerminalId(terminalId)
+    override suspend fun sessionId(sessionId: String) {
+        TODO("Not yet implemented")
     }
 
-    override suspend fun saveAccountNumber(accountNumber: String) {
-        sharedPref.saveAccountNumber(accountNumber)
+    override suspend fun terminalId(terminalId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun merchantId(terminalId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun businessName(businessName: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun merchantName(merchantName: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun bank(terminalId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun balances(balance: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun accountName(accountName: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun accountNumber(accountNumber: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun category(category: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun loadUserInfo(): CustomersProfile {
+        return sharedPref.customerProfile()
     }
 
 
-    override suspend fun saveBalance(balance: String) {
-        sharedPref.saveBalance(balance)
-    }
-
-    override suspend fun saveAccountName(accountName: String) {
-        sharedPref.saveAccountName(accountName)
-    }
-
-    override suspend fun saveSessionId(sessionId: String) {
-         sharedPref.saveSessionId(sessionId)
-    }
-
-    override fun loadUserInfo(): UsersInfoDomain {
-        return sharedPref.loadUserInfo()
-    }
-
-    override suspend fun isNetworkApi(data: NetworkMgtReq): Response<NetworkMgtRes> {
-        return merryBeltApi.getNetwork(data)
-    }
-
-    override suspend fun getBanks(terminalId: String, sessionId: String, data: TestData): Response<Banks> {
-        return merryBeltEncryptedApi.getBanks(terminalId, sessionId, data)
-    }
 }

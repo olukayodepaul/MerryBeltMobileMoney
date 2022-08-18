@@ -11,12 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.merrybeltmobilemoney.theme.Fonts
 import com.example.merrybeltmobilemoney.theme.MChild
 import com.example.merrybeltmobilemoney.theme.White
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthState
 import com.example.merrybeltmobilemoney.ui.auth.auth_presenter.AuthViewModel
+import com.example.merrybeltmobilemoney.util.EncryptionUtil
 
 
 @Composable
@@ -27,7 +27,7 @@ fun AuthenticationButtons(
 ) {
     Button(
         onClick = {
-            viewModel.AuthApiRequest(uiState.username, uiState.password)
+            viewModel.authApiRequest(uiState.username, EncryptionUtil().passwordM5D(uiState.password))
         },
         modifier = Modifier
             .fillMaxWidth()
