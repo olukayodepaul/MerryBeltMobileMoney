@@ -6,6 +6,7 @@ import com.example.merrybeltmobilemoney.provider.api.api_provider_data.LoginApi
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.MerryBeltApi
 import com.example.merrybeltmobilemoney.provider.api.api_provider_data.MerryBeltEncryptedApi
 import com.example.merrybeltmobilemoney.util.BasicTransAuthInterceptor
+import com.example.merrybeltmobilemoney.util.Constant.LOGIN_BASE_URL
 import com.example.merrybeltmobilemoney.util.Constant.TRANSACTION_URL
 import com.example.merrybeltmobilemoney.util.TransportInterceptor
 import com.google.gson.GsonBuilder
@@ -47,7 +48,7 @@ object ApiModules {
         }
 
         return Retrofit.Builder()
-            .baseUrl("https://test.merrybet.com")
+            .baseUrl(LOGIN_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(okHttpClientBuilder.build())
             .build()
@@ -56,7 +57,7 @@ object ApiModules {
 
     @Singleton
     @Provides
-    fun provideTranApi(): MerryBeltApi {
+    fun provideTranApi(): MerryBeltEncryptedApi {
 
         val supportInterceptor = BasicTransAuthInterceptor(
             username = "restdevice",
@@ -81,14 +82,16 @@ object ApiModules {
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(okHttpClientBuilder.build())
             .build()
-            .create(MerryBeltApi::class.java)
+            .create(MerryBeltEncryptedApi::class.java)
     }
 
+
+    //This is not use
     @Singleton
     @Provides
-    fun provideEncryptedApi(): MerryBeltEncryptedApi {
+    fun provideEncryptedApi(): MerryBeltApi {
 
-        val supportInterceptor = BasicTransAuthInterceptor(
+        val supportInterceptor = TransportInterceptor(
             username = "restdevice",
             password = "5NDM1NjckJV4KK"
         )
@@ -107,11 +110,11 @@ object ApiModules {
         }
 
         return Retrofit.Builder()
-            .baseUrl("https://a6a8-105-112-30-112.eu.ngrok.io")
+            .baseUrl(TRANSACTION_URL)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .client(okHttpClientBuilder.build())
             .build()
-            .create(MerryBeltEncryptedApi::class.java)
+            .create(MerryBeltApi::class.java)
     }
 
 

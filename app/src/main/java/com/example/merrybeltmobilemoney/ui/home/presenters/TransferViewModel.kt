@@ -1,10 +1,13 @@
 package com.example.merrybeltmobilemoney.ui.home.presenters
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferState
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.*
+import com.example.merrybeltmobilemoney.util.Constant.gson
+import com.example.merrybeltmobilemoney.util.EncryptionUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -12,7 +15,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class TransferViewModel @Inject constructor(private val repo: MerryBeltApiRepository): ViewModel() {
+class TransferViewModel @Inject constructor(private val repo: MerryBeltApiRepository, private val appContext: Application): ViewModel() {
 
     var uiState = MutableStateFlow(TransferState())
 
@@ -29,10 +32,26 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
     }
 
     private fun onInputtedAccNo(inputtedAccNo: String) {
+
         uiState.value = uiState.value.copy(
             inputtedAccNo = inputtedAccNo
         )
+
+        getBankList(inputtedAccNo)
     }
+
+    private fun getBankList(accountVerification: List<AllBanks>) {
+        uiState.value = uiState.value.copy(
+            accountVerification = accountVerification,
+        )
+    }
+
+    private fun getBankList(inputtedAccNo:String) = viewModelScope.launch{
+        if(inputtedAccNo.length==10) {
+
+        }
+    }
+
 
     private fun onInputtedAccName(inputtedAccName: String) {
         uiState.value = uiState.value.copy(
@@ -51,6 +70,11 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
             inputtedRemark = inputtedRemark
         )
     }
+
+    private fun onSelectedItemIndex(selectedItemIndex: Int) {
+        uiState.value = uiState.value.copy(selectedItemIndex = selectedItemIndex)
+    }
+
 
 
     fun transEventHandler(transEvent: TransferEvent) {
@@ -72,6 +96,10 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
                 onChangeInputtedRemark(transEvent.remark)
             }
 
+            is TransferEvent.OnSelectedItemIndex -> {
+                onSelectedItemIndex(transEvent.selectedItemIndex)
+            }
+
             else -> {}
         }
     }
@@ -79,6 +107,18 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
 
     init {
         viewModelScope.launch {
+
+            try{
+
+                val dataFromEncryptedBankList = repo.getEncryptedBankList(repo.customerProfile().terminalId, repo.customerProfile().sessionId)
+                val decryptedData = EncryptionUtil().isDecryption(dataFromEncryptedBankList.body()!!.data, repo.customerProfile().sessionId)
+                val decryptedBankList: List<AllBanks> = gson.fromJson(decryptedData, Array<AllBanks>::class.java).toList()
+                getBankList(decryptedBankList)
+
+            }catch (e:Throwable) {
+                Log.d("ISEPOKHAI 2", "${e.message}")
+            }
+
             onBalance(balances = repo.customerProfile().balance)
             onAccountNumber(accountNumber = repo.customerProfile().accountNumber)
         }

@@ -1,6 +1,6 @@
 package com.example.merrybeltmobilemoney.util
 
-import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
+
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.*
@@ -8,23 +8,19 @@ import javax.crypto.Cipher
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import javax.inject.Inject
 
 
 class EncryptionUtil {
-
-    @Inject
-    lateinit var repo: MerryBeltApiRepository
 
     private val algo = "DESede/CBC/PKCS5Padding"
     private val des = "DESede"
     private val md5 = "md5"
     private val standard = StandardCharsets.UTF_8
 
-    fun isEncryption(message: String): ByteArray {
+    fun isEncryption(message: String, sessionId: String): ByteArray {
 
         val md = MessageDigest.getInstance(md5)
-        val digestOfPassword = md.digest(repo.customerProfile().sessionId.toByteArray(standard))
+        val digestOfPassword = md.digest(sessionId.toByteArray(standard))
         val keyBytes = Arrays.copyOf(digestOfPassword, 24)
         var j = 0
         var k = 16
@@ -37,11 +33,12 @@ class EncryptionUtil {
         cipher.init(Cipher.ENCRYPT_MODE, key, iv)
         val plainTextBytes = message.toByteArray(StandardCharsets.UTF_8)
         return cipher.doFinal(plainTextBytes)
+
     }
 
-    fun isDecryption(encryptedText: String): String {
+    fun isDecryption(encryptedText: String, sessionId: String): String {
             val md = MessageDigest.getInstance(md5)
-            val digestOfPassword = md.digest(repo.customerProfile().sessionId.toByteArray(standard))
+            val digestOfPassword = md.digest(sessionId.toByteArray(standard))
             val keyBytes = Arrays.copyOf(digestOfPassword, 24)
             var j = 0
             var k = 16

@@ -12,11 +12,12 @@ data class TransferState (
     val bankLogo: String = "",
     var value: String = "",
     val enable: Boolean = false,
-    val accountVerification: List<Banks.AllBanks> = emptyList(),
+    val accountVerification: List<AllBanks> = emptyList(),
+    var selectedItemIndex: Int = -1,
 )
 
 
-sealed class TransferEvent{
+sealed class TransferEvent {
     class OnChangeAccNumber(val accountNumber:  String): TransferEvent()
     class OnChangeBalance(val balance: String): TransferEvent()
     class OnChangeInputtedAccNo(val accNo: String): TransferEvent()
@@ -26,6 +27,7 @@ sealed class TransferEvent{
     class OnEnable(val enable: Boolean) : TransferEvent()
     class OnBankLogo(val bankLogo: String) : TransferEvent()
     class OnValue(val value: String) : TransferEvent()
+    class OnSelectedItemIndex(val selectedItemIndex: Int) : TransferEvent()
 }
 
 

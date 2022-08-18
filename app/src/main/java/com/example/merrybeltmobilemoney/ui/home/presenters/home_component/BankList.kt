@@ -101,6 +101,7 @@ fun BankList(
                             value = specimen.name
                         )
                     )
+
                 }) {
                     Row(   Modifier
                         .padding(5.dp)

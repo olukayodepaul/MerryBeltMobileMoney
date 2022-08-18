@@ -6,6 +6,7 @@ import com.example.merrybeltmobilemoney.provider.preference.pref_provider_domain
 import com.example.merrybeltmobilemoney.provider.room.room_provider_domain.MerryBeltRoomDao
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.EncryptedBankList
 import retrofit2.Response
 
 
@@ -87,4 +88,13 @@ class MerryBeltApiRepositoryImpl(
     override fun customerProfile(): CustomersProfile {
         return sharedPref.customerProfile()
     }
+
+    override suspend fun getEncryptedBankList(
+        terminalId: String,
+        sessionId: String
+    ): Response<EncryptedBankList> {
+        return merryBeltEncryptedApi.getEncryptedBankList(terminalId, sessionId)
+    }
+
+
 }

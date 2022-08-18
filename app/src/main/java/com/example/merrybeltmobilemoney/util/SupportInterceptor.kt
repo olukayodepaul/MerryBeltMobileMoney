@@ -48,7 +48,7 @@ class TransportInterceptor(username: String, password: String) : Interceptor {
         buffer.clear()
         buffer.close()
 
-        val encryptedRequest = Base64.encodeToString(EncryptionUtil().isEncryption(strOldBody), Base64.NO_WRAP).trim()
+        val encryptedRequest = Base64.encodeToString(EncryptionUtil().isEncryption(strOldBody, original.headers["sessionId"]!!), Base64.NO_WRAP).trim()
         val request = original
             .newBuilder()
             .addHeader("Authorization", credentials)
