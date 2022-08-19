@@ -49,47 +49,11 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
         )
     }
 
-
-//
-//    private fun onInputtedAccNo(inputtedAccNo: String) {
-//
-//        uiState.value = uiState.value.copy(
-//            inputtedAccNo = inputtedAccNo
-//        )
-//
-//        getBankList(inputtedAccNo)
-//    }
-//
-
-//
-//    private fun getBankList(inputtedAccNo:String) = viewModelScope.launch{
-//        if(inputtedAccNo.length==10) {
-//
-//        }
-//    }
-//
-//
-//    private fun onInputtedAccName(inputtedAccName: String) {
-//        uiState.value = uiState.value.copy(
-//            inputtedAccName = inputtedAccName
-//        )
-//    }
-//
-//    private fun onChangeInputtedAmount(inputtedAccName: String) {
-//        uiState.value = uiState.value.copy(
-//            inputtedAccName = inputtedAccName
-//        )
-//    }
-//
-//    private fun onChangeInputtedRemark(inputtedRemark: String) {
-//        uiState.value = uiState.value.copy(
-//            inputtedRemark = inputtedRemark
-//        )
-//    }
-//
-//    private fun onSelectedItemIndex(selectedItemIndex: Int) {
-//        uiState.value = uiState.value.copy(selectedItemIndex = selectedItemIndex)
-//    }
+    private fun onAccNoToTransferTo(accNoToTransferTo: String) {
+        uiState.value = uiState.value.copy(
+            accNoToTransferTo = accNoToTransferTo
+        )
+    }
 
 
     fun transEventHandler(transEvent: TransferEvent) {
@@ -107,19 +71,9 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
                 onSelectedBankLogo(transEvent.bankLogo)
             }
 
-
-//
-//            is TransferEvent.OnChangeInputtedAmount->{
-//                onChangeInputtedAmount(transEvent.amount)
-//            }
-//
-//            is TransferEvent.OnChangeInputtedRemark->{
-//                onChangeInputtedRemark(transEvent.remark)
-//            }
-//
-//            is TransferEvent.OnSelectedItemIndex -> {
-//                onSelectedItemIndex(transEvent.selectedItemIndex)
-//            }
+            is TransferEvent.OnAccNoToTransferTo->{
+                onAccNoToTransferTo(transEvent.accNoToTransferTo)
+            }
 
         }
     }

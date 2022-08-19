@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,9 +25,7 @@ import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.theme.*
 import com.example.merrybeltmobilemoney.ui.home.presenters.TransferViewModel
 import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.BankList
-import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.Buttons
 import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsNumber
-import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsText
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
 
 @Composable
@@ -162,16 +159,16 @@ fun transferChannel(
                             )
                         }
 
-//                        OutlinedTextFieldsNumber(
-//                            label = "Account Number",
-//                            value = uiState.inputtedAccNo,
-//                            onValueChange = {inputtedAccNo->
-//                                uiEvent(
-//                                    TransferEvent.OnChangeInputtedAccNo(inputtedAccNo)
-//                                )
-//                            },
-//                            enabled = true,
-//                        )
+                        OutlinedTextFieldsNumber(
+                            label = "Account Number",
+                            value = uiState.accNoToTransferTo,
+                            onValueChange = {accNoToTransferTo->
+                                uiEvent(
+                                    TransferEvent.OnAccNoToTransferTo(accNoToTransferTo)
+                                )
+                            },
+                            enabled = true,
+                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 

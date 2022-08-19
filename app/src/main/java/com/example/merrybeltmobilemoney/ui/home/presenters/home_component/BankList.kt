@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.ImagePainter
@@ -37,9 +38,9 @@ fun BankList(
                 Text(
                     text = "Banks",
                     style = TextStyle(
-                        fontFamily = Fonts.Montserrat,
-                        color = Blues,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        fontFamily = Fonts.RobotoBold,
+                        fontWeight = FontWeight.W600
                     )
                 )
             },
@@ -130,9 +131,15 @@ fun BankList(
                                 )
                             }
                         }
-                        Text(text = specimen.name) //Dropdownmenu list items
+                        Text(
+                            text = specimen.name,
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                fontFamily = Fonts.RobotoBold,
+                                fontWeight = FontWeight.W600
+                            )
+                        ) //Dropdownmenu list items
                     }
-
                 }
             }
         }
@@ -148,7 +155,6 @@ fun BankList(
                                 expanded = !uiState.expanded
                             )
                         )
-                        //expanded = !expanded
                     }
                 )
         )

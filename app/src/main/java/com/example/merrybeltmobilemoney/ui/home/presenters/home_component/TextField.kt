@@ -41,8 +41,6 @@ fun OutlinedTextFieldsNumber(
             onValueChange(accNumber)
         },
 
-
-
         placeholder = { Text(text = label) },
         singleLine = true,
         keyboardOptions = KeyboardOptions.Default.copy(
