@@ -26,6 +26,7 @@ import com.example.merrybeltmobilemoney.theme.*
 import com.example.merrybeltmobilemoney.ui.home.presenters.TransferViewModel
 import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.BankList
 import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsNumber
+import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsText
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
 
 @Composable
@@ -172,16 +173,12 @@ fun transferChannel(
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
-//                        OutlinedTextFieldsText(
-//                            label = "Account Name",
-//                            value = uiState.inputtedAccName,
-//                            onValueChange = {inputtedAccName->
-//                                uiEvent(
-//                                    TransferEvent.OnChangeInputtedAccName(inputtedAccName)
-//                                )
-//                            },
-//                            enabled = uiState.enableWidget
-//                        )
+                        OutlinedTextFieldsText(
+                            label = "Account Name",
+                            value = uiState.accNameToTransferTo,
+                            onValueChange = {},
+                            enabled = false
+                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 

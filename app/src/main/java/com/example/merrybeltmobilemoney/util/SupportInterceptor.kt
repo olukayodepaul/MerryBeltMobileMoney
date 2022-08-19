@@ -48,7 +48,12 @@ class TransportInterceptor(username: String, password: String) : Interceptor {
         buffer.clear()
         buffer.close()
 
+        Log.d("CHECKEPO BODY","${strOldBody}")
+
         val encryptedRequest = Base64.encodeToString(EncryptionUtil().isEncryption(strOldBody, original.headers["sessionId"]!!), Base64.NO_WRAP).trim()
+        Log.d("CHECKEPO ENCRYPTED","${encryptedRequest}")
+        Log.d("CHECKEPO SESSION","${original.headers["sessionId"]!!}")
+
         val request = original
             .newBuilder()
             .addHeader("Authorization", credentials)

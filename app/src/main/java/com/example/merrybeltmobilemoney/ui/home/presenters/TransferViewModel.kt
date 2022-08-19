@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class TransferViewModel @Inject constructor(private val repo: MerryBeltApiRepository, private val appContext: Application): ViewModel() {
+class TransferViewModel @Inject constructor(private val repo: MerryBeltApiRepository): ViewModel() {
 
     var uiState = MutableStateFlow(TransferState())
 
@@ -32,9 +32,16 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
     }
 
     private fun onSpecimenText(specimen: String) {
+
         uiState.value = uiState.value.copy(
             specimen = specimen
         )
+
+        //empty the account number
+        uiState.value = uiState.value.copy(
+            accNoToTransferTo = ""
+        )
+
     }
 
     private fun onSetListOfBanks(listOfBanks: List<AllBanks>) {
@@ -49,11 +56,47 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
         )
     }
 
-    private fun onAccNoToTransferTo(accNoToTransferTo: String) {
+    private fun onAccNoToTransferTo(accNoToTransferTo: String) = viewModelScope.launch{
+
         uiState.value = uiState.value.copy(
             accNoToTransferTo = accNoToTransferTo
         )
+
+        if(accNoToTransferTo.length==10 && uiState.value.specimen.isNotEmpty()) {
+
+            val isSelectedBankCode = uiState.value.setBankCode
+
+            val validateAccNumber = ValidateAccNumber(
+                bankCode = isSelectedBankCode,
+                accountNumber = accNoToTransferTo
+            )
+
+            try {
+
+                val accValidResponse = repo.validateAccNumber(repo.customerProfile().terminalId, repo.customerProfile().sessionId, validateAccNumber)
+
+
+            }catch (e:Throwable){
+                Log.d("CHECKEPO ERROR", "${e.message}")
+            }
+
+        }
     }
+
+    //set the account name to transfer to
+    private fun onAccNameToTransferTo(accNameToTransferTo: String) {
+        uiState.value = uiState.value.copy(
+            accNameToTransferTo = accNameToTransferTo
+        )
+    }
+
+    //set bank code
+    private fun onBankCode(setBankCode: String) {
+        uiState.value = uiState.value.copy(
+            setBankCode = setBankCode
+        )
+    }
+
 
 
     fun transEventHandler(transEvent: TransferEvent) {
@@ -73,6 +116,10 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
 
             is TransferEvent.OnAccNoToTransferTo->{
                 onAccNoToTransferTo(transEvent.accNoToTransferTo)
+            }
+
+            is TransferEvent.OnSetBankCode->{
+                onBankCode(transEvent.setBankCode)
             }
 
         }

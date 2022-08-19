@@ -86,7 +86,6 @@ object ApiModules {
     }
 
 
-    //This is not use
     @Singleton
     @Provides
     fun provideEncryptedApi(): MerryBeltApi {

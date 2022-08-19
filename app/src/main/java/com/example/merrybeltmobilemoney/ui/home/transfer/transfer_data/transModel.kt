@@ -13,7 +13,6 @@ data class EncryptedBankList(
     val data: String =  ""
 )
 
-
 data class AllBanks(
     @SerializedName("url")
     @Expose
@@ -24,4 +23,18 @@ data class AllBanks(
     @SerializedName("code")
     @Expose
     val code: String = ""
+)
+
+data class ValidateAccNumber(
+    val bankCode: String? = "",
+    val accountNumber: String =  ""
+)
+
+data class ValidateAccNumberResponse(
+    @SerializedName("status")
+    @Expose
+    val status: String? = "",
+    @SerializedName("data")
+    @Expose
+    val data: String =  ""
 )

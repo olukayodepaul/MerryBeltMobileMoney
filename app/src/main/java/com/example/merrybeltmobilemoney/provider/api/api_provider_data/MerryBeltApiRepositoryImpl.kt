@@ -7,6 +7,8 @@ import com.example.merrybeltmobilemoney.provider.room.room_provider_domain.Merry
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.EncryptedBankList
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumber
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumberResponse
 import retrofit2.Response
 
 
@@ -94,6 +96,14 @@ class MerryBeltApiRepositoryImpl(
         sessionId: String
     ): Response<EncryptedBankList> {
         return merryBeltEncryptedApi.getEncryptedBankList(terminalId, sessionId)
+    }
+
+    override suspend fun validateAccNumber(
+        terminalId: String,
+        sessionId: String,
+        data: ValidateAccNumber
+    ): Response<ValidateAccNumberResponse> {
+        return merryBeltApi.validateAccNumber(terminalId, sessionId, data)
     }
 
 

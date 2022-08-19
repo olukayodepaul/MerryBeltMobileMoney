@@ -4,6 +4,8 @@ import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.C
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.EncryptedBankList
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumber
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumberResponse
 import retrofit2.Response
 
 interface MerryBeltApiRepository {
@@ -39,5 +41,7 @@ interface MerryBeltApiRepository {
     fun customerProfile(): CustomersProfile
 
     suspend fun getEncryptedBankList(terminalId: String, sessionId: String): Response<EncryptedBankList>
+
+    suspend fun validateAccNumber(terminalId: String, sessionId: String, data: ValidateAccNumber): Response<ValidateAccNumberResponse>
 
 }

@@ -37,16 +37,19 @@ fun OutlinedTextFieldsNumber(
         modifier = Modifier.fillMaxWidth(),
         value = value,
         enabled = enabled,
+
         onValueChange = {accNumber->
             onValueChange(accNumber)
         },
 
+
         placeholder = { Text(text = label) },
         singleLine = true,
+
         keyboardOptions = KeyboardOptions.Default.copy(
             capitalization = KeyboardCapitalization.Sentences,
             autoCorrect = true,
-            keyboardType = KeyboardType.Text,
+            keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
         ),
         keyboardActions = KeyboardActions(onNext = {

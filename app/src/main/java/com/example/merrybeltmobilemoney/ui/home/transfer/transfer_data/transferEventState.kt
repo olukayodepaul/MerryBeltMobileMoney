@@ -9,6 +9,8 @@ data class TransferState (
     val specimen: String = "",
     val selectedBankLogo: String = "",
     val accNoToTransferTo: String = "",
+    val accNameToTransferTo: String = "",
+    val setBankCode: String = "",
 )
 
 
@@ -18,7 +20,7 @@ sealed class TransferEvent {
     class OnSpecimenText(val specimen:  String) : TransferEvent()
     class OnSelectedBankLogo(val bankLogo: String) : TransferEvent()
     class OnAccNoToTransferTo(val accNoToTransferTo: String) : TransferEvent()
-
+    class OnSetBankCode(val setBankCode: String) : TransferEvent()
 }
 
 
