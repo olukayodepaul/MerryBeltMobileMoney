@@ -48,6 +48,10 @@ class MerryBeltPrefRepositoryImpl(
         sharedPref.edit().putString(MerryBeltPrefRepository.KEY_CATEGORY, category).apply()
     }
 
+    override suspend fun stan(stan: String) {
+        sharedPref.edit().putString(MerryBeltPrefRepository.KEY_STAN, stan).apply()
+    }
+
     override fun customerProfile(): CustomersProfile {
 
         val sessionId = sharedPref.getString(MerryBeltPrefRepository.KEY_SESSION_ID, "")
@@ -60,6 +64,7 @@ class MerryBeltPrefRepositoryImpl(
         val accountName = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NAME, "")
         val accountNumber = sharedPref.getString(MerryBeltPrefRepository.KEY_ACC_NUMBER, "")
         val category = sharedPref.getString(MerryBeltPrefRepository.KEY_CATEGORY, "")
+        val stan = sharedPref.getString(MerryBeltPrefRepository.KEY_STAN, "")
 
         return CustomersProfile(
             sessionId = sessionId!!,
@@ -72,6 +77,7 @@ class MerryBeltPrefRepositoryImpl(
             accountName = accountName!!,
             accountNumber = accountNumber!!,
             category = category!!,
+            stan= stan!!
         )
     }
 

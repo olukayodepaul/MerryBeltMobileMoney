@@ -10,5 +10,6 @@ data class CustomersProfile (
     val balance: String ="",
     val accountName: String ="",
     val accountNumber: String ="",
-    val category: String =""
+    val category: String ="",
+    val stan:String=""
 )

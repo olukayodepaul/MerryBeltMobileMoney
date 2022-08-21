@@ -7,6 +7,7 @@ import com.example.merrybeltmobilemoney.provider.room.room_provider_domain.Merry
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.EncryptedBankList
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.FundTrans
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumber
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumberResponse
 import retrofit2.Response
@@ -87,6 +88,10 @@ class MerryBeltApiRepositoryImpl(
         sharedPref.category(category)
     }
 
+    override suspend fun stan(stan: String) {
+        sharedPref.stan(stan)
+    }
+
     override fun customerProfile(): CustomersProfile {
         return sharedPref.customerProfile()
     }
@@ -104,6 +109,14 @@ class MerryBeltApiRepositoryImpl(
         data: ValidateAccNumber
     ): Response<ValidateAccNumberResponse> {
         return merryBeltApi.validateAccNumber(terminalId, sessionId, data)
+    }
+
+    override suspend fun fundTransfer(
+        terminalId: String,
+        sessionId: String,
+        data: FundTrans
+    ): Response<ValidateAccNumberResponse> {
+        return merryBeltApi.fundTransfer(terminalId, sessionId, data)
     }
 
 

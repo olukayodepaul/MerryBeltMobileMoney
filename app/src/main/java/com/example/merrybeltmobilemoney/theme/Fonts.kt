@@ -20,4 +20,8 @@ object Fonts {
         Font(R.font.opensansregular, FontWeight.Bold)
     )
 
+    val RobotoNormal = FontFamily(
+        Font(R.font.roboto_regular, FontWeight.Normal)
+    )
+
 }

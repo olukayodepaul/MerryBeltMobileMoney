@@ -38,3 +38,31 @@ data class ValidateAccNumberResponse(
     @Expose
     val data: String =  ""
 )
+
+data class ValidationData(
+    @SerializedName("bankCode")
+    @Expose
+    val bankCode: String? = "",
+    @SerializedName("accountName")
+    @Expose
+    val accountName: String? = "",
+    @SerializedName("accountNumber")
+    @Expose
+    val accountNumber: String? = "",
+    @SerializedName("walletBalance")
+    @Expose
+    val walletBalance: String? = "",
+    @SerializedName("amountCharged")
+    @Expose
+    val amountCharged: String? = "",
+)
+
+data class FundTrans(
+    val amount: String? = "",
+    val stan: String =  "",
+    val pin: String =  "",
+    val accountNumber: String =  "",
+    val bankCode: String =  "",
+    val type: String =  "",
+)
+

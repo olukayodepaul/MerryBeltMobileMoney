@@ -2,21 +2,12 @@ package com.example.merrybeltmobilemoney.util
 
 
 import android.util.Base64
-import android.util.Log
-import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
-
-
 
 
 class BasicTransAuthInterceptor(username: String, password: String) : Interceptor {
@@ -48,11 +39,7 @@ class TransportInterceptor(username: String, password: String) : Interceptor {
         buffer.clear()
         buffer.close()
 
-        Log.d("CHECKEPO BODY","${strOldBody}")
-
         val encryptedRequest = Base64.encodeToString(EncryptionUtil().isEncryption(strOldBody, original.headers["sessionId"]!!), Base64.NO_WRAP).trim()
-        Log.d("CHECKEPO ENCRYPTED","${encryptedRequest}")
-        Log.d("CHECKEPO SESSION","${original.headers["sessionId"]!!}")
 
         val request = original
             .newBuilder()
@@ -66,13 +53,3 @@ class TransportInterceptor(username: String, password: String) : Interceptor {
 
     }
 }
-
-
-//        val req = chain.proceed(request)
-//
-//        val encData = req.body?.string().toString()
-//        val decryptedData = EncryptionUtil().isDecryption(encData)
-//        val gson = Gson()
-//        return req.newBuilder()
-//            .body(decryptedData.toResponseBody("application/json".toMediaTypeOrNull()))
-//            .build()

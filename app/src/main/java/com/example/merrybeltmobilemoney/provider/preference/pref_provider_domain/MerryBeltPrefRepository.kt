@@ -15,6 +15,7 @@ interface MerryBeltPrefRepository {
     suspend fun accountName(accountName: String)
     suspend fun accountNumber(accountNumber: String)
     suspend fun category(category: String)
+    suspend fun stan(stan: String)
     fun customerProfile(): CustomersProfile
 
     companion object {
@@ -28,5 +29,6 @@ interface MerryBeltPrefRepository {
         const val KEY_ACC_NAME= "accountName"
         const val KEY_ACC_NUMBER = "accountNumber"
         const val KEY_CATEGORY = "category"
+        const val KEY_STAN = "stan"
     }
 }

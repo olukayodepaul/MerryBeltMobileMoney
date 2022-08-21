@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.merrybeltmobilemoney.theme.DialogBoxLoading
 import com.example.merrybeltmobilemoney.theme.White
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthEvent
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginAuthState
