@@ -11,18 +11,22 @@ import androidx.compose.ui.unit.sp
 import com.example.merrybeltmobilemoney.theme.Fonts
 import com.example.merrybeltmobilemoney.theme.MChild
 import com.example.merrybeltmobilemoney.theme.White
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferState
 
 @Composable
 fun Buttons(
+    uiEvent: (TransferEvent)->Unit,
+    uiState: TransferState,
     label: String,
-    enabled: Boolean = false,
-
-) {
+    ) {
     Button(
         onClick = {
-
+            uiEvent(
+                TransferEvent.OnClickContButton
+            )
         },
-        enabled = enabled,
+        enabled = uiState.continueButtonEnable,
         modifier = Modifier
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(

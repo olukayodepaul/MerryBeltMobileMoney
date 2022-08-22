@@ -1,6 +1,7 @@
 package com.example.merrybeltmobilemoney.ui.home.presenters.home_component
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,6 +15,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.merrybeltmobilemoney.theme.Blues
@@ -89,6 +92,7 @@ fun OutlinedTextFieldsNumber(
 
 @Composable
 fun OutlinedTextFieldsText(
+    readOnly: Boolean = false,
     label: String,
     value:String,
     onValueChange:(String)->Unit,
@@ -99,6 +103,7 @@ fun OutlinedTextFieldsText(
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
+        readOnly = readOnly,
         modifier = Modifier.fillMaxWidth(),
         value = value,
         enabled = enabled,
@@ -125,6 +130,64 @@ fun OutlinedTextFieldsText(
                 )
             )
         },
+        maxLines = 1,
+        shape = RoundedCornerShape(6.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            backgroundColor = Color(
+                bColor.red, bColor.green, bColor.blue,
+                TextFieldDefaults.BackgroundOpacity
+            ),
+            focusedBorderColor = bColor,
+            unfocusedBorderColor = Color(
+                bColor.red, bColor.green, bColor.blue,
+                TextFieldDefaults.UnfocusedIndicatorLineOpacity,
+            ),
+            focusedLabelColor = GreyTransparent,
+            cursorColor = GreyTransparent
+        )
+    )
+}
+
+
+
+@Composable
+fun OutlinedTextFieldsTextPin(
+    value:String,
+    onValueChange:(String)->Unit,
+) {
+
+    val bColor = Borderline
+    val focusManager = LocalFocusManager.current
+
+    OutlinedTextField(
+        modifier = Modifier.padding(top = 36.dp, start = 36.dp, end = 36.dp, bottom = 8.dp),
+        singleLine = true,
+        value = value,
+        onValueChange = {pin->
+            onValueChange(pin)
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            autoCorrect = true,
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(onNext = {
+            focusManager.moveFocus(FocusDirection.Down)
+        }),
+
+        label = {
+            Text(
+                text = "",
+                style = TextStyle(
+                    fontFamily = Fonts.Montserrat,
+                    color = Blues,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center
+                )
+            )
+        },
+        visualTransformation = PasswordVisualTransformation(),
         maxLines = 1,
         shape = RoundedCornerShape(6.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(

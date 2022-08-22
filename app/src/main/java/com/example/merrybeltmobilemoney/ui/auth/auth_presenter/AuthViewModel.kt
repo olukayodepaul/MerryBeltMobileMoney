@@ -75,7 +75,7 @@ class AuthViewModel @Inject constructor(private val repo: MerryBeltApiRepository
                     if(bodyPayLoad!!.errorStatusCode == 1 && handleApiRequest.code() == 200 && handleApiRequest.isSuccessful) {
                         repo.balances(balance = "300.0")
                         repo.accountNumber(accountNumber = "0223318808")
-                        repo.sessionId(sessionId = "2033HQOQ-b4628146-d885-4622-9666-d2438d9f1cf8")
+                        repo.sessionId(sessionId = "2033HQOQ-b87f7ae8-2bd6-4a54-a063-f0851df858a4")
                         repo.terminalId(terminalId = "2033HQOQ")
                         repo.stan(stan = "123456")
                         _apiEvent.send(LoginAuthState.Success(status = 200))

@@ -35,8 +35,7 @@ fun DialogBoxLoading(
     progressIndicatorSize: Dp = 80.dp
 ) {
     Dialog(
-        onDismissRequest = {
-        }
+        onDismissRequest = {}
     ) {
         Surface(
             elevation = 4.dp,

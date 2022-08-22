@@ -109,6 +109,12 @@ fun BankList(
                         )
                     )
 
+                    uiEvent(
+                        TransferEvent.OnSetBankName(
+                            setBankName = specimen.name
+                        )
+                    )
+
                 }) {
                     Row(
                         Modifier

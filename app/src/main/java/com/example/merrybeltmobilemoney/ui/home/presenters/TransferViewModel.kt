@@ -1,8 +1,10 @@
 package com.example.merrybeltmobilemoney.ui.home.presenters
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.*
 import com.example.merrybeltmobilemoney.util.Constant.gson
@@ -14,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class TransferViewModel @Inject constructor(private val repo: MerryBeltApiRepository): ViewModel() {
+class TransferViewModel @Inject constructor(private val repo: MerryBeltApiRepository, private val appContext: Application): ViewModel() {
 
     var uiState = MutableStateFlow(TransferState())
 
@@ -63,6 +65,10 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
 
         if(accNoToTransferTo.length==10 && uiState.value.specimen.isNotEmpty()) {
 
+            uiState.value = uiState.value.copy(
+                loader = true
+            )
+
             val isSelectedBankCode = uiState.value.setBankCode
 
             val validateAccNumber = ValidateAccNumber(
@@ -70,16 +76,30 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
                 accountNumber = accNoToTransferTo
             )
 
+            val accValidResponse = repo.validateAccNumber(repo.customerProfile().terminalId, repo.customerProfile().sessionId, validateAccNumber)
             try {
 
-                val accValidResponse = repo.validateAccNumber(repo.customerProfile().terminalId, repo.customerProfile().sessionId, validateAccNumber)
-                val decryptedData = EncryptionUtil().isDecryption(accValidResponse.body()!!.data, repo.customerProfile().sessionId)
-                val getValid:ValidationData = gson.fromJson(decryptedData, ValidationData::class.java)
-                onAccNameToTransferTo(accNameToTransferTo = getValid.accountName!!)
+                if(accValidResponse.body()!!.status!!) {
+                    val decryptedData = EncryptionUtil().isDecryption(accValidResponse.body()!!.data, repo.customerProfile().sessionId)
+                    val getValid:ValidationData = gson.fromJson(decryptedData, ValidationData::class.java)
+                    onAccNameToTransferTo(accNameToTransferTo = getValid.accountName!!)
 
-            }catch (e:Throwable){
-                Log.d("CHECKEPO ERROR", "${e.message}")
+                    //click here to enable the Continue Button
+                    uiState.value = uiState.value.copy(
+                        continueButtonEnable = true
+                    )
+
+                }else{
+                    Toast.makeText(appContext, accValidResponse.body()!!.message, Toast.LENGTH_SHORT).show()
+                }
+
+            }catch (e:Throwable) {
+                Toast.makeText(appContext, "Please Check Account Number", Toast.LENGTH_SHORT).show()
             }
+
+            uiState.value = uiState.value.copy(
+                loader = false
+            )
 
         }
     }
@@ -95,6 +115,46 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
         uiState.value = uiState.value.copy(
             setBankCode = setBankCode
         )
+    }
+
+    private fun onAmountToTransfer(amountToTransfer: String) {
+        uiState.value = uiState.value.copy(
+            amountToTransfer = amountToTransfer
+        )
+    }
+
+    private fun onRemark(remark: String) {
+        uiState.value = uiState.value.copy(
+            remark = remark
+        )
+    }
+
+    private fun onSetBankName(setBankName: String) {
+        uiState.value = uiState.value.copy(
+            setBankName = setBankName
+        )
+    }
+
+    private fun onClickContButton() {
+        uiState.value = uiState.value.copy(
+            showAndHidePinDialog = true
+        )
+    }
+
+    private fun onShowAndHidePinDialog(showAndHidePinDialog: Boolean) {
+        uiState.value = uiState.value.copy(
+            showAndHidePinDialog = showAndHidePinDialog
+        )
+    }
+
+    private fun onEnteringPin(enteringPin: String) {
+        uiState.value = uiState.value.copy(
+            enteringPin = enteringPin
+        )
+    }
+
+    private fun nnClickOnDoneButton() {
+
     }
 
     fun transEventHandler(transEvent: TransferEvent) {
@@ -120,6 +180,34 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
                 onBankCode(transEvent.setBankCode)
             }
 
+            is TransferEvent.OnAmountToTransfer->{
+                onAmountToTransfer(transEvent.amountToTransfer)
+            }
+
+            is TransferEvent.OnRemark->{
+                onRemark(transEvent.remark)
+            }
+
+            is TransferEvent.OnClickContButton->{
+                onClickContButton()
+            }
+
+            is TransferEvent.OnSetBankName->{
+                onSetBankName(transEvent.setBankName)
+            }
+
+            is TransferEvent.OnShowAndHidePinDialog->{
+                onShowAndHidePinDialog(transEvent.showAndHidePinDialog)
+            }
+
+            is TransferEvent.OnEnteringPin->{
+                onEnteringPin(transEvent.enteringPin)
+            }
+
+            is TransferEvent.OnClickOnDoneButton->{
+                nnClickOnDoneButton()
+            }
+
         }
     }
 
@@ -129,7 +217,6 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
 
             onBalance(balances = repo.customerProfile().balance)
             try{
-
                 val dataFromEncryptedBankList = repo.getEncryptedBankList(repo.customerProfile().terminalId, repo.customerProfile().sessionId)
                 val decryptedData = EncryptionUtil().isDecryption(dataFromEncryptedBankList.body()!!.data, repo.customerProfile().sessionId)
                 val getListOfBanks: List<AllBanks> = gson.fromJson(decryptedData, Array<AllBanks>::class.java).toList()

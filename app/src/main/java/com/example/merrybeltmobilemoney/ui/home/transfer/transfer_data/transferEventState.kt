@@ -10,6 +10,14 @@ data class TransferState (
     val accNoToTransferTo: String = "",
     val accNameToTransferTo: String = "",
     val setBankCode: String = "",
+    val setBankName: String = "",
+    val loader: Boolean = false,
+    val amountToTransfer: String = "",
+    val remark: String = "",
+    val continueButtonEnable: Boolean = false, //this is the continue button
+    val showAndHidePinDialog: Boolean = false,
+    val enteringPin: String = ""
+
 )
 
 
@@ -19,6 +27,13 @@ sealed class TransferEvent {
     class OnSelectedBankLogo(val bankLogo: String) : TransferEvent()
     class OnAccNoToTransferTo(val accNoToTransferTo: String) : TransferEvent()
     class OnSetBankCode(val setBankCode: String) : TransferEvent()
+    class OnSetBankName(val setBankName: String) : TransferEvent()
+    class OnAmountToTransfer(val amountToTransfer: String) : TransferEvent()
+    class OnRemark(val remark: String) : TransferEvent()
+    object OnClickContButton : TransferEvent()
+    class OnShowAndHidePinDialog(val showAndHidePinDialog: Boolean) : TransferEvent()
+    object OnClickOnDoneButton: TransferEvent()
+    class OnEnteringPin(val enteringPin: String) : TransferEvent()
 }
 
 

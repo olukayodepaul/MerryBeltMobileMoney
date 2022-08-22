@@ -33,10 +33,13 @@ data class ValidateAccNumber(
 data class ValidateAccNumberResponse(
     @SerializedName("status")
     @Expose
-    val status: String? = "",
+    val status: Boolean? = null,
     @SerializedName("data")
     @Expose
-    val data: String =  ""
+    val data: String =  "",
+    @SerializedName("message")
+    @Expose
+    val message: String =  "",
 )
 
 data class ValidationData(

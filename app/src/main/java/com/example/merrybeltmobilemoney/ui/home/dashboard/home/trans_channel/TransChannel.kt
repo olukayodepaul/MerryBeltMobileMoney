@@ -25,6 +25,7 @@ import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.theme.*
 import com.example.merrybeltmobilemoney.ui.home.presenters.TransferViewModel
 import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.BankList
+import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.Buttons
 import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsNumber
 import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsText
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
@@ -174,43 +175,56 @@ fun transferChannel(
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
                         OutlinedTextFieldsText(
+                            readOnly = true,
                             label = "Account Name",
                             value = uiState.accNameToTransferTo,
                             onValueChange = {},
-                            enabled = false
+                            enabled = true
                         )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
-//                        OutlinedTextFieldsNumber(
-//                            label = "Amount",
-//                            value = uiState.inputtedAmount,
-//                            onValueChange = {inputtedAmount->
-//                                uiEvent(
-//                                    TransferEvent.OnChangeInputtedAmount(inputtedAmount)
-//                                )
-//                            },
-//                            enabled = uiState.enableWidget
-//                        )
+                        OutlinedTextFieldsNumber(
+                            label = "Amount",
+                            value = uiState.amountToTransfer,
+                            onValueChange = {amountToTransfer->
+                                uiEvent(
+                                    TransferEvent.OnAmountToTransfer(amountToTransfer)
+                                )
+                            },
+                            enabled = true
+                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
-//                        OutlinedTextFieldsText(
-//                            label = "Remark",
-//                            value = uiState.inputtedRemark,
-//                            onValueChange = {inputtedRemark->
-//                                uiEvent(
-//                                    TransferEvent.OnChangeInputtedRemark(inputtedRemark)
-//                                )
-//                            },
-//                            enabled = uiState.enableWidget
-//                        )
+                        OutlinedTextFieldsText(
+                            label = "Remark",
+                            value = uiState.remark,
+                            onValueChange = {remark->
+                                uiEvent(
+                                    TransferEvent.OnRemark(remark)
+                                )
+                            },
+                            enabled = true
+                        )
 
                         Spacer(modifier = Modifier.padding(bottom = 20.dp))
-//                        Buttons(
-//                            label = "Next",
-//                            enabled = uiState.enableWidget
-//                        )
+                        Buttons(
+                            label = "Continue",
+                            uiEvent = uiEvent,
+                            uiState = uiState
+                        )
+
+                        if(uiState.loader){
+                            DialogBoxLoading()
+                        }
+
+                        if(uiState.showAndHidePinDialog) {
+                            DialogBoxBiAuth(
+                                uiState = uiState,
+                                uiEvent = uiEvent
+                            )
+                        }
                     }
                 }
             }
