@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
-import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_data.BillAirtimeEvent
-import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_data.BillAirtimeEventState
-import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_data.NetworkList
-import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_data.PaymentCategory
+import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_data.*
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.AllBanks
+import com.example.merrybeltmobilemoney.util.Constant
+import com.example.merrybeltmobilemoney.util.EncryptionUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -43,7 +43,7 @@ class BillAndAirtimeViewModel @Inject constructor(private val repo: MerryBeltApi
         )
     }
 
-    private fun onNetworkList(networkList: List<NetworkList>) {
+    private fun onNetworkList(networkList: List<DataCategory>) {
         uiState.value = uiState.value.copy(
             networkList = networkList,
         )
@@ -86,23 +86,17 @@ class BillAndAirtimeViewModel @Inject constructor(private val repo: MerryBeltApi
         viewModelScope.launch {
 
             val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "data")
-            Log.d("epoi", "${billProduct.body()}")
+            val billProductRes = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
+            val getDataList: List<DataCategory> = Constant.gson.fromJson(billProductRes, Array<DataCategory>::class.java).toList()
+            onNetworkList(getDataList)
+
         }
+
         val category = ArrayList<PaymentCategory>()
         category.add(PaymentCategory(id = 1, category = "Buy Airtime"))
         category.add(PaymentCategory(id = 2, category = "Buy Data"))
         category.add(PaymentCategory(id = 3, category = "Pay for Cable Tv"))
         category.add(PaymentCategory(id = 4, category = "Pay For Internet"))
         onPaymentList(category)
-
-        val networkList = ArrayList<NetworkList>()
-        networkList.add(NetworkList(id = 1, category = "AIRTEL"))
-        networkList.add(NetworkList(id = 2, category = "MTN"))
-        networkList.add(NetworkList(id = 3, category = "ETISALAT"))
-        networkList.add(NetworkList(id = 4, category = "GLO"))
-        onNetworkList(networkList)
-
-
-
     }
 }

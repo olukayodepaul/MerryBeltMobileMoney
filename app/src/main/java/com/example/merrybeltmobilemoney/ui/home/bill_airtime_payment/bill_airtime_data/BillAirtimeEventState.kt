@@ -1,13 +1,12 @@
 package com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_data
 
 
-
 data class BillAirtimeEventState (
     val list_Of_PaymentCategory: List<PaymentCategory> = emptyList(),
     val specimen: String = "",
     val expanded: Boolean = false,
     val categoryId: Int = 0,
-    val networkList: List<NetworkList> = emptyList(),
+    val networkList: List<DataCategory> = emptyList(),
     val ntSpecimen: String = "",
     val ntExpanded: Boolean = false,
 )

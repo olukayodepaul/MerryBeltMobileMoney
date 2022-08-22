@@ -91,7 +91,7 @@ fun NetworkList (
 
                     uiEvent(
                         BillAirtimeEvent.OnNtSpecimen(
-                            ntSpecimen = contents.category
+                            ntSpecimen = contents.category!!
                         )
                     )
 
@@ -101,7 +101,7 @@ fun NetworkList (
                             .padding(5.dp)
                     ) {
                         Text(
-                            text = contents.category,
+                            text = contents.category!!,
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 fontFamily = Fonts.RobotoBold,
