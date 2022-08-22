@@ -143,6 +143,7 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
 
     private fun onShowAndHidePinDialog(showAndHidePinDialog: Boolean) {
         uiState.value = uiState.value.copy(
+            enteringPin = "",
             showAndHidePinDialog = showAndHidePinDialog
         )
     }
@@ -153,8 +154,44 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
         )
     }
 
-    private fun nnClickOnDoneButton() {
+    private fun onClickOnDoneButton() = viewModelScope.launch{
+        if(uiState.value.enteringPin.isEmpty()) {
+            Toast.makeText(appContext, "Enter your 4-digit Pin", Toast.LENGTH_SHORT).show()
+        }else{
 
+           try{
+               val isFundTransfer = FundTrans(
+                   uiState.value.amountToTransfer,
+                   repo.customerProfile().stan,
+                   uiState.value.enteringPin,
+                   uiState.value.accNoToTransferTo,
+                   uiState.value.setBankCode,
+                   type = "TRANSFER"
+               )
+
+               Log.d("EPOTEXT 1", "${isFundTransfer}")
+
+               val makeTransfer = repo.fundTransfer(
+                   repo.customerProfile().terminalId,
+                   repo.customerProfile().sessionId,
+                   isFundTransfer
+               )
+
+               val trans = EncryptionUtil().isDecryption(makeTransfer.body()!!.data, repo.customerProfile().sessionId)
+               val getValid: DecryptedTransData = gson.fromJson(trans, DecryptedTransData::class.java)
+
+               if(getValid.description=="00"){
+                   Log.d("EPOTEXT 2", "$trans $getValid")
+               }else{
+                   //close the pin and open a notification dialog for notification messages
+                   Log.d("EPOTEXT 2", "$trans $getValid")
+               }
+
+           }catch (e:Throwable) {
+               Log.d("EPOTEXT 3", "${e.message}")
+           }
+
+        }
     }
 
     fun transEventHandler(transEvent: TransferEvent) {
@@ -205,18 +242,15 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
             }
 
             is TransferEvent.OnClickOnDoneButton->{
-                nnClickOnDoneButton()
+                onClickOnDoneButton()
             }
-
         }
     }
 
-
     init {
         viewModelScope.launch {
-
-            onBalance(balances = repo.customerProfile().balance)
             try{
+                onBalance(balances = repo.customerProfile().balance)
                 val dataFromEncryptedBankList = repo.getEncryptedBankList(repo.customerProfile().terminalId, repo.customerProfile().sessionId)
                 val decryptedData = EncryptionUtil().isDecryption(dataFromEncryptedBankList.body()!!.data, repo.customerProfile().sessionId)
                 val getListOfBanks: List<AllBanks> = gson.fromJson(decryptedData, Array<AllBanks>::class.java).toList()
@@ -225,7 +259,6 @@ class TransferViewModel @Inject constructor(private val repo: MerryBeltApiReposi
             }catch (e:Throwable) {
                 Log.d("ISEPOKHAI 2", "${e.message}")
             }
-
         }
     }
 

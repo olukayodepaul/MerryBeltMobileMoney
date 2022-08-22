@@ -6,11 +6,9 @@ import com.example.merrybeltmobilemoney.provider.preference.pref_provider_domain
 import com.example.merrybeltmobilemoney.provider.room.room_provider_domain.MerryBeltRoomDao
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.EncryptedBankList
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.FundTrans
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumber
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumberResponse
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.*
 import retrofit2.Response
+import retrofit2.http.Path
 
 
 class MerryBeltApiRepositoryImpl(
@@ -119,5 +117,12 @@ class MerryBeltApiRepositoryImpl(
         return merryBeltApi.fundTransfer(terminalId, sessionId, data)
     }
 
+    override suspend fun getBillingProduct(
+        terminalId: String,
+        sessionId: String,
+        category: String
+    ): Response<BillingProducts> {
+        return merryBeltEncryptedApi.getBillingProduct(terminalId, sessionId, category)
+    }
 
 }

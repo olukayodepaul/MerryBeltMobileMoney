@@ -111,7 +111,7 @@ fun HomeScreen(
 
                 appIntents(
                     imageSwitchers = 1,
-                    routerLinkName = "Bill Payment",
+                    routerLinkName = "Bill And Airtime Payment",
                      click = {
                         navController.navigate(DetailsScreen.PayBill.route)
                     },

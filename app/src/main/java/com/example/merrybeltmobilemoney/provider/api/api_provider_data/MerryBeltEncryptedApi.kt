@@ -1,6 +1,7 @@
 package com.example.merrybeltmobilemoney.provider.api.api_provider_data
 
 
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.BillingProducts
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.EncryptedBankList
 import retrofit2.Response
 import retrofit2.http.*
@@ -12,5 +13,12 @@ interface MerryBeltEncryptedApi {
         @Header("terminalId")  terminalId: String,
         @Header("sessionId")  sessionId: String,
     ): Response<EncryptedBankList>
+
+    @GET("/resd/bills/{category}")
+    suspend fun getBillingProduct(
+        @Header("terminalId")  terminalId: String,
+        @Header("sessionId")  sessionId: String,
+        @Path("category") category: String
+    ): Response<BillingProducts>
 
 }

@@ -160,7 +160,7 @@ fun OutlinedTextFieldsTextPin(
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        modifier = Modifier.padding(top = 36.dp, start = 36.dp, end = 36.dp, bottom = 8.dp),
+        modifier = Modifier.padding(top = 5.dp, start = 36.dp, end = 36.dp, bottom = 8.dp),
         singleLine = true,
         value = value,
         onValueChange = {pin->

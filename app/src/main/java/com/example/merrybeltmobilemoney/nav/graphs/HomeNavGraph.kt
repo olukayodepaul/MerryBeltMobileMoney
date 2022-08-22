@@ -9,12 +9,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.merrybeltmobilemoney.nav.BottomBarScreen
+import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_presenter.PayBillChannel
 import com.example.merrybeltmobilemoney.ui.home.presenters.HomeViewModel
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.HomeScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.ProfileScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.SettingScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.CreditAccChannel
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.PayBillChannel
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.transferChannel
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.withrawChannel
 

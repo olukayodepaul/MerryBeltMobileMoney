@@ -69,3 +69,20 @@ data class FundTrans(
     val type: String =  "",
 )
 
+data class DecryptedTransData(
+    @SerializedName("description")
+    @Expose
+    val description: String? = "",
+    @SerializedName("responseCode")
+    @Expose
+    val responseCode: String? = "",
+)
+
+data class BillingProducts(
+    @SerializedName("status")
+    @Expose
+    val status: String? = "",
+    @SerializedName("data")
+    @Expose
+    val data: String =  ""
+)

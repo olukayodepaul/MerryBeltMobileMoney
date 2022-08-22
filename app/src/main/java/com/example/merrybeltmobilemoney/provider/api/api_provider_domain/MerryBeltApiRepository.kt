@@ -3,11 +3,9 @@ package com.example.merrybeltmobilemoney.provider.api.api_provider_domain
 import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.CustomersProfile
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.EncryptedBankList
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.FundTrans
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumber
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumberResponse
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.*
 import retrofit2.Response
+import retrofit2.http.Path
 
 interface MerryBeltApiRepository {
 
@@ -49,4 +47,5 @@ interface MerryBeltApiRepository {
 
     suspend fun fundTransfer(terminalId: String, sessionId: String, data: FundTrans): Response<ValidateAccNumberResponse>
 
+    suspend fun getBillingProduct(terminalId: String, sessionId: String, category: String): Response<BillingProducts>
 }
