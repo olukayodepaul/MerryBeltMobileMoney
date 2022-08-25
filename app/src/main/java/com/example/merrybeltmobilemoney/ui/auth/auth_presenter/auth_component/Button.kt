@@ -40,8 +40,8 @@ fun AuthenticationButtons(
             text = title,
             style = TextStyle(
                 color = White,
-                fontSize = 20.sp,
-                fontFamily = Fonts.MontserratBold
+                fontSize = 18.sp,
+                fontFamily = Fonts.RobotoMedium,
             ),
         )
     }

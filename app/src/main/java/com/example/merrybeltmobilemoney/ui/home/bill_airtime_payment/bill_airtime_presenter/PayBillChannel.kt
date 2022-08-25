@@ -12,10 +12,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.merrybeltmobilemoney.theme.DialogBoxLoading
 import com.example.merrybeltmobilemoney.theme.Fonts.Montserrat
 import com.example.merrybeltmobilemoney.theme.Fonts.MontserratBold
 import com.example.merrybeltmobilemoney.theme.Fonts.RobotoBold
@@ -28,7 +28,7 @@ import com.example.merrybeltmobilemoney.ui.home.presenters.BillAndAirtimeViewMod
 
 @Composable
 fun PayBillChannel(
-    bill: BillAndAirtimeViewModel = hiltViewModel(),
+    bill: BillAndAirtimeViewModel = hiltViewModel()
 ){
 
     val uiState = bill.uiState.collectAsState().value
@@ -69,8 +69,6 @@ fun PayBillChannel(
                             .padding(20.dp)
                     ) {
 
-
-
                         Text(
                             text = "Select a category",
                             style = TextStyle(
@@ -81,7 +79,7 @@ fun PayBillChannel(
 
                         Text(
                             text = "Your airtime and data top up, cable tv and internet payment",
-                            style = TextStyle(
+                            style = TextStyle (
                                 fontFamily = Montserrat,
                                 fontSize = 13.sp
                             )
@@ -91,16 +89,16 @@ fun PayBillChannel(
 
                         when(uiState.categoryId) {
                             1->{
-
+                                loadAirtime(uiState, uiEvent)
                             }
                             2->{
                                 loadData(uiState, uiEvent)
                             }
                             3->{
-
+                                cableTv(uiState, uiEvent)
                             }
                             4->{
-
+                                getPhcn(uiState, uiEvent)
                             }
                         }
                     }
@@ -117,28 +115,261 @@ fun loadData(
     uiEvent: (BillAirtimeEvent)->Unit
 ){
 
+
+
     Column(
 
         Modifier
             .fillMaxSize()
-            .background(White)
-            .padding(20.dp)
+           // .background(White)
+           // .padding(10.dp)
     ) {
-        Text(
-            text = "Load Internet Data",
-            style = TextStyle(
-                fontFamily = Montserrat,
-                fontSize = 18.sp,
-                textDecoration = TextDecoration.Underline,
-                color = MChild
+//        Text(
+//            text = "Load Internet Data",
+//            style = TextStyle(
+//                fontFamily = Montserrat,
+//                fontSize = 18.sp,
+//                textDecoration = TextDecoration.Underline,
+//                color = MChild
+//            )
+//        )
+
+        uiEvent(
+            BillAirtimeEvent.OnChangeCategory(
+                onChangeCategory = uiState.categoryId
             )
         )
 
         NetworkList(
-            uiState, uiEvent
+            uiState, uiEvent, "Select Network"
         )
 
-        //Buttons("Next")
+        DataPlanSpinner(
+            label = "Available Bundles",
+            uiState,
+            uiEvent,
+        )
+
+
+        BillPaymentOnlineText(
+            label = "Amount",
+            value = uiState.dataAmount,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataAmount(it)
+                )
+            }
+        )
+
+        BillPaymentOnlineText(
+            label = "Mobile Number",
+            value = uiState.dataPhoneNumber,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataPhoneNumber(it)
+                )
+            }
+        )
+
+        if(!uiState.loader) {
+            DialogBoxLoading()
+        }
+
+        DataButtons(label = "Next")
+
+    }
+}
+
+@Composable
+fun loadAirtime(
+    uiState: BillAirtimeEventState,
+    uiEvent: (BillAirtimeEvent)->Unit
+){
+
+
+    Column(
+
+        Modifier
+            .fillMaxSize()
+        // .background(White)
+        // .padding(10.dp)
+    ) {
+
+
+        uiEvent(
+            BillAirtimeEvent.OnChangeCategory(
+                onChangeCategory = uiState.categoryId
+            )
+        )
+
+        NetworkList(
+            uiState, uiEvent, "Select Network"
+        )
+
+        BillPaymentOnlineText(
+            label = "Amount",
+            value = uiState.dataAmount,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataAmount(it)
+                )
+            }
+        )
+
+        BillPaymentOnlineText(
+            label = "Mobile Number",
+            value = uiState.dataPhoneNumber,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataPhoneNumber(it)
+                )
+            }
+        )
+
+
+        if(!uiState.loader) {
+            DialogBoxLoading()
+        }
+
+        DataButtons(label = "Next")
+    }
+}
+
+
+@Composable
+fun cableTv(
+    uiState: BillAirtimeEventState,
+    uiEvent: (BillAirtimeEvent)->Unit
+){
+
+
+    Column(
+
+        Modifier
+            .fillMaxSize()
+        // .background(White)
+        // .padding(10.dp)
+    ) {
+
+
+        uiEvent(
+            BillAirtimeEvent.OnChangeCategory(
+                onChangeCategory = uiState.categoryId
+            )
+        )
+
+        NetworkList(
+            uiState, uiEvent, "Select Bouquet"
+        )
+
+        DataPlanSpinner(
+            label = "Product",
+            uiState,
+            uiEvent
+        )
+
+        BillPaymentOnlineText(
+            label = "Smart Card Number",
+            value = uiState.dataPhoneNumber,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataPhoneNumber(it)
+                )
+            }
+        )
+
+        BillPaymentOnlineText(
+            label = "Amount",
+            value = uiState.dataAmount,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataAmount(it)
+                )
+            }
+        )
+
+        BillPaymentOnlineText(
+            label = "Phone Number",
+            value = uiState.dataPhoneNumber,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataPhoneNumber(it)
+                )
+            }
+        )
+
+        if(!uiState.loader) {
+            DialogBoxLoading()
+        }
+
+        DataButtons(label = "Next")
+
+    }
+}
+
+
+@Composable
+fun getPhcn(
+    uiState: BillAirtimeEventState,
+    uiEvent: (BillAirtimeEvent)->Unit
+){
+
+
+    Column(
+
+        Modifier
+            .fillMaxSize()
+        // .background(White)
+        // .padding(10.dp)
+    ) {
+
+
+        uiEvent(
+            BillAirtimeEvent.OnChangeCategory(
+                onChangeCategory = uiState.categoryId
+            )
+        )
+
+        NetworkList(
+            uiState, uiEvent, "Select Category"
+        )
+
+
+        BillPaymentOnlineText(
+            label = "Meter Number",
+            value = uiState.dataPhoneNumber,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataPhoneNumber(it)
+                )
+            }
+        )
+
+        BillPaymentOnlineText(
+            label = "Amount",
+            value = uiState.dataAmount,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataAmount(it)
+                )
+            }
+        )
+
+        BillPaymentOnlineText(
+            label = "Phone Number",
+            value = uiState.dataAmount,
+            onValueChange = {
+                uiEvent(
+                    BillAirtimeEvent.OnDataAmount(it)
+                )
+            }
+        )
+
+        if(!uiState.loader) {
+            DialogBoxLoading()
+        }
+
+        DataButtons(label = "Next")
 
     }
 }

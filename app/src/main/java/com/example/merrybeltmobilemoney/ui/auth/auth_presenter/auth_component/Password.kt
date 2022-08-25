@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,15 +49,17 @@ fun PasswordFields (
             onValueChange(password)
         },
         keyboardOptions = keyboardOptions.copy(
-            keyboardType = KeyboardType.Text,
+            capitalization = KeyboardCapitalization.Sentences,
+            autoCorrect = true,
+            keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         ),
         singleLine = true,
-        label = {
+        placeholder = {
             Text(
                 text = label,
                 style = TextStyle(
-                    fontFamily = Fonts.Montserrat,
+                    fontFamily = Fonts.RobotoMedium,
                     color = Blues,
                     fontSize = 18.sp
                 )

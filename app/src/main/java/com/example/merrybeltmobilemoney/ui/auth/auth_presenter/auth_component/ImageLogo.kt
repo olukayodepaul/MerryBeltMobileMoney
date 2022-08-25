@@ -24,8 +24,8 @@ fun ImageLogo() {
         Image(
             painterResource(id = R.drawable.mb1200x630),
             modifier = Modifier
-                .height(90.dp)
-                .width(90.dp)
+                .height(75.dp)
+                .width(75.dp)
                 .align(Alignment.CenterHorizontally),
             contentScale = ContentScale.Crop,
             contentDescription = "Logo",

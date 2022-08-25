@@ -1,7 +1,6 @@
 package com.example.merrybeltmobilemoney.ui.auth.auth_presenter.auth_component
 
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -10,7 +9,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.merrybeltmobilemoney.theme.DialogBoxLoading
 import com.example.merrybeltmobilemoney.theme.White
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.AuthEvent
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginAuthState
@@ -43,7 +41,7 @@ fun LoginScreenTheme(
                 Modifier
                     .padding(20.dp)
                     .fillMaxSize()
-                    .padding(top = 60.dp)
+                    .padding(top = 80.dp)
 
             ) {
                 InputForms(
@@ -71,11 +69,9 @@ fun LoginScreenTheme(
                     viewModel = viewModel,
                     uiState = loginSate
                 )
-                Spacer(modifier = Modifier.padding(bottom = 15.dp))
-                CircularPropagations(
-                    status = loginSate.loadingProgressBar
-                )
-                Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
+                copyWrite(copyWriteYear="2022")
+
                 AuthenticationErrorDialogs(
                     isDialogShow = loginSate.isDialogShow,
                     isDialogMessage = loginSate.isDialogMessage,
@@ -90,7 +86,10 @@ fun LoginScreenTheme(
                     }
                 )
 
-                copyWrite(copyWriteYear="2022")
+                Spacer(modifier = Modifier.padding(bottom = 15.dp))
+                CircularPropagations(
+                    status = loginSate.loadingProgressBar
+                )
 
                 LaunchedEffect(key1 = true) {
                     viewModel.uiEvent.collect { event ->

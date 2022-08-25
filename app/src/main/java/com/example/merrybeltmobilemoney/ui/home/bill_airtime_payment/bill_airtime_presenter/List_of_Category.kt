@@ -43,7 +43,7 @@ fun PaymentCategory (
                     )
                 )
             },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+            modifier = Modifier.fillMaxWidth(),
             trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
             readOnly = true,
             shape = RoundedCornerShape(6.dp),
@@ -101,6 +101,8 @@ fun PaymentCategory (
                             categoryId = contents.id
                         )
                     )
+
+
 
                 }) {
                     Row(

@@ -17,7 +17,7 @@ fun getNameInitialsBg(switchImage: Int):Int {
 @Composable
 fun changeBgColor(switchColor: Int): Color {
     val color = arrayOf(
-        Blues, Blu, Purple200, reds
+        Blues, Blu, Purple200, reds, MChild
     )
     return color[switchColor]
 }
