@@ -30,7 +30,7 @@ fun appIntents(
         elevation = 3.dp,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
-            .height(180.dp).width(180.dp)
+            .height(160.dp).width(160.dp)
             .padding(4.dp)
             .clickable {
                 click()
@@ -46,8 +46,8 @@ fun appIntents(
             Image(
                 painterResource(id = getNameInitialsBg(imageSwitchers)),
                 modifier = Modifier
-                    .width(60.dp)
-                    .height(60.dp)
+                    .width(50.dp)
+                    .height(50.dp)
                     .align(Alignment.CenterHorizontally),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Logo",
@@ -56,14 +56,13 @@ fun appIntents(
             Text(
                 text = routerLinkName,
                 modifier = Modifier
-                    .padding(start = 10.dp)
+                    .padding(top = 20.dp)
                     .align(Alignment.CenterHorizontally),
                 style = TextStyle(
-                    fontSize = 12.sp,
+                    fontSize = 14.sp,
                     fontFamily = Fonts.RobotoBold,
                     color = MaterialBg
                 )
-
             )
         }
 

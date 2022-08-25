@@ -94,6 +94,7 @@ fun HomeScreen(
                 //horizontalAlignment = Alignment.CenterHorizontally,
             ){
 
+                Spacer(modifier = Modifier.padding(bottom = 20.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -111,7 +112,7 @@ fun HomeScreen(
 
                     appIntents(
                         imageSwitchers = 1,
-                        routerLinkName = "Bill DAta AND Airtime",
+                        routerLinkName = "Bill DATA Airtime",
                         click = {
                             navController.navigate(DetailsScreen.PayBill.route)
                         },
