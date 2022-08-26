@@ -1,4 +1,4 @@
-package com.example.merrybeltmobilemoney.ui.home.presenters.home_component
+package com.example.merrybeltmobilemoney.ui.home.payorpurchase
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,15 +15,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.merrybeltmobilemoney.theme.*
+import com.example.merrybeltmobilemoney.theme.Fonts
+import com.example.merrybeltmobilemoney.theme.MaterialBg
+import com.example.merrybeltmobilemoney.theme.changeBgColor
+import com.example.merrybeltmobilemoney.theme.getNameInitialsBg
 
 
 @Composable
-fun appIntents(
-    imageSwitchers: Int = 0,
-    routerLinkName: String = "",
-   click:()->Unit
-){
+fun EachNavigations(
+    label: String,
+    link:()->Unit
+) {
+
     Card(
         elevation = 3.dp,
         shape = RoundedCornerShape(10.dp),
@@ -31,18 +34,18 @@ fun appIntents(
             .height(160.dp).width(160.dp)
             .padding(4.dp)
             .clickable {
-                click()
+                link()
             }
     ) {
         Column(
             modifier = Modifier
-                .background(changeBgColor(switchColor = 4))
+                .background(changeBgColor(5))
                 .padding(5.dp),
             verticalArrangement = Arrangement.Center,
-            ) {
+        ) {
 
             Image(
-                painterResource(id = getNameInitialsBg(imageSwitchers)),
+                painterResource(id = getNameInitialsBg(1)),
                 modifier = Modifier
                     .width(50.dp)
                     .height(50.dp)
@@ -52,7 +55,7 @@ fun appIntents(
             )
 
             Text(
-                text = routerLinkName,
+                text = label,
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .align(Alignment.CenterHorizontally),
@@ -62,13 +65,7 @@ fun appIntents(
                     color = MaterialBg
                 )
             )
-        }
 
+        }
     }
 }
-
-
-
-
-
-

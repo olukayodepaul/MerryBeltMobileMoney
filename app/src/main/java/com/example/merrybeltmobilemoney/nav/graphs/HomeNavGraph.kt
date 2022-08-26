@@ -2,21 +2,23 @@ package com.example.merrybeltmobilemoney.nav.graphs
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.merrybeltmobilemoney.nav.BottomBarScreen
-import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_presenter.PayBillChannel
-import com.example.merrybeltmobilemoney.ui.home.presenters.HomeViewModel
+import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_presenter.PayBillChannelHome
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.HomeScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.ProfileScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.SettingScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.CreditAccChannel
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.transferChannel
 import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.withrawChannel
+import com.example.merrybeltmobilemoney.ui.home.payorpurchase.Airtime
+import com.example.merrybeltmobilemoney.ui.home.payorpurchase.CableTv
+import com.example.merrybeltmobilemoney.ui.home.payorpurchase.DataPurchase
+import com.example.merrybeltmobilemoney.ui.home.payorpurchase.Phcn
 
 
 @Composable
@@ -71,22 +73,41 @@ fun NavGraphBuilder.detailsNavGraph(
         }
 
         composable(route = DetailsScreen.PayBill.route) {
-            PayBillChannel()
+            PayBillChannelHome(
+                airtime = {
+                 navController.navigate(DetailsScreen.Airtime.route)
+                },
+                datapurchase = {
+                    navController.navigate(DetailsScreen.Data.route)
+                },
+                phcn = {
+                    navController.navigate(DetailsScreen.Phcn.route)
+                },
+                cabletv = {
+                    navController.navigate(DetailsScreen.Cabletv.route)
+                }
+            )
         }
 
         composable(route = DetailsScreen.Withdraw.route) {
             withrawChannel()
         }
 
+        composable(route = DetailsScreen.Airtime.route) {
+            Airtime()
+        }
 
-//        composable(route = DetailsScreen.Overview.route) {
-//            ScreenContent(name = DetailsScreen.Overview.route) {
-//                navController.popBackStack(
-//                    route = DetailsScreen.Information.route,
-//                    inclusive = false
-//                )
-//            }
-//        }
+        composable(route = DetailsScreen.Data.route) {
+            DataPurchase()
+        }
+
+        composable(route = DetailsScreen.Phcn.route) {
+            Phcn()
+        }
+
+        composable(route = DetailsScreen.Cabletv.route) {
+            CableTv()
+        }
     }
 }
 
@@ -95,5 +116,8 @@ sealed class DetailsScreen(val route: String) {
     object Withdraw : DetailsScreen(route = "WITHDRAW")
     object AccCredit : DetailsScreen(route = "ACCCREDIT")
     object PayBill : DetailsScreen(route = "PAYBILL")
-   // object Overview : DetailsScreen(route = "OVERVIEW")
+    object Airtime : DetailsScreen(route = "AIRTIME")
+    object Data : DetailsScreen(route = "DATA")
+    object Phcn: DetailsScreen(route = "PHCN")
+    object Cabletv: DetailsScreen(route = "CABLETV")
 }

@@ -13,4 +13,6 @@
     <string name="cd_hide_password">Hide Password</string>
     <string name="error_action">Close</string>
     <string name="error_title">Login Error</string>
+    <string name="servicedesc">Login Error</string>
+    <string name="aiddescription">Login Error</string>
 </resources>
