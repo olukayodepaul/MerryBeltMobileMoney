@@ -75,14 +75,6 @@ fun PayBillChannelHome(
                         }
                     )
 
-
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalArrangement  =  Arrangement.SpaceBetween
-                ){
                     EachNavigations(
                         label="PHCN",
                         link = {
@@ -96,10 +88,7 @@ fun PayBillChannelHome(
                             cabletv()
                         }
                     )
-
-
                 }
-
             }
         }
     )
