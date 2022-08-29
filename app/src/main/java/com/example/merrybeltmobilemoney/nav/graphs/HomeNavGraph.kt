@@ -12,10 +12,10 @@ import com.example.merrybeltmobilemoney.ui.home.creditacc.creditacc_ui.CreditAcc
 import com.example.merrybeltmobilemoney.ui.home.dashboard.dashboard_ui.HomeScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.dashboard_ui.ProfileScreen
 import com.example.merrybeltmobilemoney.ui.home.dashboard.dashboard_ui.SettingScreen
-import com.example.merrybeltmobilemoney.ui.home.payorbuy.CableTv
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.PayBillChannelHome
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_ui.AirtimeComponentActivity
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.buydata.buydata_ui.DataPurchaseComponentActivity
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_ui.CableTvComponentActivity
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_ui.PhcnComponentActivity
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_ui.transferComposableActivity
 import com.example.merrybeltmobilemoney.ui.home.withdraw.withdraw_ui.withrawChannel
@@ -106,8 +106,9 @@ fun NavGraphBuilder.detailsNavGraph(
         }
 
         composable(route = DetailsScreen.Cabletv.route) {
-            CableTv()
+            CableTvComponentActivity()
         }
+
     }
 }
 

@@ -61,7 +61,7 @@ fun PhcnComponentActivity(
                     .padding(20.dp)
                     .verticalScroll(rememberScrollState())) {
                 
-                Spacer(modifier = Modifier.padding(bottom = 50.dp))
+                Spacer(modifier = Modifier.padding(bottom = 20.dp))
 
                 ProductLis(
                     uiState = uiState,
