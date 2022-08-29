@@ -8,17 +8,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.merrybeltmobilemoney.nav.BottomBarScreen
-import com.example.merrybeltmobilemoney.ui.home.bill_airtime_payment.bill_airtime_presenter.PayBillChannelHome
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home.HomeScreen
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home.ProfileScreen
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home.SettingScreen
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.CreditAccChannel
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.transferChannel
-import com.example.merrybeltmobilemoney.ui.home.dashboard.home.trans_channel.withrawChannel
-import com.example.merrybeltmobilemoney.ui.home.payorpurchase.Airtime
-import com.example.merrybeltmobilemoney.ui.home.payorpurchase.CableTv
-import com.example.merrybeltmobilemoney.ui.home.payorpurchase.DataPurchase
-import com.example.merrybeltmobilemoney.ui.home.payorpurchase.Phcn
+import com.example.merrybeltmobilemoney.ui.home.creditacc.creditacc_ui.CreditAccChannel
+import com.example.merrybeltmobilemoney.ui.home.dashboard.dashboard_ui.HomeScreen
+import com.example.merrybeltmobilemoney.ui.home.dashboard.dashboard_ui.ProfileScreen
+import com.example.merrybeltmobilemoney.ui.home.dashboard.dashboard_ui.SettingScreen
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.CableTv
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.PayBillChannelHome
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_ui.AirtimeComponentActivity
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.buydata.buydata_ui.DataPurchaseComponentActivity
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_ui.PhcnComponentActivity
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_ui.transferComposableActivity
+import com.example.merrybeltmobilemoney.ui.home.withdraw.withdraw_ui.withrawChannel
 
 
 @Composable
@@ -65,7 +65,7 @@ fun NavGraphBuilder.detailsNavGraph(
     ) {
 
         composable(route = DetailsScreen.Transfers.route) {
-            transferChannel()
+            transferComposableActivity()
         }
 
         composable(route = DetailsScreen.AccCredit.route) {
@@ -94,15 +94,15 @@ fun NavGraphBuilder.detailsNavGraph(
         }
 
         composable(route = DetailsScreen.Airtime.route) {
-            Airtime()
+            AirtimeComponentActivity()
         }
 
         composable(route = DetailsScreen.Data.route) {
-            DataPurchase()
+            DataPurchaseComponentActivity()
         }
 
         composable(route = DetailsScreen.Phcn.route) {
-            Phcn()
+            PhcnComponentActivity()
         }
 
         composable(route = DetailsScreen.Cabletv.route) {

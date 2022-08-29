@@ -18,10 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.merrybeltmobilemoney.R
-import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsText
-import com.example.merrybeltmobilemoney.ui.home.presenters.home_component.OutlinedTextFieldsTextPin
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferState
+import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_ui.OutlinedTextFieldsTextPin
 
 @Composable
 fun DialogBoxBiAuth(
