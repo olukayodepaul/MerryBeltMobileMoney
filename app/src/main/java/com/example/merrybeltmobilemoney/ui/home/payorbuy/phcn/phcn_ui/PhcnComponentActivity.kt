@@ -1,8 +1,6 @@
 package com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_ui
 
-
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -21,8 +19,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.merrybeltmobilemoney.theme.Fonts
 import com.example.merrybeltmobilemoney.theme.MChild
 import com.example.merrybeltmobilemoney.theme.White
+import com.example.merrybeltmobilemoney.theme.spanceWidget
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnEvent
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_domain.PhcnViewModel
+
 
 @Composable
 fun PhcnComponentActivity(
@@ -31,7 +31,6 @@ fun PhcnComponentActivity(
 
     val uiState = dataViewModel.uiState.collectAsState().value
     val uiEvent = dataViewModel::phcnEventHandler
-
 
     Scaffold(
         topBar = {
@@ -59,22 +58,24 @@ fun PhcnComponentActivity(
                 Modifier
                     .fillMaxSize()
                     .padding(20.dp)
-                    .verticalScroll(rememberScrollState())) {
-                
-                Spacer(modifier = Modifier.padding(bottom = 20.dp))
+                    .verticalScroll(rememberScrollState())
+            ) {
 
-                ProductLis(
+                spanceWidget(label = "Category")
+                PhcnProductLis(
                     uiState = uiState,
                     uiEvent = uiEvent
                 )
 
-                MeterType(
+                spanceWidget(label = "Meter Type")
+                MeterTypeList(
                     uiState = uiState,
                     uiEvent = uiEvent
                 )
 
+                spanceWidget(label ="Meter Number")
                 phcnInput(
-                    label = "Meter Number",
+                    label = "",
                     value = uiState.meterNumber,
                     onValueChange = {
                         uiEvent(
@@ -82,11 +83,13 @@ fun PhcnComponentActivity(
                                 it
                             )
                         )
-                    }
+                    },
+                    readOnly = false
                 )
 
+                spanceWidget(label ="Phone Number")
                 phcnInput(
-                    label = "Phone Number",
+                    label = "",
                     value = uiState.phoneNumber,
                     onValueChange = {
                         uiEvent(
@@ -94,11 +97,13 @@ fun PhcnComponentActivity(
                                 it
                             )
                         )
-                    }
+                    },
+                    readOnly = false
                 )
 
+                spanceWidget(label ="Amount")
                 phcnInput(
-                    label = "Amount",
+                    label = "",
                     value = uiState.amount,
                     onValueChange = {
                         uiEvent(
@@ -106,19 +111,15 @@ fun PhcnComponentActivity(
                                 it
                             )
                         )
-                    }
+                    },
+                    readOnly = false
                 )
 
                 phcnSubmitButton(
-                    submit = {
-                        uiEvent(
-                            PhcnEvent.OnContinue,
-                        )
-                    },
                     label = "Continue"
                 )
-
             }
         }
     )
+
 }

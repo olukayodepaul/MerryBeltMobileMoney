@@ -108,3 +108,19 @@ fun ProgressIndicatorLoading(progressIndicatorSize: Dp, progressIndicatorColor: 
 
     )
 }
+
+
+@Composable
+fun spanceWidget(
+    label: String
+){
+    Text(
+        text = label,
+        Modifier.padding(bottom = 4.dp, top = 2.dp),
+        style = TextStyle(
+            fontFamily = Fonts.RobotoNormal,
+            fontSize = 15.sp,
+            color = Monsoon
+        )
+    )
+}

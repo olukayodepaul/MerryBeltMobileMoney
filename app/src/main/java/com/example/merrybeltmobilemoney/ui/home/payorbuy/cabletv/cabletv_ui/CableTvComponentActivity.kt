@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.merrybeltmobilemoney.theme.Fonts
 import com.example.merrybeltmobilemoney.theme.MChild
-import com.example.merrybeltmobilemoney.theme.Monsoon
 import com.example.merrybeltmobilemoney.theme.White
+import com.example.merrybeltmobilemoney.theme.spanceWidget
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_data.CableTvEvent
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_domain.CableTvViewModel
 

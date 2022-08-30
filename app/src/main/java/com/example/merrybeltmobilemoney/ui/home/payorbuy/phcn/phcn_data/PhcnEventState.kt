@@ -1,40 +1,34 @@
 package com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data
 
-
-
 data class PhcnState(
-    val productList: List<PhcnProduct> = emptyList(),
-    val productLoader: Boolean = false,
-    val productSelected: String = "",
-    val productExpanded: Boolean = false,
-    val productImage: String = "",
-    val productCategory: String = "",
 
-    val phoneNumber: String = "",
+    val phcnTvList: List<PhcnProductList> = emptyList(),
+    val phcnTvProductLoader: Boolean = false,
+    val phcnTvProductSelected: String = "",
+    val phcnTvProductExpanded: Boolean = false,
+    val phcnTvProductImage: String = "",
+    val phcnTvProductCategory: String = "",
+
+
+    val phcnMeterTypeList: List<MeterType> = emptyList(),
+    val phcnTvProductSelectedMeterType: String = "",
+    val phcnTvProductExpandedMeterType: Boolean = false,
+
+    //this is the entring field
     val meterNumber: String = "",
-    val amount: String = "",
-
-    val meterType: List<MeterType> = emptyList(),
-    val meterTypeSelected: String = "",
-    val meterTypeExpanded: Boolean = false,
+    val phoneNumber: String = "",
+    val amount: String = ""
 
 )
 
 
 sealed class PhcnEvent {
-
-    class OnProductExpanded(val productExpanded: Boolean) : PhcnEvent()
-    class OnProductSelected(val productSelected: String) : PhcnEvent()
-    class OnProductImage(val productImage: String) : PhcnEvent()
-    class OnProductCategory(val productCategory: String) : PhcnEvent()
-
-
-    class OnPhoneNumber(val phoneNumber: String) : PhcnEvent()
+    class OnPhcnTvProductExpanded(val phcnTvProductExpanded: Boolean) : PhcnEvent()
+    class OnPhcnTvProductSelected(val phcnTvProductSelected: String, val phcnTvProductCategory: String, val phcnTvProductImage: String) : PhcnEvent()
+    class OnPhcnTvProductSelectedMeterType(val phcnTvProductSelectedMeterType: String) : PhcnEvent()
+    class OnPhcnTvProductExpandedMeterType(val phcnTvProductExpandedMeterType: Boolean) : PhcnEvent()
     class OnMeterNumber(val meterNumber: String) : PhcnEvent()
+    class OnPhoneNumber(val phoneNumber: String) : PhcnEvent()
     class OnAmount(val amount: String) : PhcnEvent()
-    class OnMeterTypeSelected(val meterTypeSelected: String) : PhcnEvent()
-    class OnMeterTypeExpanded(val meterTypeExpanded: Boolean) : PhcnEvent()
-    object OnContinue: PhcnEvent()
-
 }
 

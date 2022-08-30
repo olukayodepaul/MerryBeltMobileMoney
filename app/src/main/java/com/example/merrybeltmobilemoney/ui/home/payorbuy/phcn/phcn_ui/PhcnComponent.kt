@@ -1,6 +1,5 @@
 package com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_ui
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,11 +26,14 @@ import androidx.compose.ui.unit.sp
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.theme.*
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_data.CableTvEvent
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_data.CableTvState
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnEvent
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnState
 
+
 @Composable
-fun ProductLis(
+fun PhcnProductLis(
     uiState: PhcnState,
     uiEvent: (PhcnEvent) -> Unit,
 ) {
@@ -40,19 +42,9 @@ fun ProductLis(
 
     Box {
         OutlinedTextField(
-            value = uiState.productSelected.uppercase(), //Menu Active Text
+            value = uiState.phcnTvProductSelected  .uppercase(), //Menu Active Text
             onValueChange = {},
-            placeholder = {
-                Text(
-                    text = "Product",
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontFamily = Fonts.RobotoBold,
-                        fontWeight = FontWeight.W600
-                    )
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
             readOnly = true,
             shape = RoundedCornerShape(6.dp),
@@ -79,43 +71,34 @@ fun ProductLis(
             ),
         )
         DropdownMenu(
-            expanded = uiState.productExpanded,
+            expanded = uiState.phcnTvProductExpanded,
             onDismissRequest = {
                 uiEvent(
-                    PhcnEvent.OnProductExpanded(
-                        productExpanded = false
+                    PhcnEvent.OnPhcnTvProductExpanded(
+                        phcnTvProductExpanded = false
                     )
                 )
             },
             Modifier.fillMaxWidth()
         ) {
 
-            uiState.productList.forEach { specimen ->
+            uiState.phcnTvList.forEachIndexed { index, specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
-                        PhcnEvent.OnProductExpanded(
-                            productExpanded = false
+                        PhcnEvent.OnPhcnTvProductExpanded(
+                            phcnTvProductExpanded = false
                         )
                     )
 
                     uiEvent(
-                        PhcnEvent.OnProductSelected(
-                            productSelected = specimen.description!!
+                        PhcnEvent.OnPhcnTvProductSelected(
+                            phcnTvProductSelected = specimen.description!!,
+                            phcnTvProductCategory = specimen.category!!,
+                            phcnTvProductImage = specimen.imageUrl!!
                         )
                     )
 
-                    uiEvent(
-                        PhcnEvent.OnProductImage(
-                            productImage = specimen.imageUrl!!
-                        )
-                    )
-
-                    uiEvent(
-                        PhcnEvent.OnProductCategory(
-                            productCategory = specimen.category!!
-                        )
-                    )
 
                 }) {
                     Row(
@@ -146,7 +129,7 @@ fun ProductLis(
                             }
                         }
                         Text(
-                            text = specimen.description!!.uppercase(),
+                            text = specimen.category!!.uppercase(),
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 fontFamily = Fonts.RobotoBold,
@@ -164,9 +147,10 @@ fun ProductLis(
                 .padding(10.dp)
                 .clickable(
                     onClick = {
+
                         uiEvent(
-                            PhcnEvent.OnProductExpanded(
-                                productExpanded = !uiState.productExpanded
+                            PhcnEvent.OnPhcnTvProductExpanded(
+                                phcnTvProductExpanded = !uiState.phcnTvProductExpanded
                             )
                         )
                     }
@@ -176,88 +160,19 @@ fun ProductLis(
 }
 
 
-
 @Composable
-fun phcnInput(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-) {
-
-    val bColor = Borderline
-    val focusManager = LocalFocusManager.current
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp)
-            .background(MaterialBg)
-            .focusable(enabled = true),
-        value = value,
-        onValueChange = {
-            onValueChange(it)
-        },
-
-        keyboardOptions = KeyboardOptions.Default.copy(
-            capitalization = KeyboardCapitalization.Sentences,
-            autoCorrect = true,
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next
-        ),
-        keyboardActions = KeyboardActions(onNext = {
-            focusManager.moveFocus(FocusDirection.Down)
-        }),
-        placeholder = {
-            Text(
-                text = label,
-                style = TextStyle(
-                    fontFamily = Fonts.RobotoBold,
-                    color = Blues,
-                    fontSize = 18.sp
-                )
-            )
-        },
-        maxLines = 1,
-        shape = RoundedCornerShape(6.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = Color(
-                bColor.red, bColor.green, bColor.blue,
-                TextFieldDefaults.BackgroundOpacity
-            ),
-            focusedBorderColor = bColor,
-            unfocusedBorderColor = Color(
-                bColor.red, bColor.green, bColor.blue,
-                TextFieldDefaults.UnfocusedIndicatorLineOpacity,
-            ),
-            focusedLabelColor = GreyTransparent,
-            cursorColor = GreyTransparent,
-        ),
-    )
-}
-
-
-@Composable
-fun MeterType(
+fun MeterTypeList(
     uiState: PhcnState,
     uiEvent: (PhcnEvent) -> Unit,
 ) {
+
     val bColor = Borderline
 
     Box {
         OutlinedTextField(
-            value = uiState.meterTypeSelected, //Menu Active Text
+            value = uiState.phcnTvProductSelectedMeterType.uppercase(), //Menu Active Text
             onValueChange = {},
-            placeholder = {
-                Text(
-                    text = "Meter Type",
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontFamily = Fonts.RobotoBold,
-                        fontWeight = FontWeight.W600
-                    )
-                )
-            },
-            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
             readOnly = true,
             shape = RoundedCornerShape(6.dp),
@@ -284,31 +199,32 @@ fun MeterType(
             ),
         )
         DropdownMenu(
-            expanded = uiState.meterTypeExpanded,
+            expanded = uiState.phcnTvProductExpandedMeterType,
             onDismissRequest = {
                 uiEvent(
-                    PhcnEvent.OnMeterTypeExpanded(
-                        meterTypeExpanded = false
+                    PhcnEvent.OnPhcnTvProductExpandedMeterType(
+                        phcnTvProductExpandedMeterType = false
                     )
                 )
             },
             Modifier.fillMaxWidth()
         ) {
 
-            uiState.meterType.forEach { content ->
+            uiState.phcnMeterTypeList.forEachIndexed { index, specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
-                        PhcnEvent.OnMeterTypeExpanded(
-                            meterTypeExpanded = false
+                        PhcnEvent.OnPhcnTvProductExpandedMeterType(
+                            phcnTvProductExpandedMeterType = false
                         )
                     )
 
                     uiEvent(
-                        PhcnEvent.OnMeterTypeSelected(
-                            meterTypeSelected = content.type
+                        PhcnEvent.OnPhcnTvProductSelectedMeterType(
+                            phcnTvProductSelectedMeterType = specimen.type
                         )
                     )
+
 
                 }) {
                     Row(
@@ -316,7 +232,7 @@ fun MeterType(
                             .padding(5.dp)
                     ) {
                         Text(
-                            text = content.type,
+                            text = specimen.type,
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 fontFamily = Fonts.RobotoBold,
@@ -334,9 +250,10 @@ fun MeterType(
                 .padding(10.dp)
                 .clickable(
                     onClick = {
+
                         uiEvent(
-                            PhcnEvent.OnMeterTypeExpanded(
-                                meterTypeExpanded = !uiState.meterTypeExpanded
+                            PhcnEvent.OnPhcnTvProductExpandedMeterType(
+                                phcnTvProductExpandedMeterType = !uiState.phcnTvProductExpandedMeterType
                             )
                         )
                     }
@@ -346,14 +263,66 @@ fun MeterType(
 }
 
 
+
+
+@Composable
+fun phcnInput(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    readOnly: Boolean
+) {
+
+    val bColor = Borderline
+    val focusManager = LocalFocusManager.current
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp)
+            .background(MaterialBg)
+            .focusable(enabled = true),
+        value = value,
+        onValueChange = {
+            onValueChange(it)
+        },
+
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            autoCorrect = true,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(onNext = {
+            focusManager.moveFocus(FocusDirection.Down)
+        }),
+        readOnly = readOnly,
+        maxLines = 1,
+        shape = RoundedCornerShape(6.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            backgroundColor = Color(
+                bColor.red, bColor.green, bColor.blue,
+                TextFieldDefaults.BackgroundOpacity
+            ),
+            focusedBorderColor = bColor,
+            unfocusedBorderColor = Color(
+                bColor.red, bColor.green, bColor.blue,
+                TextFieldDefaults.UnfocusedIndicatorLineOpacity,
+            ),
+            focusedLabelColor = GreyTransparent,
+            cursorColor = GreyTransparent,
+        ),
+    )
+}
+
 @Composable
 fun phcnSubmitButton(
-    submit: () -> Unit,
+    //submit: () -> Unit,
     label: String,
 ) {
     Button(
         onClick = {
-            submit()
+            // submit()
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -372,5 +341,6 @@ fun phcnSubmitButton(
             ),
         )
     }
-
 }
+
+

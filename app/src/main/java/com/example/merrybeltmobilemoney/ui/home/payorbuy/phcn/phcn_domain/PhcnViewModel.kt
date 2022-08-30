@@ -4,7 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
-import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.*
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_data.CableTvEvent
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.MeterType
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnEvent
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnProductList
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnState
 import com.example.merrybeltmobilemoney.util.Constant
 import com.example.merrybeltmobilemoney.util.EncryptionUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,80 +25,103 @@ class PhcnViewModel @Inject constructor(
 
     var uiState = MutableStateFlow(PhcnState())
 
-    private fun phcnProduct(productList: List<PhcnProduct>) {
+    private fun phcnProduct(phcnTvList: List<PhcnProductList>) {
         uiState.value = uiState.value.copy(
             //showAndHideLoader = true,
-            productList = productList
+            phcnTvList = phcnTvList
         )
     }
 
-    private fun onProductSelected(productSelected: String){
+    private fun onPhcnTvProductExpanded(phcnTvProductExpanded: Boolean) {
         uiState.value = uiState.value.copy(
-            productSelected = productSelected
+            phcnTvProductExpanded = phcnTvProductExpanded
         )
     }
 
-    private fun onProductImage(productImage: String){
+    private fun onPhcnTvProductSelected(phcnTvProductSelected: String, phcnTvProductCategory: String, phcnTvProductImage: String){
         uiState.value = uiState.value.copy(
-            productImage = productImage
+            phcnTvProductSelected = phcnTvProductSelected,
+            phcnTvProductCategory = phcnTvProductCategory,
+            phcnTvProductImage = phcnTvProductImage
         )
     }
 
-    private fun onProductExpanded(productExpanded: Boolean){
+    private fun onPhcnMeterType(phcnMeterTypeList: List<MeterType>) {
         uiState.value = uiState.value.copy(
-            productExpanded = productExpanded
+            phcnMeterTypeList = phcnMeterTypeList
         )
     }
 
-    private fun onProductCategory(productCategory: String){
+    private fun onPhcnTvProductExpandedMeterType(phcnTvProductExpandedMeterType: Boolean) {
         uiState.value = uiState.value.copy(
-            productCategory = productCategory
+            phcnTvProductExpandedMeterType = phcnTvProductExpandedMeterType
         )
     }
 
-    private fun isMeterType(meterType: List<MeterType>) {
+    private fun onPhcnTvProductSelectedMeterType(phcnTvProductSelectedMeterType: String) {
         uiState.value = uiState.value.copy(
-            meterType = meterType
+            phcnTvProductSelectedMeterType = phcnTvProductSelectedMeterType
         )
     }
 
+    private fun onMeterNumber(meterNumber: String){
+        uiState.value = uiState.value.copy(
+            meterNumber = meterNumber
+        )
+    }
+
+    private fun onPhoneNumber(phoneNumber: String){
+        uiState.value = uiState.value.copy(
+            phoneNumber = phoneNumber
+        )
+    }
+
+    private fun onAmount(amount: String){
+        uiState.value = uiState.value.copy(
+            amount = amount
+        )
+    }
 
     fun phcnEventHandler(phcnEvent: PhcnEvent) {
         when (phcnEvent) {
-
-            is PhcnEvent.OnProductSelected->{
-                onProductSelected(phcnEvent.productSelected)
+            is PhcnEvent.OnPhcnTvProductExpanded->{
+                onPhcnTvProductExpanded(phcnEvent.phcnTvProductExpanded)
             }
-
-            is PhcnEvent.OnProductImage->{
-                onProductImage(phcnEvent.productImage)
+            is PhcnEvent.OnPhcnTvProductSelected->{
+                onPhcnTvProductSelected(phcnEvent.phcnTvProductSelected, phcnEvent.phcnTvProductCategory, phcnEvent.phcnTvProductImage)
             }
-
-            is PhcnEvent.OnProductExpanded->{
-                onProductExpanded(phcnEvent.productExpanded)
+            is PhcnEvent.OnPhcnTvProductExpandedMeterType->{
+                onPhcnTvProductExpandedMeterType(phcnEvent.phcnTvProductExpandedMeterType)
             }
-
-            is PhcnEvent.OnProductCategory->{
-                onProductCategory(phcnEvent.productCategory)
+            is PhcnEvent.OnPhcnTvProductSelectedMeterType->{
+                onPhcnTvProductSelectedMeterType(phcnEvent.phcnTvProductSelectedMeterType)
             }
-
+            is PhcnEvent.OnMeterNumber->{
+                onMeterNumber(phcnEvent.meterNumber)
+            }
+            is PhcnEvent.OnPhoneNumber->{
+                onPhoneNumber(phcnEvent.phoneNumber)
+            }
+            is PhcnEvent.OnAmount->{
+                onAmount(phcnEvent.amount)
+            }
         }
     }
 
 
     init {
+        //put try catch here to prevent error
+        viewModelScope.launch {
+            val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "phcn")
+            val decryptedAirtime = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
+            val getAirtimeListOfVariousNetwork: List<PhcnProductList> = Constant.gson.fromJson(decryptedAirtime, Array<PhcnProductList>::class.java).toList()
+            phcnProduct(getAirtimeListOfVariousNetwork)
+        }
 
         val category = ArrayList<MeterType>()
         category.add(MeterType(type = "POSTPAID"))
         category.add(MeterType(type = "PREPAID"))
-        isMeterType(category)
-
-        viewModelScope.launch {
-            val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "phcn")
-            val decryptedAirtime = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
-            val getAirtimeListOfVariousNetwork: List<PhcnProduct> = Constant.gson.fromJson(decryptedAirtime, Array<PhcnProduct>::class.java).toList()
-            phcnProduct(getAirtimeListOfVariousNetwork)
-        }
+        onPhcnMeterType(category)
 
     }
 }

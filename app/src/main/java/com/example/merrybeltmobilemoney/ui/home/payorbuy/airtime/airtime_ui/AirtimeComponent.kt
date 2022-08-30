@@ -1,6 +1,5 @@
 package com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,34 +12,27 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import com.example.merrybeltmobilemoney.R
 import com.example.merrybeltmobilemoney.theme.*
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data.AirtimeEvent
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data.AirtimeState
-import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_ui.OutlinedTextFieldsTextPin
+
 
 
 @Composable
-fun VariousNetwork(
+fun AirtimeProductLis(
     uiState: AirtimeState,
     uiEvent: (AirtimeEvent) -> Unit,
 ) {
@@ -49,19 +41,9 @@ fun VariousNetwork(
 
     Box {
         OutlinedTextField(
-            value = uiState.selectedNetwork, //Menu Active Text
+            value = uiState.airtimeProductSelected.uppercase(), //Menu Active Text
             onValueChange = {},
-            placeholder = {
-                Text(
-                    text = "Mobile Network",
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontFamily = Fonts.RobotoBold,
-                        fontWeight = FontWeight.W600
-                    )
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
             readOnly = true,
             shape = RoundedCornerShape(6.dp),
@@ -88,37 +70,34 @@ fun VariousNetwork(
             ),
         )
         DropdownMenu(
-            expanded = uiState.expandNetworkWidget,
+            expanded = uiState.airtimeProductExpanded,
             onDismissRequest = {
                 uiEvent(
-                    AirtimeEvent.OnExpandNetworkWidget(
-                        expanded = false
+                    AirtimeEvent.OnAirtimeProductExpanded(
+                        airtimeProductExpanded = false
                     )
                 )
             },
             Modifier.fillMaxWidth()
         ) {
 
-            uiState.difAirTimeNetwork.forEach { specimen ->
+            uiState.airtimeList.forEachIndexed { index, specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
-                        AirtimeEvent.OnExpandNetworkWidget(
-                            expanded = false
+                        AirtimeEvent.OnAirtimeProductExpanded(
+                            airtimeProductExpanded = false
                         )
                     )
 
                     uiEvent(
-                        AirtimeEvent.OnselectedNetwork(
-                            selectedNetwork = specimen.category!!
+                        AirtimeEvent.OnAirtimeProductSelected(
+                            airtimeProductSelected = specimen.category!!,
+                            airtimeProductImage = specimen.imageUrl!!,
+                            airtimeProductCategory = specimen.category!!
                         )
                     )
 
-                    uiEvent(
-                        AirtimeEvent.OnselectNetworkImage(
-                            selectNetworkImage = specimen.imageUrl!!
-                        )
-                    )
 
                 }) {
                     Row(
@@ -149,7 +128,7 @@ fun VariousNetwork(
                             }
                         }
                         Text(
-                            text = specimen.category!!,
+                            text = specimen.category!!.uppercase(),
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 fontFamily = Fonts.RobotoBold,
@@ -167,9 +146,10 @@ fun VariousNetwork(
                 .padding(10.dp)
                 .clickable(
                     onClick = {
+
                         uiEvent(
-                            AirtimeEvent.OnExpandNetworkWidget(
-                                expanded = !uiState.expandNetworkWidget
+                            AirtimeEvent.OnAirtimeProductExpanded(
+                                airtimeProductExpanded = !uiState.airtimeProductExpanded
                             )
                         )
                     }
@@ -179,10 +159,11 @@ fun VariousNetwork(
 }
 
 @Composable
-fun numberInput(
+fun airtimeInput(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
+    readOnly: Boolean
 ) {
 
     val bColor = Borderline
@@ -191,7 +172,7 @@ fun numberInput(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 10.dp)
+            .padding(bottom = 10.dp)
             .background(MaterialBg)
             .focusable(enabled = true),
         value = value,
@@ -208,16 +189,7 @@ fun numberInput(
         keyboardActions = KeyboardActions(onNext = {
             focusManager.moveFocus(FocusDirection.Down)
         }),
-        placeholder = {
-            Text(
-                text = label,
-                style = TextStyle(
-                    fontFamily = Fonts.RobotoBold,
-                    color = Blues,
-                    fontSize = 18.sp
-                )
-            )
-        },
+        readOnly = readOnly,
         maxLines = 1,
         shape = RoundedCornerShape(6.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -238,12 +210,12 @@ fun numberInput(
 
 @Composable
 fun airtimeSubmitButton(
-    submit: () -> Unit,
+    //submit: () -> Unit,
     label: String,
 ) {
     Button(
         onClick = {
-            submit()
+            // submit()
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -262,154 +234,5 @@ fun airtimeSubmitButton(
             ),
         )
     }
-
 }
 
-
-@Composable
-fun airtimePinDialog(
-    cornerRadius: Dp = 16.dp,
-    uiState : AirtimeState,
-    uiEvent: (AirtimeEvent)->Unit
-) {
-    val contextForToast = LocalContext.current.applicationContext
-
-    Dialog(
-        onDismissRequest = {}
-    ) {
-        Surface(
-            elevation = 4.dp,
-            shape = RoundedCornerShape(cornerRadius)
-
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .background(color = MChild),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .padding(top = 16.dp, bottom = 16.dp),
-                        painter = painterResource(id = R.drawable.ic_baseline_verified_user_24),
-                        contentDescription = "Review Payment",
-                        alignment = Alignment.Center
-                    )
-                }
-
-                Text(
-                    modifier = Modifier.padding(top = 16.dp, bottom = 16.dp, start = 12.dp, end = 12.dp),
-                    text = "Confirm the airtime of ₦${uiState.amount} send to ${uiState.phoneNumber}",
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        fontFamily = Fonts.RobotoRegular,
-                        fontSize = 12.sp
-                    )
-                )
-
-                Text(
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp),
-                    text = "Enter your 4-digit Pin",
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        fontFamily = Fonts.RobotoBold,
-                        fontSize = 13.sp
-                    )
-                )
-
-                OutlinedTextFieldsTextPin(
-                    value = uiState.pin,
-                    onValueChange = {pin->
-                        uiEvent(
-                            AirtimeEvent.OnPin(pin)
-                        )
-                    }
-                )
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp, start = 36.dp, end = 36.dp, bottom = 8.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MChild),
-                    onClick = {
-//                        uiEvent(
-//                            TransferEvent.OnClickOnDoneButton
-//                        )
-                    }
-                ) {
-                    Text(
-                        text = "Done",
-                        color = Color.White,
-                        style = TextStyle(
-                            fontFamily = Fonts.RobotoMedium,
-                            fontSize = 16.sp
-                        )
-                    )
-                }
-
-                TextButton(
-                    onClick = {
-                        uiEvent(
-                            AirtimeEvent.OnshowAndHidePinDialog(
-                                showAndHidePinDialog = false
-                            )
-                        )
-                    }) {
-                    Text(
-                        text = "Cancel",
-                        color = Color(0xFF35898f),
-                        style = TextStyle(
-                            fontFamily = Fonts.RobotoNormal,
-                            fontSize = 14.sp
-                        )
-                    )
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun airtimeMessageDialogs (
-    isDialogShow : Boolean,
-    isDialogMessage: String,
-    isDialogTitle: String = "",
-    onDismissRequest:()->Unit
-
-) {
-    if(isDialogShow) {
-        AlertDialog(
-            onDismissRequest = {
-                onDismissRequest()
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    onDismissRequest()
-                })
-                {
-                    Text(
-                        text = "Close",
-                        style = TextStyle(
-                            color = MChild,
-                            fontFamily = Fonts.Montserrat,
-                            fontSize = 14.sp
-                        )
-                    )
-                }
-            },
-            title = {
-                Text(text = isDialogTitle)
-            },
-            text = {
-                Text(text = isDialogMessage)
-            }
-        )
-    }
-}

@@ -2,44 +2,29 @@ package com.example.merrybeltmobilemoney.ui.home.payorbuy.buydata.buydata_data
 
 
 data class DataState(
-    val difAirTimeNetwork: List<VariousNetwork> = emptyList(),
-    val showAndHideLoader: Boolean = false,
-    val selectedNetwork: String = "",
-    val expandNetworkWidget: Boolean = false,
-    val selectedIndex: Int = -1,
-    val selectNetworkImage: String = "",
-    val amount: String = "",
-    val phoneNumber:String = "",
-    val showAndHidePinDialog: Boolean = false,
-    val pin: String = "",
-    val messageDialogTitle: String = "Notification",
-    val messageDialogContent: String = "",
-    val messageDialogShowAndHide: Boolean = false,
+    val dataList: List<DataProductList> = emptyList(),
+    val dataProductLoader: Boolean = false,
+    val dataProductSelected: String = "",
+    val dataProductExpanded: Boolean = false,
+    val dataProductImage: String = "",
+    val dataProductCategory: String = "",
+    val dataIndex:Int = -1,
 
-    //data plan
-    val dataPlanList: List<DataPlan> = emptyList(),
-    val id: Int = -1,
-    val dataPlanSelect: String = "",
-    val dataPlanExpandNetworkWidget: Boolean = false,
+    //this is for plan list,
+    val dataProductPlan : List<DataPlan> = emptyList(),
+    val dataProductSelectedPlan: String = "",
+    val dataProductExpandedPlan: Boolean = false,
+    val dataProductPlanId: Int = 0,
+    val dataProductPlanPrice: String = "",
 
-
+    val phoneNumber: String = "",
+    val amount: String = ""
 )
 
 sealed class DataEvent {
-
-    class OnExpandNetworkWidget(val expanded: Boolean) : DataEvent()
-    class OnselectedNetwork(val selectedNetwork: String, val selectedIndex: Int) : DataEvent()
-    class OnselectNetworkImage(val selectNetworkImage: String) : DataEvent()
-    class OnAmount(val amount: String) : DataEvent()
+    class OnDataProductExpanded(val dataProductExpanded: Boolean) : DataEvent()
+    class OnDataProductSelected(val dataProductSelected: String, val dataProductImage: String, val dataProductCategory: String, val dataIndex: Int) : DataEvent()
+    class OnDataProductExpandedPlan(val dataProductExpandedPlan: Boolean) : DataEvent()
+    class OnDataProductSelectedPlan(val dataProductSelectedPlan: String ,  val dataProductPlanId: Int, val dataProductPlanPrice: String): DataEvent()
     class OnPhoneNumber(val phoneNumber: String) : DataEvent()
-    object OnContinue : DataEvent()
-    class OnshowAndHidePinDialog(val showAndHidePinDialog: Boolean) : DataEvent()
-    class OnPin(val pin: String) : DataEvent()
-    class MessageDialog(val message: String = "", val viewStatus: Boolean = false): DataEvent()
-
-
-    //this is the additions
-    class OnDataPlanExpandNetworkWidget(val dataPlanExpandNetworkWidget: Boolean) : DataEvent()
-    class OnDataPlanSelect(val dataPlanSelect: String, val id: Int) : DataEvent()
 }
-

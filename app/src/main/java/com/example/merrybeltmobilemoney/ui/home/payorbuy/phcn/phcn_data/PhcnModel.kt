@@ -4,7 +4,7 @@ package com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class PhcnProduct(
+data class PhcnProductList(
     @SerializedName("category")
     @Expose
     val category: String? = "",

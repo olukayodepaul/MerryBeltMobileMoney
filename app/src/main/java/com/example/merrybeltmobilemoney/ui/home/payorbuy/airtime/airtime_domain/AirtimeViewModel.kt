@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data.AirtimeEvent
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data.AirtimeProductList
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data.AirtimeState
-import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data.VariousAirtime
 import com.example.merrybeltmobilemoney.util.Constant
 import com.example.merrybeltmobilemoney.util.EncryptionUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,124 +23,66 @@ class AirtimeViewModel @Inject constructor(
 
     var uiState = MutableStateFlow(AirtimeState())
 
-    private fun onVariousNetworkAirtimeList(difAirTimeNetwork: List<VariousAirtime>) {
+    private fun airtimeProduct(airtimeList: List<AirtimeProductList>) {
         uiState.value = uiState.value.copy(
-            //showAndHideLoader = true,
-            difAirTimeNetwork = difAirTimeNetwork
+            airtimeList = airtimeList
         )
     }
 
-    private fun onExpandNetworkWidget(expandNetworkWidget: Boolean){
+    private fun onAirtimeProductExpanded(airtimeProductExpanded: Boolean) {
         uiState.value = uiState.value.copy(
-            expandNetworkWidget = expandNetworkWidget
+            airtimeProductExpanded = airtimeProductExpanded
         )
     }
 
-    private fun onselectedNetwork(selectedNetwork: String){
+    private fun onAirtimeProductSelected(airtimeProductSelected: String, airtimeProductImage: String, airtimeProductCategory: String){
         uiState.value = uiState.value.copy(
-            selectedNetwork = selectedNetwork
+            airtimeProductSelected = airtimeProductSelected,
+            airtimeProductImage = airtimeProductImage,
+            airtimeProductCategory = airtimeProductCategory
         )
     }
 
-    private fun onselectNetworkImage(selectNetworkImage: String){
-        uiState.value = uiState.value.copy(
-            selectNetworkImage = selectNetworkImage
-        )
-    }
-
-    private fun onPhoneNumber(phoneNumber: String){
+    private fun onPhoneNumber(phoneNumber: String) {
         uiState.value = uiState.value.copy(
             phoneNumber = phoneNumber
         )
     }
 
-    private fun onAmount(amount: String){
+    private fun onAmount(amount: String) {
         uiState.value = uiState.value.copy(
             amount = amount
         )
     }
 
-    private fun onContinue(){
-
-        if(uiState.value.amount=="" && uiState.value.phoneNumber=="" && uiState.value.selectedNetwork == ""){
-            uiState.value = uiState.value.copy(
-                messageDialogContent = "Please enter all the field",
-                messageDialogShowAndHide = true
-            )
-        }else{
-            uiState.value = uiState.value.copy(
-                showAndHidePinDialog = true
-            )
-        }
-
-    }
-
-    private fun onshowAndHidePinDialog(showAndHidePinDialog: Boolean){
-        uiState.value = uiState.value.copy(
-            showAndHidePinDialog = showAndHidePinDialog
-        )
-    }
-
-    private fun onPin(pin: String){
-        uiState.value = uiState.value.copy(
-            pin = pin
-        )
-    }
-
-    private fun onMessageDialog(messageDialogContent: String, messageDialogShowAndHide: Boolean){
-        uiState.value = uiState.value.copy(
-            messageDialogContent = messageDialogContent,
-            messageDialogShowAndHide = messageDialogShowAndHide
-        )
-    }
-
     fun airtimeEventHandler(airtimeEvent: AirtimeEvent) {
         when (airtimeEvent) {
-            is AirtimeEvent.OnExpandNetworkWidget ->{
-                onExpandNetworkWidget(airtimeEvent.expanded)
+            is AirtimeEvent.OnAirtimeProductExpanded->{
+                onAirtimeProductExpanded(airtimeEvent.airtimeProductExpanded)
             }
-
-            is AirtimeEvent.OnselectedNetwork->{
-                onselectedNetwork(airtimeEvent.selectedNetwork)
+            is AirtimeEvent.OnAirtimeProductSelected->{
+                onAirtimeProductSelected(airtimeEvent.airtimeProductSelected, airtimeEvent.airtimeProductImage, airtimeEvent.airtimeProductCategory)
             }
-
-            is AirtimeEvent.OnselectNetworkImage->{
-                onselectNetworkImage(airtimeEvent.selectNetworkImage)
-            }
-
             is AirtimeEvent.OnPhoneNumber->{
                 onPhoneNumber(airtimeEvent.phoneNumber)
             }
-
             is AirtimeEvent.OnAmount->{
                 onAmount(airtimeEvent.amount)
-            }
-
-            is AirtimeEvent.OnContinue->{
-                onContinue()
-            }
-
-            is AirtimeEvent.OnshowAndHidePinDialog->{
-                onshowAndHidePinDialog(airtimeEvent.showAndHidePinDialog)
-            }
-
-            is AirtimeEvent.OnPin->{
-                onPin(airtimeEvent.pin)
-            }
-
-            is AirtimeEvent.MessageDialog->{
-                onMessageDialog(airtimeEvent.message, airtimeEvent.viewStatus)
             }
         }
     }
 
     init {
-        viewModelScope.launch {
-            val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "airtime")
-            val decryptedAirtime = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
-            val getAirtimeListOfVariousNetwork: List<VariousAirtime> = Constant.gson.fromJson(decryptedAirtime, Array<VariousAirtime>::class.java).toList()
-            onVariousNetworkAirtimeList(getAirtimeListOfVariousNetwork)
-        }
+        try{
+            viewModelScope.launch {
+                val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "airtime")
+                val decryptedAirtime = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
+                val getAirtimeListOfVariousNetwork: List<AirtimeProductList> = Constant.gson.fromJson(decryptedAirtime, Array<AirtimeProductList>::class.java).toList()
+                airtimeProduct(getAirtimeListOfVariousNetwork)
+            }
+        }catch (e:Throwable){}
+
+        //hide this component here
     }
 
 

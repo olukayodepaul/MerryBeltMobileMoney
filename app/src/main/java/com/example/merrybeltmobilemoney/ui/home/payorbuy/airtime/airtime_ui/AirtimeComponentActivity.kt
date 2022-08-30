@@ -3,6 +3,8 @@ package com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -14,12 +16,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.merrybeltmobilemoney.theme.DialogBoxLoading
-import com.example.merrybeltmobilemoney.theme.Fonts
-import com.example.merrybeltmobilemoney.theme.MChild
-import com.example.merrybeltmobilemoney.theme.White
+import com.example.merrybeltmobilemoney.theme.*
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data.AirtimeEvent
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_domain.AirtimeViewModel
+
 
 @Composable
 fun AirtimeComponentActivity(
@@ -34,7 +34,7 @@ fun AirtimeComponentActivity(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Buy Airtime",
+                        text = "AIRTIME",
                         style = TextStyle(
                             fontFamily = Fonts.RobotoBold,
                             fontSize = 14.sp
@@ -51,16 +51,22 @@ fun AirtimeComponentActivity(
                 elevation = 0.dp
             )
         }, content = {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(20.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
 
-            Column(Modifier.fillMaxSize().padding(20.dp)) {
-
-                VariousNetwork(
+                spanceWidget(label ="Network")
+                AirtimeProductLis(
                     uiState = uiState,
                     uiEvent = uiEvent
                 )
 
-                numberInput(
-                    label = "Phone Number",
+                spanceWidget(label ="Phone Number")
+                airtimeInput(
+                    label = "",
                     value = uiState.phoneNumber,
                     onValueChange = {
                         uiEvent(
@@ -68,11 +74,13 @@ fun AirtimeComponentActivity(
                                 it
                             )
                         )
-                    }
+                    },
+                    readOnly = false
                 )
 
-                numberInput(
-                    label = "Amount",
+                spanceWidget(label ="Amount")
+                airtimeInput(
+                    label = "",
                     value = uiState.amount,
                     onValueChange = {
                         uiEvent(
@@ -80,42 +88,14 @@ fun AirtimeComponentActivity(
                                 it
                             )
                         )
-                    }
+                    },
+                    readOnly = false
                 )
 
                 airtimeSubmitButton(
-                    submit = {
-                        uiEvent(
-                            AirtimeEvent.OnContinue,
-                        )
-                    },
                     label = "Continue"
                 )
 
-                if(uiState.showAndHidePinDialog) {
-                    airtimePinDialog(
-                        uiState = uiState,
-                        uiEvent = uiEvent
-                    )
-                }
-
-                if(uiState.showAndHideLoader) {
-                    DialogBoxLoading()
-                }
-
-                airtimeMessageDialogs(
-                    isDialogShow = uiState.messageDialogShowAndHide,
-                    isDialogMessage = uiState.messageDialogContent,
-                    isDialogTitle = uiState.messageDialogTitle,
-                    onDismissRequest = {
-                        uiEvent(
-                            AirtimeEvent.MessageDialog(
-                                message = "",
-                                viewStatus = false
-                            )
-                        )
-                    }
-                )
             }
         }
     )

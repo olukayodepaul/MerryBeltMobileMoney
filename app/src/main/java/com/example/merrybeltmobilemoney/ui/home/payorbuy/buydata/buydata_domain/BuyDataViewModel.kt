@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
 import com.example.merrybeltmobilemoney.provider.api.api_provider_domain.MerryBeltApiRepository
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.buydata.buydata_data.DataEvent
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.buydata.buydata_data.DataProductList
 import com.example.merrybeltmobilemoney.ui.home.payorbuy.buydata.buydata_data.DataState
-import com.example.merrybeltmobilemoney.ui.home.payorbuy.buydata.buydata_data.VariousNetwork
 import com.example.merrybeltmobilemoney.util.Constant
 import com.example.merrybeltmobilemoney.util.EncryptionUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,146 +24,71 @@ class BuyDataViewModel @Inject constructor(
 
     var uiState = MutableStateFlow(DataState())
 
-    private fun onVariousNetworkAirtimeList(difAirTimeNetwork: List<VariousNetwork>) {
+    private fun onDataProduct(dataList: List<DataProductList>) {
         uiState.value = uiState.value.copy(
             //showAndHideLoader = true,
-            difAirTimeNetwork = difAirTimeNetwork
+            dataList = dataList
         )
     }
 
-    private fun onExpandNetworkWidget(expandNetworkWidget: Boolean){
+    private fun onDataProductExpanded(dataProductExpanded: Boolean) {
         uiState.value = uiState.value.copy(
-            expandNetworkWidget = expandNetworkWidget
+            dataProductExpanded = dataProductExpanded
         )
     }
 
-    private fun onselectedNetwork(selectedNetwork: String, index: Int) {
-
-        uiState.value = uiState.value.copy(
-            selectedNetwork = selectedNetwork,
-            selectedIndex = index,
-            dataPlanExpandNetworkWidget = false,
-            dataPlanSelect = "",
-            id = -1
-        )
-
-        val isDataPlan: List<VariousNetwork> = uiState.value.difAirTimeNetwork
-
-        uiState.value = uiState.value.copy(
-            dataPlanList = isDataPlan[index].plan!!
-        )
-
-    }
-
-    private fun onselectNetworkImage(selectNetworkImage: String){
-        uiState.value = uiState.value.copy(
-            selectNetworkImage = selectNetworkImage
+    private fun onDataProductSelected(dataProductSelected: String, dataProductImage: String, dataProductCategory: String, dataIndex: Int) {
+        val isDataPlan: List<DataProductList> = uiState.value.dataList
+        uiState.value = uiState.value.copy (
+            amount = "",
+            dataProductSelectedPlan = "",
+            dataProductExpandedPlan = false,
+            dataProductPlanId = 0,
+            dataProductPlanPrice = "",
+            dataProductSelected = dataProductSelected,
+            dataProductImage = dataProductImage,
+            dataProductCategory = dataProductCategory,
+            dataProductPlan = isDataPlan[dataIndex].plan!!
         )
     }
 
-    private fun onPhoneNumber(phoneNumber: String){
+    private fun onDataProductExpandedPlan(dataProductExpandedPlan: Boolean) {
+        uiState.value = uiState.value.copy(
+            dataProductExpandedPlan = dataProductExpandedPlan
+        )
+    }
+
+    private fun onDataProductSelectedPlan(dataProductSelectedPlan: String ,  dataProductPlanId: Int, dataProductPlanPrice: String) {
+        uiState.value = uiState.value.copy(
+            dataProductSelectedPlan = dataProductSelectedPlan,
+            dataProductPlanId = dataProductPlanId,
+            dataProductPlanPrice = dataProductPlanPrice,
+            amount = dataProductPlanPrice
+        )
+    }
+
+    private fun onPhoneNumber(phoneNumber: String) {
         uiState.value = uiState.value.copy(
             phoneNumber = phoneNumber
         )
     }
 
-    private fun onAmount(amount: String){
-        uiState.value = uiState.value.copy(
-            amount = amount
-        )
-    }
-
-    private fun onContinue() {
-
-        if(uiState.value.phoneNumber=="" && uiState.value.selectedNetwork == "" && uiState.value.id == -1){
-            uiState.value = uiState.value.copy(
-                messageDialogContent = "Please enter all the field",
-                messageDialogShowAndHide = true
-            )
-        }else{
-            uiState.value = uiState.value.copy(
-                showAndHidePinDialog = true
-            )
-        }
-
-    }
-
-    private fun OnDataPlanExpandNetworkWidget(dataPlanExpandNetworkWidget: Boolean){
-        uiState.value = uiState.value.copy(
-            dataPlanExpandNetworkWidget = dataPlanExpandNetworkWidget
-        )
-    }
-
-    private fun onDataPlanSelect(dataPlanSelect: String, id: Int){
-        uiState.value = uiState.value.copy(
-            dataPlanSelect = dataPlanSelect,
-            id = id
-        )
-    }
-
-    private fun onPin(pin: String){
-        uiState.value = uiState.value.copy(
-            pin = pin
-        )
-    }
-
-    private fun onshowAndHidePinDialog(showAndHidePinDialog: Boolean){
-        uiState.value = uiState.value.copy(
-            showAndHidePinDialog = showAndHidePinDialog
-        )
-    }
-
-    private fun onMessageDialog(messageDialogContent: String, messageDialogShowAndHide: Boolean){
-        uiState.value = uiState.value.copy(
-            messageDialogContent = messageDialogContent,
-            messageDialogShowAndHide = messageDialogShowAndHide
-        )
-    }
-
     fun dataEventHandler(dataEvent: DataEvent) {
         when(dataEvent) {
-
-            is DataEvent.OnselectedNetwork->{
-                onselectedNetwork(dataEvent.selectedNetwork, dataEvent.selectedIndex)
+            is DataEvent.OnDataProductExpanded->{
+                onDataProductExpanded(dataEvent.dataProductExpanded)
             }
-            is DataEvent.OnExpandNetworkWidget ->{
-                onExpandNetworkWidget(dataEvent.expanded)
+            is DataEvent.OnDataProductSelected->{
+                onDataProductSelected(dataEvent.dataProductSelected, dataEvent.dataProductImage, dataEvent.dataProductCategory, dataEvent.dataIndex)
             }
-
-            is DataEvent.OnDataPlanExpandNetworkWidget ->{
-                OnDataPlanExpandNetworkWidget(dataEvent.dataPlanExpandNetworkWidget)
+            is DataEvent.OnDataProductExpandedPlan->{
+                onDataProductExpandedPlan(dataEvent.dataProductExpandedPlan)
             }
-
-            is DataEvent.OnDataPlanSelect ->{
-                onDataPlanSelect(dataEvent.dataPlanSelect, dataEvent.id)
+            is DataEvent.OnDataProductSelectedPlan->{
+                onDataProductSelectedPlan(dataEvent.dataProductSelectedPlan, dataEvent.dataProductPlanId, dataEvent.dataProductPlanPrice)
             }
-
-            is DataEvent.OnPin->{
-                onPin(dataEvent.pin)
-            }
-
-            is DataEvent.OnshowAndHidePinDialog->{
-                onshowAndHidePinDialog(dataEvent.showAndHidePinDialog)
-            }
-
-            is DataEvent.OnselectNetworkImage->{
-                onselectNetworkImage(dataEvent.selectNetworkImage)
-            }
-
             is DataEvent.OnPhoneNumber->{
                 onPhoneNumber(dataEvent.phoneNumber)
-            }
-
-            is DataEvent.OnAmount->{
-                onAmount(dataEvent.amount)
-            }
-
-            is DataEvent.OnContinue->{
-                onContinue()
-            }
-
-            is DataEvent.MessageDialog->{
-                onMessageDialog(dataEvent.message, dataEvent.viewStatus)
             }
         }
     }
@@ -172,8 +97,8 @@ class BuyDataViewModel @Inject constructor(
         viewModelScope.launch {
             val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "data")
             val decryptedAirtime = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
-            val getAirtimeListOfVariousNetwork: List<VariousNetwork> = Constant.gson.fromJson(decryptedAirtime, Array<VariousNetwork>::class.java).toList()
-            onVariousNetworkAirtimeList(getAirtimeListOfVariousNetwork)
+            val getAirtimeListOfVariousNetwork: List<DataProductList> = Constant.gson.fromJson(decryptedAirtime, Array<DataProductList>::class.java).toList()
+            onDataProduct(getAirtimeListOfVariousNetwork)
         }
     }
 }

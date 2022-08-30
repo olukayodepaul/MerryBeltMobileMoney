@@ -3,7 +3,7 @@ package com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_data
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class VariousAirtime(
+data class AirtimeProductList(
     @SerializedName("category")
     @Expose
     val category: String? = "",

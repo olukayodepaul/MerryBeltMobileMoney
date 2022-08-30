@@ -52,8 +52,6 @@ class CableTvViewModel @Inject constructor(
             cableTvProductImage = cableTvProductImage,
             cableTvProductPlan = isDataPlan[cableTvIndex].plan!!
         )
-
-
     }
 
     private fun onCableTvProductExpandedPlan(cableTvProductExpandedPlan: Boolean) {
