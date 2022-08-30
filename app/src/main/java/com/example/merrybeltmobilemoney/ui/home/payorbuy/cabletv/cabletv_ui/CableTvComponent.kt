@@ -1,4 +1,4 @@
-package com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_ui
+package com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_ui
 
 
 import androidx.compose.foundation.Image
@@ -27,32 +27,23 @@ import androidx.compose.ui.unit.sp
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.theme.*
-import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnEvent
-import com.example.merrybeltmobilemoney.ui.home.payorbuy.phcn.phcn_data.PhcnState
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_data.CableTvEvent
+import com.example.merrybeltmobilemoney.ui.home.payorbuy.cabletv.cabletv_data.CableTvState
+
 
 @Composable
-fun ProductLis(
-    uiState: PhcnState,
-    uiEvent: (PhcnEvent) -> Unit,
+fun CableTvProductLis(
+    uiState: CableTvState,
+    uiEvent: (CableTvEvent) -> Unit,
 ) {
 
     val bColor = Borderline
 
     Box {
         OutlinedTextField(
-            value = uiState.productSelected.uppercase(), //Menu Active Text
+            value = uiState.cableTvProductSelected.uppercase(), //Menu Active Text
             onValueChange = {},
-            placeholder = {
-                Text(
-                    text = "Product",
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontFamily = Fonts.RobotoBold,
-                        fontWeight = FontWeight.W600
-                    )
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
             readOnly = true,
             shape = RoundedCornerShape(6.dp),
@@ -79,43 +70,35 @@ fun ProductLis(
             ),
         )
         DropdownMenu(
-            expanded = uiState.productExpanded,
+            expanded = uiState.cableTvProductExpanded,
             onDismissRequest = {
                 uiEvent(
-                    PhcnEvent.OnProductExpanded(
-                        productExpanded = false
+                    CableTvEvent.OnCableTvProductExpanded(
+                        cableTvProductExpanded = false
                     )
                 )
             },
             Modifier.fillMaxWidth()
         ) {
 
-            uiState.productList.forEach { specimen ->
+            uiState.cableTvList.forEachIndexed { index, specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
-                        PhcnEvent.OnProductExpanded(
-                            productExpanded = false
+                        CableTvEvent.OnCableTvProductExpanded(
+                            cableTvProductExpanded = false
                         )
                     )
 
                     uiEvent(
-                        PhcnEvent.OnProductSelected(
-                            productSelected = specimen.description!!
+                        CableTvEvent.OnCableTvProductSelected(
+                            cableTvProductSelected = specimen.category!!,
+                            cableTvIndex = index,
+                            cableTvProductCategory = specimen.category!!,
+                            cableTvProductImage = specimen.imageUrl!!
                         )
                     )
 
-                    uiEvent(
-                        PhcnEvent.OnProductImage(
-                            productImage = specimen.imageUrl!!
-                        )
-                    )
-
-                    uiEvent(
-                        PhcnEvent.OnProductCategory(
-                            productCategory = specimen.category!!
-                        )
-                    )
 
                 }) {
                     Row(
@@ -146,7 +129,7 @@ fun ProductLis(
                             }
                         }
                         Text(
-                            text = specimen.description!!.uppercase(),
+                            text = specimen.category!!.uppercase(),
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 fontFamily = Fonts.RobotoBold,
@@ -164,9 +147,10 @@ fun ProductLis(
                 .padding(10.dp)
                 .clickable(
                     onClick = {
+
                         uiEvent(
-                            PhcnEvent.OnProductExpanded(
-                                productExpanded = !uiState.productExpanded
+                            CableTvEvent.OnCableTvProductExpanded(
+                                cableTvProductExpanded = !uiState.cableTvProductExpanded
                             )
                         )
                     }
@@ -176,88 +160,19 @@ fun ProductLis(
 }
 
 
-
 @Composable
-fun phcnInput(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
+fun CableTvProductLisPlan(
+    uiState: CableTvState,
+    uiEvent: (CableTvEvent) -> Unit,
 ) {
 
-    val bColor = Borderline
-    val focusManager = LocalFocusManager.current
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp)
-            .background(MaterialBg)
-            .focusable(enabled = true),
-        value = value,
-        onValueChange = {
-            onValueChange(it)
-        },
-
-        keyboardOptions = KeyboardOptions.Default.copy(
-            capitalization = KeyboardCapitalization.Sentences,
-            autoCorrect = true,
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next
-        ),
-        keyboardActions = KeyboardActions(onNext = {
-            focusManager.moveFocus(FocusDirection.Down)
-        }),
-        placeholder = {
-            Text(
-                text = label,
-                style = TextStyle(
-                    fontFamily = Fonts.RobotoBold,
-                    color = Blues,
-                    fontSize = 18.sp
-                )
-            )
-        },
-        maxLines = 1,
-        shape = RoundedCornerShape(6.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = Color(
-                bColor.red, bColor.green, bColor.blue,
-                TextFieldDefaults.BackgroundOpacity
-            ),
-            focusedBorderColor = bColor,
-            unfocusedBorderColor = Color(
-                bColor.red, bColor.green, bColor.blue,
-                TextFieldDefaults.UnfocusedIndicatorLineOpacity,
-            ),
-            focusedLabelColor = GreyTransparent,
-            cursorColor = GreyTransparent,
-        ),
-    )
-}
-
-
-@Composable
-fun MeterType(
-    uiState: PhcnState,
-    uiEvent: (PhcnEvent) -> Unit,
-) {
     val bColor = Borderline
 
     Box {
         OutlinedTextField(
-            value = uiState.meterTypeSelected, //Menu Active Text
+            value = uiState.cableTvProductSelectedPlan.uppercase(), //Menu Active Text
             onValueChange = {},
-            placeholder = {
-                Text(
-                    text = "Meter Type",
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontFamily = Fonts.RobotoBold,
-                        fontWeight = FontWeight.W600
-                    )
-                )
-            },
-            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             trailingIcon = { Icon(Icons.Outlined.ArrowDropDown, null) },
             readOnly = true,
             shape = RoundedCornerShape(6.dp),
@@ -284,31 +199,34 @@ fun MeterType(
             ),
         )
         DropdownMenu(
-            expanded = uiState.meterTypeExpanded,
+            expanded = uiState.cableTvProductExpandedPlan,
             onDismissRequest = {
                 uiEvent(
-                    PhcnEvent.OnMeterTypeExpanded(
-                        meterTypeExpanded = false
+                    CableTvEvent.OnCableTvProductExpandedPlan(
+                        cableTvProductExpandedPlan = false
                     )
                 )
             },
             Modifier.fillMaxWidth()
         ) {
 
-            uiState.meterType.forEach { content ->
+            uiState.cableTvProductPlan.forEachIndexed { index, specimen ->
                 DropdownMenuItem(onClick = {
 
                     uiEvent(
-                        PhcnEvent.OnMeterTypeExpanded(
-                            meterTypeExpanded = false
+                        CableTvEvent.OnCableTvProductExpandedPlan(
+                            cableTvProductExpandedPlan = false
                         )
                     )
 
                     uiEvent(
-                        PhcnEvent.OnMeterTypeSelected(
-                            meterTypeSelected = content.type
+                        CableTvEvent.OnCableTvProductSelectedPlan(
+                            cableTvProductSelectedPlan = "${specimen.packages!!.uppercase()}  ${specimen.price!!.uppercase()}",
+                            cableTvProductPlanId = specimen.id!!,
+                            cableTvProductPlanPrice = specimen.price!!
                         )
                     )
+
 
                 }) {
                     Row(
@@ -316,7 +234,7 @@ fun MeterType(
                             .padding(5.dp)
                     ) {
                         Text(
-                            text = content.type,
+                            text = "${specimen.packages!!.uppercase()} ${specimen.price!!.uppercase()}",
                             style = TextStyle(
                                 fontSize = 18.sp,
                                 fontFamily = Fonts.RobotoBold,
@@ -334,9 +252,10 @@ fun MeterType(
                 .padding(10.dp)
                 .clickable(
                     onClick = {
+
                         uiEvent(
-                            PhcnEvent.OnMeterTypeExpanded(
-                                meterTypeExpanded = !uiState.meterTypeExpanded
+                            CableTvEvent.OnCableTvProductExpandedPlan(
+                                cableTvProductExpandedPlan = !uiState.cableTvProductExpandedPlan
                             )
                         )
                     }
@@ -346,14 +265,81 @@ fun MeterType(
 }
 
 
+
 @Composable
-fun phcnSubmitButton(
-    submit: () -> Unit,
+fun cableTvInput(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    readOnly: Boolean
+) {
+
+    val bColor = Borderline
+    val focusManager = LocalFocusManager.current
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp)
+            .background(MaterialBg)
+            .focusable(enabled = true),
+        value = value,
+        onValueChange = {
+            onValueChange(it)
+        },
+
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            autoCorrect = true,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(onNext = {
+            focusManager.moveFocus(FocusDirection.Down)
+        }),
+        readOnly = readOnly,
+        maxLines = 1,
+        shape = RoundedCornerShape(6.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            backgroundColor = Color(
+                bColor.red, bColor.green, bColor.blue,
+                TextFieldDefaults.BackgroundOpacity
+            ),
+            focusedBorderColor = bColor,
+            unfocusedBorderColor = Color(
+                bColor.red, bColor.green, bColor.blue,
+                TextFieldDefaults.UnfocusedIndicatorLineOpacity,
+            ),
+            focusedLabelColor = GreyTransparent,
+            cursorColor = GreyTransparent,
+        ),
+    )
+}
+
+@Composable
+fun spanceWidget(
+    label: String
+){
+    Text(
+        text = label,
+        Modifier.padding(bottom = 4.dp, top = 2.dp),
+        style = TextStyle(
+            fontFamily = Fonts.RobotoNormal,
+            fontSize = 15.sp,
+            color = Monsoon
+        )
+    )
+}
+
+
+@Composable
+fun cableTvSubmitButton(
+    //submit: () -> Unit,
     label: String,
 ) {
     Button(
         onClick = {
-            submit()
+           // submit()
         },
         modifier = Modifier
             .fillMaxWidth()
