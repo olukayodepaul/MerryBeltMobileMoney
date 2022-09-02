@@ -27,12 +27,12 @@ import androidx.compose.ui.window.Dialog
 @Composable
 fun DialogBoxLoading(
     cornerRadius: Dp = 16.dp,
-    paddingStart: Dp = 56.dp,
-    paddingEnd: Dp = 56.dp,
-    paddingTop: Dp = 32.dp,
-    paddingBottom: Dp = 32.dp,
+    paddingStart: Dp = 22.dp,
+    paddingEnd: Dp = 22.dp,
+    paddingTop: Dp = 22.dp,
+    paddingBottom: Dp = 22.dp,
     progressIndicatorColor: Color = Color(0xFFf47100),
-    progressIndicatorSize: Dp = 80.dp
+    progressIndicatorSize: Dp = 50.dp
 ) {
     Dialog(
         onDismissRequest = {}
@@ -54,7 +54,7 @@ fun DialogBoxLoading(
                 )
 
                 // Gap between progress indicator and text
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
                 // Please wait text
                 Text(

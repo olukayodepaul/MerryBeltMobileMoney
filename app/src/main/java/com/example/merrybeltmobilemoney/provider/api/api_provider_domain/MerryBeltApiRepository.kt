@@ -48,4 +48,12 @@ interface MerryBeltApiRepository {
     suspend fun fundTransfer(terminalId: String, sessionId: String, data: FundTrans): Response<ValidateAccNumberResponse>
 
     suspend fun getBillingProduct(terminalId: String, sessionId: String, category: String): Response<BillingProducts>
+
+    suspend fun userSerialNumber(): String
+
+    suspend fun userStan(): String
+
+    suspend fun userOnlyAccountInfo () : Boolean
+
+
 }

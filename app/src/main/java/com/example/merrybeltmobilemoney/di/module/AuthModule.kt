@@ -14,7 +14,7 @@ object AuthModule {
     @Provides
     @Singleton
     @Named("TOKEN_KEY")
-    fun authToken(): String{
+    fun authToken(): String {
         return "6a7941634d54705a4d6a346a53714461347274664d42475048"
     }
 
@@ -29,6 +29,27 @@ object AuthModule {
     @Singleton
     fun apiID() : Int {
         return 8
+    }
+
+    @Provides
+    @Singleton
+    @Named("SERIAL_NUMBER")
+    fun userSerialNumber() :String {
+        return "63201125995137"
+    }
+
+    @Provides
+    @Singleton
+    @Named("STAN")
+    fun userStan() :String {
+        return "123456"
+    }
+
+    @Provides
+    @Singleton
+    @Named("ONLY_ACCOUNT_INFO")
+    fun userOnlyAccountInfo() :Boolean {
+        return false
     }
 
 }

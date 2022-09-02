@@ -95,10 +95,12 @@ class BuyDataViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "data")
-            val decryptedAirtime = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
-            val getAirtimeListOfVariousNetwork: List<DataProductList> = Constant.gson.fromJson(decryptedAirtime, Array<DataProductList>::class.java).toList()
-            onDataProduct(getAirtimeListOfVariousNetwork)
+            try{
+                val billProduct = repo.getBillingProduct(repo.customerProfile().terminalId, repo.customerProfile().sessionId, "data")
+                val decryptedAirtime = EncryptionUtil().isDecryption(billProduct.body()!!.data, repo.customerProfile().sessionId)
+                val getAirtimeListOfVariousNetwork: List<DataProductList> = Constant.gson.fromJson(decryptedAirtime, Array<DataProductList>::class.java).toList()
+                onDataProduct(getAirtimeListOfVariousNetwork)
+            }catch (e:Throwable){ }
         }
     }
 }

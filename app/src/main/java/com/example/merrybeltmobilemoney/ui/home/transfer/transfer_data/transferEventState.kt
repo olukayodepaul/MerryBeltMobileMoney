@@ -1,39 +1,23 @@
 package com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data
 
 
-data class TransferState (
-    val balances:String = "",
-    val listOfBanks: List<AllBanks> = emptyList(),
-    val expanded: Boolean = false,
-    val specimen: String = "",
-    val selectedBankLogo: String = "",
-    val accNoToTransferTo: String = "",
-    val accNameToTransferTo: String = "",
-    val setBankCode: String = "",
-    val setBankName: String = "",
-    val loader: Boolean = false,
-    val amountToTransfer: String = "",
-    val continueButtonEnable: Boolean = false, //this is the continue button
-    val showAndHidePinDialog: Boolean = false,
-    val enteringPin: String = ""
-
+data class TransferState(
+    val bankList: List<AllBanks> = emptyList(),
+    val bankLoader: Boolean = false,
+    val bankSelected: String = "",
+    val bankExpanded: Boolean = false,
+    val bankImage: String = "",
+    val backCode: String = "",
+    val accountNumber: String = "",
+    val accountName: String = "",
+    val amount: String = ""
 )
 
-
 sealed class TransferEvent {
-    class OnExpanded(val expanded: Boolean) : TransferEvent()
-    class OnSpecimenText(val specimen:  String) : TransferEvent()
-    class OnSelectedBankLogo(val bankLogo: String) : TransferEvent()
-    class OnAccNoToTransferTo(val accNoToTransferTo: String) : TransferEvent()
-    class OnSetBankCode(val setBankCode: String) : TransferEvent()
-    class OnSetBankName(val setBankName: String) : TransferEvent()
-    class OnAmountToTransfer(val amountToTransfer: String) : TransferEvent()
-    object OnClickContButton : TransferEvent()
-    class OnShowAndHidePinDialog(val showAndHidePinDialog: Boolean) : TransferEvent()
-    object OnClickOnDoneButton: TransferEvent()
-    class OnEnteringPin(val enteringPin: String) : TransferEvent()
+    class OnBankExpanded(val bankExpanded: Boolean) : TransferEvent()
+    class OnBankLoader(val bankLoader: Boolean) : TransferEvent()
+    class OnBankSelected(val bankSelected: String, val bankImage: String, val backCode: String) : TransferEvent()
+    class OnAccountNumber(val accountNumber: String) : TransferEvent()
+    class OnAccountName(val accountName: String) : TransferEvent()
+    class OnAmount(val amount: String) : TransferEvent()
 }
-
-
-
-

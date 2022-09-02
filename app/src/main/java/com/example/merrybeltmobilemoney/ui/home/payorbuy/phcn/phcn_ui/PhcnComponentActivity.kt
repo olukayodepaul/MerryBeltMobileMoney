@@ -39,8 +39,8 @@ fun PhcnComponentActivity(
                     Text(
                         text = "PHCN",
                         style = TextStyle(
-                            fontFamily = Fonts.RobotoBold,
-                            fontSize = 14.sp
+                            fontFamily = Fonts.RobotoMedium,
+                            fontSize = 20.sp
                         )
                     )
                 },

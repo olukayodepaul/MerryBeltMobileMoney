@@ -20,8 +20,10 @@ class MerryBeltApiRepositoryImpl(
     private val apiUser: String,
     private val apiID: Int,
     private val merryBeltRoomDao: MerryBeltRoomDao,
-    private val sharedPref: MerryBeltPrefRepository
-
+    private val sharedPref: MerryBeltPrefRepository,
+    private val userSerialNumber: String,
+    private val userStan: String,
+    private val userOnlyAccountInfo: Boolean
 ) : MerryBeltApiRepository {
 
 
@@ -123,6 +125,18 @@ class MerryBeltApiRepositoryImpl(
         category: String
     ): Response<BillingProducts> {
         return merryBeltEncryptedApi.getBillingProduct(terminalId, sessionId, category)
+    }
+
+    override suspend fun userSerialNumber() : String{
+        return userSerialNumber
+    }
+
+    override suspend fun userStan() : String {
+        return userStan
+    }
+
+    override suspend fun userOnlyAccountInfo() : Boolean{
+        return userOnlyAccountInfo
     }
 
 }

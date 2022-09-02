@@ -17,7 +17,6 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -42,11 +41,16 @@ object AppModule {
         @Named("API_USER_LOGIN") apiUser: String,
         apiId: Int,
         merryBeltRoomDao: MerryBeltRoomDao,
-        merryPref: MerryBeltPrefRepository
+        merryPref: MerryBeltPrefRepository,
+        @Named("SERIAL_NUMBER") userSerialNumber: String,
+        @Named("STAN") userStan: String,
+        @Named("ONLY_ACCOUNT_INFO") userOnlyAccountInfo: Boolean
     ): MerryBeltApiRepository {
         return MerryBeltApiRepositoryImpl(
-            merryBeltApi, merryBeltEncryptedApi, loginApi, authToken, apiUser, apiId, merryBeltRoomDao, merryPref
+            merryBeltApi, merryBeltEncryptedApi, loginApi, authToken, apiUser, apiId, merryBeltRoomDao, merryPref, userSerialNumber, userStan, userOnlyAccountInfo
         )
     }
+
+
 
 }
