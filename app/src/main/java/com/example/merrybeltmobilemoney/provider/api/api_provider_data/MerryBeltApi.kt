@@ -1,6 +1,5 @@
 package com.example.merrybeltmobilemoney.provider.api.api_provider_data
 
-
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.FundTrans
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumber
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.ValidateAccNumberResponse

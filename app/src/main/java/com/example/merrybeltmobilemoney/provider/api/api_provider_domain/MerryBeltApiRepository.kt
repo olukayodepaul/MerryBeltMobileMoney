@@ -3,6 +3,8 @@ package com.example.merrybeltmobilemoney.provider.api.api_provider_domain
 import com.example.merrybeltmobilemoney.provider.preference.pref_provider_data.CustomersProfile
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.NetworkMgt
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.NetworkMgtResponse
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.*
 import retrofit2.Response
 import retrofit2.http.Path
@@ -54,6 +56,8 @@ interface MerryBeltApiRepository {
     suspend fun userStan(): String
 
     suspend fun userOnlyAccountInfo () : Boolean
+
+    suspend fun mgt(data: NetworkMgt): Response<NetworkMgtResponse>
 
 
 }

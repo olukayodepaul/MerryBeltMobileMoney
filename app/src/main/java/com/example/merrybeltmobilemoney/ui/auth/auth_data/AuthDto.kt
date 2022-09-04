@@ -48,6 +48,48 @@ data class LoginResponse(
 //    val instantBetSettlementBalance: Float? = 0f,
 //)
 
+data class NetworkMgt(
+    val serialNumber: String,
+    val stan: String,
+    val onlyAccountInfo: Boolean
+)
+
+
+data class NetworkMgtResponse(
+    @SerializedName("status")
+    @Expose
+    val status: Boolean? = null,
+    @SerializedName("data")
+    @Expose
+    val data: NetworkMgtData? = null,
+)
+
+data class NetworkMgtData(
+    @SerializedName("sessionId")
+    @Expose
+    val sessionId: String? = null,
+    @SerializedName("terminalId")
+    @Expose
+    val terminalId: String? = null,
+    @SerializedName("merchantId")
+    @Expose
+    val merchantId: String? = null,
+    @SerializedName("balance")
+    @Expose
+    val balance: String? = null,
+    @SerializedName("accountName")
+    @Expose
+    val accountName: String? = null,
+    @SerializedName("accountNumber")
+    @Expose
+    val accountNumber: String? = null,
+    @SerializedName("bank")
+    @Expose
+    val bank: String? = null
+)
+
+
+
 
 
 

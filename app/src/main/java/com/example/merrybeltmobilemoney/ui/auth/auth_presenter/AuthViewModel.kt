@@ -1,6 +1,7 @@
 package com.example.merrybeltmobilemoney.ui.auth.auth_presenter
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
@@ -75,12 +76,17 @@ class AuthViewModel @Inject constructor(private val repo: MerryBeltApiRepository
                     val bodyPayLoad = handleApiRequest.body()
 
                     if(bodyPayLoad!!.errorStatusCode == 1 && handleApiRequest.code() == 200 && handleApiRequest.isSuccessful) {
-                        repo.balances(balance = "300.0")
-                        repo.accountNumber(accountNumber = "0223318808")
-                        repo.sessionId(sessionId = "2033HQOQ-a918957c-f504-4544-9999-73e6e0370ddd")
-                        repo.terminalId(terminalId = "2033HQOQ")
-                        repo.stan(stan = "123456")
+
+                        val makeMgtRequest = NetworkMgt(repo.userSerialNumber(), repo.userStan(), repo.userOnlyAccountInfo())
+                        val mgtResponseReceiver = repo.mgt(makeMgtRequest).body()
+
+                        repo.balances(balance = mgtResponseReceiver!!.data!!.balance!!)
+                        repo.accountNumber(accountNumber = mgtResponseReceiver!!.data!!.accountNumber!!)
+                        repo.sessionId(sessionId = mgtResponseReceiver!!.data!!.sessionId!!)
+                        repo.terminalId(terminalId = mgtResponseReceiver!!.data!!.terminalId!!)
+                        repo.stan(stan = repo.userStan())
                         _apiEvent.send(LoginAuthState.Success(status = 200))
+
                     }else{
                         _apiEvent.send(LoginAuthState.Error(error =  bodyPayLoad.errorMessage!!))
                     }

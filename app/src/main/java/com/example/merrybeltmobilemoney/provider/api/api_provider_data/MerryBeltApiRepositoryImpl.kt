@@ -6,9 +6,10 @@ import com.example.merrybeltmobilemoney.provider.preference.pref_provider_domain
 import com.example.merrybeltmobilemoney.provider.room.room_provider_domain.MerryBeltRoomDao
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginCredential
 import com.example.merrybeltmobilemoney.ui.auth.auth_data.LoginResponse
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.NetworkMgt
+import com.example.merrybeltmobilemoney.ui.auth.auth_data.NetworkMgtResponse
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.*
 import retrofit2.Response
-import retrofit2.http.Path
 
 
 class MerryBeltApiRepositoryImpl(
@@ -138,5 +139,10 @@ class MerryBeltApiRepositoryImpl(
     override suspend fun userOnlyAccountInfo() : Boolean{
         return userOnlyAccountInfo
     }
+
+    override suspend fun mgt(data: NetworkMgt): Response<NetworkMgtResponse> {
+        return merryBeltEncryptedApi.mgt(data)
+    }
+
 
 }
