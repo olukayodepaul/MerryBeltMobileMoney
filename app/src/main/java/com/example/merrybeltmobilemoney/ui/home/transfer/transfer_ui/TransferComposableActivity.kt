@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.merrybeltmobilemoney.theme.*
+import com.example.merrybeltmobilemoney.ui.auth.auth_presenter.auth_component.AuthenticationErrorDialogs
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_presenter.TransferViewModel
 
@@ -103,7 +104,38 @@ fun transferComposableActivity(
                 }
 
                 transSubmitButton(
-                    label = "Continue"
+                    label = "Continue",
+                    submit = {
+                        uiEvent(
+                            TransferEvent.OnContinue
+                        )
+                    }
+                )
+
+                AuthenticationErrorDialogs(
+                    isDialogShow = uiState.msgVisibility,
+                    isDialogMessage = uiState.msg,
+                    isDialogTitle = uiState.msgTitle,
+                    onDismissRequest = {
+                        uiEvent(
+                            TransferEvent.OnMessageDialog(
+                                msgTitle = "",
+                                msgVisibility = false,
+                                msg = ""
+                            )
+                        )
+                    }
+                )
+
+                if(uiState.hideAnsShowPinDialog){
+                    TransferPinDialog(
+                        uiState = uiState,
+                        uiEvent =  uiEvent
+                    )
+                }
+
+                FullScreenDialog(
+                    uiState = uiState
                 )
             }
         }

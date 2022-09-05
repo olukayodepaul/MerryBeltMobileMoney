@@ -69,6 +69,7 @@ data class FundTrans(
     val type: String =  "",
 )
 
+
 data class DecryptedTransData(
     @SerializedName("description")
     @Expose

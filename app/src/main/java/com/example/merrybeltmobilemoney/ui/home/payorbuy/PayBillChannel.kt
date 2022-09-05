@@ -58,7 +58,7 @@ fun PayBillChannelHome(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .padding(8.dp),
-                    horizontalArrangement  =  Arrangement.SpaceBetween
+                    horizontalArrangement  =  Arrangement.SpaceAround
                 ){
                     EachNavigations(
                         label="PHCN",
@@ -78,7 +78,7 @@ fun PayBillChannelHome(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .padding(8.dp),
-                    horizontalArrangement  =  Arrangement.SpaceBetween
+                    horizontalArrangement  =  Arrangement.SpaceAround
                 ){
                     EachNavigations(
                         label="Airtime",

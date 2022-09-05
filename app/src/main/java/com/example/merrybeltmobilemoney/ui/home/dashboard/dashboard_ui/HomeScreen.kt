@@ -98,7 +98,7 @@ fun HomeScreen(
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .padding(8.dp),
-                    horizontalArrangement  =  Arrangement.SpaceBetween
+                    horizontalArrangement  =  Arrangement.SpaceAround
                 ){
 
                     dashBoardNavigationListComponent(
@@ -120,7 +120,7 @@ fun HomeScreen(
 
                 Row(  modifier = Modifier.fillMaxWidth()
                     .padding(8.dp),
-                    horizontalArrangement  =  Arrangement.SpaceBetween){
+                    horizontalArrangement  =  Arrangement.SpaceAround){
 
                     dashBoardNavigationListComponent(
                         imageSwitchers = 3,

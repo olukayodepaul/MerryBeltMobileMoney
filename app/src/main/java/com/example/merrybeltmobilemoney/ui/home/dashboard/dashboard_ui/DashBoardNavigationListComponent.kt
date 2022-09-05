@@ -29,7 +29,7 @@ fun dashBoardNavigationListComponent(
         elevation = 3.dp,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
-            .height(160.dp).width(160.dp)
+            .height(180.dp).width(180.dp)
             .padding(4.dp)
             .clickable {
                 click()
