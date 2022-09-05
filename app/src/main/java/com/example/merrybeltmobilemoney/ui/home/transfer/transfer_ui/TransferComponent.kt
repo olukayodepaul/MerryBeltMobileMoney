@@ -408,19 +408,19 @@ fun FullScreenDialog(
                         painter = painterResource(id = R.drawable.ic_baseline_check_circle_24),
                         contentDescription = "Medal icon",
                         tint = primaryColor,
-                        modifier = Modifier.size(size = 120.dp)
+                        modifier = Modifier.size(size = 100.dp)
                     )
 
                     Text(
                         text = "Transfer Successfully",
-                        fontSize = 22.sp,
+                        fontSize = 20.sp,
                         modifier = Modifier.padding(top = 26.dp),
                         fontFamily = RobotoMedium
                     )
 
                     Text(
                         text = "${uiState.accountName.uppercase()}",
-                        fontSize = 16.sp,
+                        fontSize = 15.sp,
                         modifier = Modifier.padding(top = 20.dp),
                         fontFamily = RobotoMedium,
                         color = Monsoon
@@ -428,7 +428,7 @@ fun FullScreenDialog(
 
                     Text(
                         text = "${uiState.accountNumber} - ${uiState.bankSelected}",
-                        fontSize = 16.sp,
+                        fontSize = 15.sp,
                         modifier = Modifier.padding(top = 5.dp),
                         fontFamily = RobotoMedium,
                         color = Monsoon
@@ -461,5 +461,3 @@ fun FullScreenDialog(
         }
     }
 }
-
-// text = " ₦${uiState.amount} payment to ",
