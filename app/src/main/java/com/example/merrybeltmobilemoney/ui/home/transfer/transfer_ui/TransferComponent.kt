@@ -1,6 +1,6 @@
 package com.example.merrybeltmobilemoney.ui.home.transfer.transfer_ui
 
-import android.content.Context
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +13,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -37,11 +35,8 @@ import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.merrybeltmobilemoney.R
 import com.example.merrybeltmobilemoney.theme.*
-import com.example.merrybeltmobilemoney.theme.Fonts.MontserratBold
 import com.example.merrybeltmobilemoney.theme.Fonts.RobotoBold
 import com.example.merrybeltmobilemoney.theme.Fonts.RobotoMedium
-import com.example.merrybeltmobilemoney.theme.Fonts.RobotoNormal
-import com.example.merrybeltmobilemoney.theme.Fonts.RobotoRegular
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferEvent
 import com.example.merrybeltmobilemoney.ui.home.transfer.transfer_data.TransferState
 

@@ -1,6 +1,9 @@
 package com.example.merrybeltmobilemoney.ui.home.payorbuy.airtime.airtime_domain
 
 
+//presentation layer
+//domain layer
+//data layer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.merrybeltmobilemoney.Application
@@ -16,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AirtimeViewModel @Inject constructor(
+class AirtimeViewModel @Inject constructor( //this are the use cases
     private val repo: MerryBeltApiRepository,
     private val appContext: Application
 ) : ViewModel() {
